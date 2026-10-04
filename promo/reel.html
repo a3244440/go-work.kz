@@ -368,12 +368,40 @@ const cards = [0, 1, 2, 3].map((i) => $('cd' + i));
 const CARD_Y = [700, 960, 1220, 1480];
 const mocks = [0, 1, 2, 3].map((i) => $('mk' + i));
 
+
+/* ---------- карта времени: реальное время (30 с) → время сюжета (15 с) ---------- */
+const KEYS = [[0,0],[2.4,1.45],[3.4,1.55],[4.6,2.3],[6.2,3.3],[8.2,4.08],[9.4,4.13],[10.4,4.9],[12.4,6.2],[13.8,6.8],[14.9,7.5],[19.4,10.17],[20.3,10.22],[21.1,10.75],[23.5,12.4],[24.4,12.5],[26.0,13.6],[28.0,14.6],[30,15]];
+const KX = KEYS.map(k => k[0]), KY = KEYS.map(k => k[1]);
+const KM = (() => { // монотонная кубическая интерполяция (Fritsch–Carlson)
+  const n = KX.length, d = [], m = [];
+  for (let i = 0; i < n - 1; i++) d.push((KY[i + 1] - KY[i]) / (KX[i + 1] - KX[i]));
+  m[0] = d[0]; m[n - 1] = d[n - 2];
+  for (let i = 1; i < n - 1; i++) m[i] = d[i - 1] * d[i] <= 0 ? 0 : 3 * (d[i - 1] + d[i]) / ((2 * d[i] + d[i - 1]) / d[i - 1] + (d[i] + 2 * d[i - 1]) / d[i]) * 0 + (2 / (1 / d[i - 1] + 1 / d[i]));
+  return m;
+})();
+function S(a) {
+  if (a <= 0) return 0; if (a >= KX[KX.length - 1]) return KY[KY.length - 1];
+  let i = 0; while (a > KX[i + 1]) i++;
+  const h = KX[i + 1] - KX[i], u = (a - KX[i]) / h;
+  const h00 = 2*u**3 - 3*u**2 + 1, h10 = u**3 - 2*u**2 + u, h01 = -2*u**3 + 3*u**2, h11 = u**3 - u**2;
+  return h00 * KY[i] + h10 * h * KM[i] + h01 * KY[i + 1] + h11 * h * KM[i + 1];
+}
+const RC = new Map();
+function R(st) { // обратная функция: время сюжета → реальное время
+  if (RC.has(st)) return RC.get(st);
+  let lo = 0, hi = 30; for (let k = 0; k < 50; k++) { const mid = (lo + hi) / 2; if (S(mid) < st) lo = mid; else hi = mid; }
+  RC.set(st, hi); return hi;
+}
+let A = 0;
+const sprR = (t0, amp, f = 22, d = 7) => spring(A, R(t0), amp, f, d);
+
 /* ---------- рендер кадра ---------- */
-function render(t) {
+function render(a) {
+  A = a; const t = S(a);
   // фон
-  T($('b1'), { x: 200 + Math.sin(t * 0.5) * 160, y: 300 + Math.cos(t * 0.4) * 140, c: true });
-  T($('b2'), { x: 900 + Math.cos(t * 0.45) * 160, y: 1100 + Math.sin(t * 0.35) * 220, c: true });
-  T($('b3'), { x: 400 + Math.sin(t * 0.3) * 260, y: 1750 + Math.cos(t * 0.5) * 120, c: true });
+  T($('b1'), { x: 200 + Math.sin(A * 0.5) * 160, y: 300 + Math.cos(A * 0.4) * 140, c: true });
+  T($('b2'), { x: 900 + Math.cos(A * 0.45) * 160, y: 1100 + Math.sin(A * 0.35) * 220, c: true });
+  T($('b3'), { x: 400 + Math.sin(A * 0.3) * 260, y: 1750 + Math.cos(A * 0.5) * 120, c: true });
   // цвет фона меняется по сценам
   const hueK = t < 7 ? 0 : t < 10.4 ? 1 : 2;
   const pal = [['#6d28d9', '#db2777', '#ea580c'], ['#4c1d95', '#0e7490', '#be185d'], ['#7c3aed', '#059669', '#db2777']][hueK];
@@ -383,23 +411,23 @@ function render(t) {
     el.style.background = `radial-gradient(circle, ${pal[i]}cc 0%, ${pal[i]}00 65%)`;
     el.style.opacity = [0.9, 0.7, 0.55][i] * cl(t / 0.8);
   });
-  $('grid').style.transform = `translateY(${(t * 40) % 90}px)`;
-  const fr = Math.floor(t * 24);
+  $('grid').style.transform = `translateY(${(A * 40) % 90}px)`;
+  const fr = Math.floor(A * 24);
   $('grain').style.transform = `translate(${((fr * 73) % 200) - 100}px, ${((fr * 151) % 200) - 100}px)`;
-  document.querySelectorAll('.grad').forEach((g) => (g.style.backgroundPosition = `${(t * 40) % 300}% 0`));
+  document.querySelectorAll('.grad').forEach((g) => (g.style.backgroundPosition = `${(A * 40) % 300}% 0`));
 
   // камера: тряска на ударах + лёгкий дрейф
-  const shx = spring(t, 0.55, 14, 55, 9) + spring(t, 2.62, 9, 55, 10) + spring(t, 4.78, 18, 50, 8) + spring(t, 13.02, 16, 50, 8) + spring(t, 14.32, 10, 60, 10);
-  const shy = spring(t, 0.55, -10, 47, 9) + spring(t, 4.78, 12, 43, 8) + spring(t, 13.02, -12, 44, 8);
-  const camS = 1 + 0.025 * Math.sin(t * 0.6) + 0.04 * E.inOutCubic(pr(t, 13, 15));
+  const shx = sprR(0.55, 14, 55, 9) + sprR(2.62, 9, 55, 10) + sprR(4.78, 18, 50, 8) + sprR(13.02, 16, 50, 8) + sprR(14.32, 10, 60, 10);
+  const shy = sprR(0.55, -10, 47, 9) + sprR(4.78, 12, 43, 8) + sprR(13.02, -12, 44, 8);
+  const camS = 1 + 0.025 * Math.sin(A * 0.6) + 0.04 * E.inOutCubic(pr(t, 13, 15));
   $('cam').style.transform = `translate(${shx}px,${shy}px) scale(${camS})`;
 
   // вспышки и блики
   const flashes = [[0.5, 0.5], [4.78, 0.45], [13.0, 0.25]];
-  $('flash').style.opacity = flashes.reduce((m, [ft, a]) => Math.max(m, t >= ft ? a * Math.exp(-(t - ft) * 9) : 0), 0);
+  $('flash').style.opacity = flashes.reduce((m, [ft, a]) => Math.max(m, A >= R(ft) ? a * Math.exp(-(A - R(ft)) * 9) : 0), 0);
   let fl = 0, fx = -900;
   for (const ft of [1.7, 4.62, 6.95, 10.28, 12.6]) {
-    const k = pr(t, ft, ft + 0.55);
+    const k = pr(A, R(ft), R(ft) + 0.75);
     if (k > 0 && k < 1) { fl = Math.sin(k * Math.PI); fx = lerp(-900, 1500, E.inOutCubic(k)); }
   }
   $('flare').style.opacity = fl;
@@ -425,7 +453,7 @@ function render(t) {
     const kNav = E.inOutExpo(pr(t, 1.55, 2.2));
     x = lerp(x, 112, kNav); y = lerp(y, 120, kNav); s = lerp(s, 0.4, kNav); r += kNav * 360;
     const kEnd = E.inOutExpo(pr(t, 13.45, 14.05));
-    x = lerp(x, 540, kEnd); y = lerp(y, 1520, kEnd) - Math.sin(kEnd * Math.PI) * 260; s = lerp(s, 0.62, kEnd) + spring(t, 14.05, 0.08, 30, 9);
+    x = lerp(x, 540, kEnd); y = lerp(y, 1520, kEnd) - Math.sin(kEnd * Math.PI) * 260; s = lerp(s, 0.62, kEnd) + sprR(14.05, 0.08, 30, 9);
     r += kEnd * 360;
     T($('mark'), { x, y, s, r, op: t < 0.45 ? 0 : 1 });
   }
@@ -437,7 +465,7 @@ function render(t) {
     T($('word'), { x, y, s, op: 1 });
     letters.forEach((l, i) => {
       const k = E.outBack(pr(t, 0.72 + i * 0.045, 1.22 + i * 0.045), 2.2);
-      const wave = Math.sin(t * 6 - i * 0.6) * 6 * pr(t, 14.1, 14.4);
+      const wave = Math.sin(A * 6 - i * 0.6) * 6 * pr(t, 14.1, 14.4);
       l.style.transform = `translateY(${(1 - k) * 110 + wave}px) rotate(${(1 - k) * 25}deg) scale(${0.4 + 0.6 * k})`;
       l.style.opacity = cl(k * 1.4);
       l.style.filter = k < 0.98 ? `blur(${(1 - cl(k)) * 10}px)` : 'none';
@@ -450,7 +478,7 @@ function render(t) {
     const out = E.inCubic(pr(t, 12.45, 12.8));
     T($('navbg'), { x: 540, y: 120, sx: 0.6 + 0.4 * k, op: k * (1 - out) * 1 });
     const kw = E.outBack(pr(t, 2.2, 2.7), 2.5);
-    const wob = spring(t, 12.25, 0.12, 30, 8);
+    const wob = sprR(12.25, 0.12, 30, 8);
     T($('navwa'), { x: 905, y: 120, s: kw + wob, op: t < 12.55 ? cl(kw * 2) : 0 });
   }
 
@@ -474,21 +502,21 @@ function render(t) {
     const k = pr(t, 2.15, 3.15);
     const grow = E.inExpo(pr(t, 4.28, 4.8));
     const fade = pr(t, 4.8, 5.15);
-    const s = E.outElastic(k) * (1 + grow * 9) * (1 + 0.03 * Math.sin(t * 3));
+    const s = E.outElastic(k) * (1 + grow * 9) * (1 + 0.03 * Math.sin(A * 3));
     T($('orb'), { x: 560, y: 1470 - grow * 300, s, op: t < 2.15 ? 0 : 1 - fade });
-    $('orbcore').style.transform = `rotate(${t * 70}deg)`;
+    $('orbcore').style.transform = `rotate(${A * 70}deg)`;
     const kr = E.outExpo(pr(t, 2.45, 3.3));
     const rout = pr(t, 4.25, 4.55);
     T($('orbwrap'), { x: 560, y: 1470, s: 0.5 + 0.5 * kr + rout * 0.6, op: kr * (1 - rout) });
-    T($('ring1'), { r: t * 80 });
-    T($('ring2'), { r: -t * 55 });
-    T($('ring3'), { r: t * 25 });
+    T($('ring1'), { r: A * 80 });
+    T($('ring2'), { r: -A * 55 });
+    T($('ring3'), { r: A * 25 });
   }
   [['fc1', 215, 1290, 2.8, -1, -1], ['fc2', 820, 1500, 3.0, 1, 0.3], ['fc3', 290, 1730, 3.2, -1, 1]].forEach(([id, x, y, t0, dx, dy], i) => {
     const k = pr(t, t0, t0 + 0.6);
     const s = E.outBack(k, 2.4);
     const out = E.inBack(pr(t, 4.15 + i * 0.04, 4.6 + i * 0.04), 2);
-    const bob = Math.sin(t * 2.4 + i * 2) * 14;
+    const bob = Math.sin(A * 2.4 + i * 2) * 14;
     T($(id), { x: x + dx * out * 900, y: y + bob + (1 - E.outExpo(k)) * 80 + dy * out * 500, s: 0.3 + 0.7 * s, r: (1 - E.outExpo(k)) * dx * 14 + out * dx * 30, op: t < t0 ? 0 : 1 });
   });
   $('fcnum').textContent = Math.round(327 * E.outExpo(pr(t, 3.0, 3.9)));
@@ -508,7 +536,7 @@ function render(t) {
     const e = E.outBack(k, 1.6);
     const side = i % 2 ? 1 : -1;
     let x = 540 + side * (1 - e) * 1300;
-    let y = CARD_Y[i] + Math.sin(t * 2 + i) * 6;
+    let y = CARD_Y[i] + Math.sin(A * 2 + i) * 6;
     let r = side * (1 - E.outExpo(k)) * 16;
     let s = 1, op = t < t0 ? 0 : 1, ry = side * (1 - E.outExpo(k)) * -40;
     // выход
@@ -547,9 +575,9 @@ function render(t) {
     $('chead').style.transform = `translateY(${(1 - inner) * -30}px)`;
     $('cform').style.opacity = inner;
     $('cform').style.transform = `translateY(${(1 - inner) * 30}px)`;
-    $('cav').style.transform = `rotate(${t * 200}deg)`;
-    $('cav').firstElementChild.style.transform = `rotate(${-t * 200}deg)`;
-    $('cstat').firstElementChild.style.boxShadow = `0 0 0 ${(t * 1.6 % 1) * 14}px rgba(37,211,102,${0.6 * (1 - (t * 1.6 % 1))})`;
+    $('cav').style.transform = `rotate(${A * 200}deg)`;
+    $('cav').firstElementChild.style.transform = `rotate(${-A * 200}deg)`;
+    $('cstat').firstElementChild.style.boxShadow = `0 0 0 ${(A * 1.6 % 1) * 14}px rgba(37,211,102,${0.6 * (1 - (A * 1.6 % 1))})`;
     const ahl = [...$('ah').children].map((l) => l.firstElementChild);
     ahl.forEach((sp, i) => lineIn(sp, t, 7.15 + i * 0.09, 0.8));
 
@@ -562,18 +590,18 @@ function render(t) {
     const sent = t >= 8.62;
     $('ctext').textContent = sent ? '' : [...TYPE].slice(0, n).join('');
     $('cph').style.display = (n === 0 || sent) ? 'inline' : 'none';
-    $('caret').style.opacity = (Math.floor(t * 3) % 2 === 0 || (t > 7.9 && t < 8.5)) ? 1 : 0;
-    $('csend').style.transform = `scale(${1 - spring(t, 8.55, 0.25, 30, 9) + (t > 8.4 && t < 8.55 ? 0.08 : 0)}) rotate(${-E.outBack(pr(t, 8.55, 8.9)) * 360}deg)`;
+    $('caret').style.opacity = (Math.floor(A * 3) % 2 === 0 || (t > 7.9 && t < 8.5)) ? 1 : 0;
+    $('csend').style.transform = `scale(${1 - sprR(8.55, 0.25, 30, 9) + (t > 8.4 && t < 8.55 ? 0.08 : 0)}) rotate(${-E.outBack(pr(t, 8.55, 8.9)) * 360}deg)`;
     grow('w2', 8.62); pop($('m2'), 8.62);
     // «печатает…»
     const dIn = E.outExpo(pr(t, 8.8, 9.1)), dOut = E.inCubic(pr(t, 9.2, 9.35));
     $('w3').style.height = MH.w3 * dIn * (1 - dOut) + 'px';
     $('m3').style.opacity = dIn * (1 - dOut);
-    [...$('m3').children].forEach((d, i) => (d.style.transform = `translateY(${-Math.max(0, Math.sin(t * 12 - i * 0.9)) * 12}px)`));
+    [...$('m3').children].forEach((d, i) => (d.style.transform = `translateY(${-Math.max(0, Math.sin(A * 12 - i * 0.9)) * 12}px)`));
     grow('w4', 9.22, 0.55); pop($('m4'), 9.22);
     const nc = m4spans.length * E.outCubic(pr(t, 9.3, 9.95));
     m4spans.forEach((s, i) => { const v = cl(nc - i); s.style.opacity = v; });
-    const kb = E.outBack(pr(t, 9.95, 10.35), 3);
+    const kb = E.outBack(pr(t, 9.9, 10.16), 3);
     $('mwa').style.transform = `scale(${kb})`;
     $('mwa').style.opacity = cl(kb * 2);
 
@@ -593,7 +621,7 @@ function render(t) {
     T($('k3'), { x: 70, y: 250, c: false, op: kk, sk: (1 - kk) * -20 });
     const kc = pr(t, 10.38, 11.43);
     $('cnum').textContent = Math.round(327 * E.outExpo(kc));
-    T($('counter'), { x: 540, y: 470, s: 0.6 + 0.4 * E.outBack(pr(t, 10.38, 10.88), 2.5) + spring(t, 11.43, 0.06, 30, 8), op: cl(kc * 6) });
+    T($('counter'), { x: 540, y: 470, s: 0.6 + 0.4 * E.outBack(pr(t, 10.38, 10.88), 2.5) + sprR(11.43, 0.06, 30, 8), op: cl(kc * 6) });
     const kl = E.outExpo(pr(t, 10.63, 11.08));
     T($('clabel'), { x: 540, y: 620 + (1 - kl) * 30, op: kl });
     const kp = E.outBack(pr(t, 10.43, 10.98), 1.8);
@@ -611,13 +639,13 @@ function render(t) {
     $('lring').setAttribute('r', t > 11.53 ? 16 + rk * 40 : 0); $('lring').style.opacity = t > 11.53 ? 1 - rk : 0;
     [[0, 235], [1, 600], [2, 905]].forEach(([i, x]) => {
       const k = E.outBack(pr(t, 11.08 + i * 0.09, 11.53 + i * 0.09), 2.6);
-      T($('r' + i), { x, y: 1350 + Math.sin(t * 3 + i) * 5, s: Math.max(0, k), r: (1 - k) * 15, op: cl(k * 2) });
+      T($('r' + i), { x, y: 1350 + Math.sin(A * 3 + i) * 5, s: Math.max(0, k), r: (1 - k) * 15, op: cl(k * 2) });
     });
     mocks.forEach((m, i) => {
       const k = E.outCubic(pr(t, 11.03, 12.9));
       const x = 1400 + i * 450 - k * 1750;
       const ent = E.outExpo(pr(t, 11.03 + i * 0.08, 11.58 + i * 0.08));
-      T(m, { x, y: 1660 + Math.sin(t * 2.5 + i * 1.3) * 10, ry: -22 + (x - 540) * -0.02, r: (x - 540) * 0.006, s: 0.8 + 0.2 * ent, op: ent });
+      T(m, { x, y: 1660 + Math.sin(A * 2.5 + i * 1.3) * 10, ry: -22 + (x - 540) * -0.02, r: (x - 540) * 0.006, s: 0.8 + 0.2 * ent, op: ent });
     });
   }
 
@@ -633,8 +661,8 @@ function render(t) {
     const wp = $('wipe');
     wp.style.width = w + 'px'; wp.style.height = h + 'px';
     wp.style.borderRadius = Math.min(w, h) / 2 + 'px';
-    const press = spring(t, 14.33, 0.09, 26, 7) + (t > 14.25 && t < 14.33 ? 0.05 * pr(t, 14.25, 14.33) : 0);
-    T(wp, { x: cx, y: cy, s: 1 - press + spring(t, 13.55, 0.04, 20, 6), op: t < 12.5 ? 0 : 1 });
+    const press = sprR(14.33, 0.09, 26, 7) + (t > 14.25 && t < 14.33 ? 0.05 * pr(t, 14.25, 14.33) : 0);
+    T(wp, { x: cx, y: cy, s: 1 - press + sprR(13.55, 0.04, 20, 6), op: t < 12.5 ? 0 : 1 });
     wp.style.boxShadow = `0 30px 90px -20px rgba(37,211,102,${0.9 * km}), inset 0 3px 0 rgba(255,255,255,.5)`;
     const ki = E.outBack(pr(t, 13.3, 13.75), 3);
     $('bico').style.transform = `scale(${ki}) rotate(${(1 - ki) * -180}deg)`;
@@ -651,8 +679,8 @@ function render(t) {
     $('ripple').style.opacity = rp > 0 && rp < 1 ? 0.55 * (1 - rp) : 0;
 
     [['pr1', 0], ['pr2', 0.5]].forEach(([id, off]) => {
-      const tt = t - 13.6 - off;
-      const k = tt > 0 ? (tt % 1.0) / 1.0 : 0;
+      const tt = A - R(13.6) - off * 1.2;
+      const k = tt > 0 ? (tt % 1.2) / 1.2 : 0;
       T($(id), { x: 540, y: 1180, sx: 1 + E.outCubic(k) * 0.18, sy: 1 + E.outCubic(k) * 0.8, op: tt > 0 ? (1 - k) * 0.8 : 0 });
     });
     const fl = [...$('fin').children].map((l) => l.firstElementChild);
@@ -666,9 +694,9 @@ function render(t) {
     const kc = E.outCubic(pr(t, 13.9, 14.28));
     const curX = lerp(1000, 650, kc) + Math.sin(kc * Math.PI) * -60, curY = lerp(1880, 1215, kc);
     const cOut = pr(t, 14.7, 14.95);
-    T($('cursor'), { x: curX + 30, y: curY + 40, s: 1 - spring(t, 14.3, 0.25, 30, 9) - (t > 14.25 && t < 14.33 ? 0.12 : 0), op: (t < 13.9 ? 0 : cl(kc * 3)) * (1 - cOut), r: -8 });
+    T($('cursor'), { x: curX + 30, y: curY + 40, s: 1 - sprR(14.3, 0.25, 30, 9) - (t > 14.25 && t < 14.33 ? 0.12 : 0), op: (t < 13.9 ? 0 : cl(kc * 3)) * (1 - cOut), r: -8 });
     conf.forEach((c) => {
-      const dt = t - 14.34;
+      const dt = (A - R(14.34)) * 0.8;
       const on = dt > 0 && dt < 0.9;
       const x = 640 + c.vx * dt * 0.75, y = 1180 + c.vy * dt * 0.75 + 2600 * dt * dt;
       T(c.el, { x, y, r: c.spin * dt, sy: Math.cos(dt * 18 + c.spin) * c.s, sx: c.s, op: on ? cl((0.9 - dt) * 3) : 0 });
@@ -680,10 +708,11 @@ function render(t) {
   $('fin').style.visibility = t < 13.2 ? 'hidden' : 'visible';
 }
 window.render = render;
-window.DURATION = 15;
+window.DURATION = 30;
+window.R = R; window.S = S;
 document.fonts.ready.then(() => { window.READY = true; });
 // предпросмотр в браузере: ?play
-if (location.search.includes('play')) { const st = performance.now(); (function loop(){ render(((performance.now() - st) / 1000) % 15); requestAnimationFrame(loop); })(); }
+if (location.search.includes('play')) { const st = performance.now(); (function loop(){ render(((performance.now() - st) / 1000) % 30); requestAnimationFrame(loop); })(); }
 else render(0);
 </script>
 </body>

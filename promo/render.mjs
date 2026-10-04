@@ -1,5 +1,5 @@
 import { chromium } from 'playwright';
-const FPS = 60, N = 15 * FPS, W = 4;
+const FPS = 60, N = 30 * FPS, W = 4;
 const b = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium' }).catch(()=>chromium.launch());
 const t0 = Date.now();
 await Promise.all([...Array(W)].map(async (_, w) => {

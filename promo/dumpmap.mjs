@@ -1,0 +1,11 @@
+import { chromium } from 'playwright';
+import fs from 'fs';
+const b = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium' }).catch(()=>chromium.launch());
+const p = await b.newPage({ viewport: { width: 1080, height: 1920 } });
+const errs=[]; p.on('pageerror', e=>errs.push(e.message));
+await p.goto('file://' + process.cwd() + '/reel.html');
+await p.waitForFunction(() => window.READY);
+const arr = await p.evaluate(() => { const o=[]; for (let i=0;i<=30000;i++) o.push(+S(i/1000).toFixed(5)); return o; });
+fs.writeFileSync('map.json', JSON.stringify(arr));
+console.log('errors', errs, 'S(15)=', arr[15000], 'mono', arr.every((v,i)=>i==0||v>=arr[i-1]-1e-9));
+await b.close();
