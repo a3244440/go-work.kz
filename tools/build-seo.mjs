@@ -28,6 +28,7 @@ function layout({ url, title, desc, h1, kicker, lead, crumbs, body, jsonld = [] 
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script>if(location.hostname.indexOf("www.")===0)location.replace("https://go-work.kz"+location.pathname+location.search+location.hash)</script>
   <title>${esc(title)}</title>
   <meta name="description" content="${esc(desc)}">
   <link rel="canonical" href="${canonical}">
