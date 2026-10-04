@@ -25,3 +25,10 @@
 python3 -m http.server 8000   # статика, чат — встроенные ответы
 # или: npx vercel dev          # вместе с /api/chat
 ```
+
+## SEO-страницы
+Генерируются скриптом: `node tools/build-seo.mjs` (данные — `tools/data.mjs`).
+- `/uslugi/` и 6 страниц услуг: сайты, ИИ, SEO Google, SEO Яндекс, Google Ads, Яндекс Директ
+- 6 × 20 страниц «услуга + город» (`/uslugi/<услуга>/<город>/`)
+- `/goroda/` и 20 страниц городов, `/audit/`
+- `sitemap.xml` пересобирается автоматически
