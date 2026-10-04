@@ -4,7 +4,8 @@
 const CONFIG = {
   whatsapp: '77783244440',
   waText: 'Здравствуйте! Хочу бесплатный аудит сайта',
-  aiEndpoint: '/api/chat', // серверная функция (Vercel). Если её нет — работает локальный ассистент.
+  // Адрес сервера с ИИ (например, Cloudflare Worker). Пусто — чат отвечает встроенными ответами.
+  aiEndpoint: '',
 };
 
 const waLink = (text = CONFIG.waText) =>
@@ -199,6 +200,7 @@ function localAnswer(q) {
 
 async function askAI(q) {
   try {
+    if (!CONFIG.aiEndpoint) throw new Error('no endpoint');
     const ctrl = new AbortController();
     const to = setTimeout(() => ctrl.abort(), 20000);
     const r = await fetch(CONFIG.aiEndpoint, {
