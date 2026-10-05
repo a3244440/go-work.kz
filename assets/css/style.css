@@ -600,3 +600,30 @@ p { margin: 0; }
 .work-logo { box-sizing: content-box; padding: 7px 12px; border-radius: 12px; background: rgba(7, 6, 13, .62); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,.12); height: 26px; }
 .work-logo.tall { height: 40px; padding: 6px 10px; }
 .work-real .work-media .shot, .work-real .bt-ui { margin-top: 46px; }
+
+/* кейс NE-TI */
+.w-nt { background: linear-gradient(135deg, #0f766e, #22d3ee 55%, #b6f35c); }
+.nt-case { width: 100%; margin-top: 46px; display: grid; gap: 10px; transform: translateY(14px); transition: transform .7s var(--ease); }
+.work-real:hover .nt-case { transform: translateY(0) scale(1.03); }
+.nt-serp { background: #fff; color: #202124; border-radius: 14px; padding: 12px 14px; box-shadow: 0 24px 50px -20px rgba(0,0,0,.55); }
+.nt-g { display: flex; align-items: center; gap: 8px; font-size: 12px; color: #5f6368; margin-bottom: 8px; }
+.nt-g b { font-family: var(--font-d); font-size: 16px; background: linear-gradient(90deg,#4285f4,#ea4335,#fbbc05,#34a853); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.nt-row { display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 8px; }
+.nt-row i { font-style: normal; font-size: 11px; font-weight: 800; color: #9aa0a6; width: 14px; }
+.nt-row span { flex: 1; height: 8px; border-radius: 4px; background: #e8eaed; }
+.nt-me { background: #e6f4ea; }
+.nt-me span { height: auto; background: none; font-size: 13px; font-weight: 800; color: #1a0dab; }
+.nt-me em { font-style: normal; font-size: 10px; font-weight: 800; color: #fff; background: #34a853; padding: 3px 8px; border-radius: 999px; }
+.nt-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.nt-stats div { background: rgba(7,6,13,.72); border: 1px solid rgba(255,255,255,.14); border-radius: 12px; padding: 10px 12px; backdrop-filter: blur(8px); }
+.nt-stats b { display: block; font-family: var(--font-d); font-size: 18px; color: var(--lime); }
+.nt-stats small { font-size: 11px; color: #d6d3e8; }
+.nt-logo { display: inline-flex; align-items: center; font-family: var(--font-d); font-weight: 800; font-size: 16px; color: #fff; letter-spacing: .02em; }
+.nt-logo span { color: var(--lime); }
+.work-real .w-nt { align-items: center; padding-bottom: 22px; }
+.nt-case { margin-top: 36px; gap: 8px; transform: none; }
+.nt-serp { padding: 10px 12px; }
+.nt-g { margin-bottom: 4px; }
+.nt-row { padding: 4px 8px; }
+.nt-stats div { padding: 8px 12px; }
+.nt-stats b { font-size: 16px; }
