@@ -1,4 +1,33 @@
+# GO-WORK.KZ
 User-agent: *
 Allow: /
+Disallow: /promo/
+Disallow: /tools/
+Disallow: /api/
+
+# Яндекс: склейка служебных параметров
+User-agent: Yandex
+Allow: /
+Disallow: /promo/
+Disallow: /tools/
+Disallow: /api/
+Clean-param: utm_source&utm_medium&utm_campaign&utm_content&utm_term&yclid&gclid&fbclid
+
+# ИИ-ассистенты и поисковые нейросети — разрешены (GEO)
+User-agent: GPTBot
+User-agent: OAI-SearchBot
+User-agent: ChatGPT-User
+User-agent: ClaudeBot
+User-agent: Claude-User
+User-agent: Claude-SearchBot
+User-agent: PerplexityBot
+User-agent: Perplexity-User
+User-agent: Google-Extended
+User-agent: Applebot-Extended
+User-agent: YandexAdditional
+Allow: /
+Disallow: /promo/
+Disallow: /tools/
+Disallow: /api/
 
 Sitemap: https://go-work.kz/sitemap.xml
