@@ -4,3 +4,5 @@ node_modules
 promo/frames
 promo/map.json
 promo/sfx.wav
+promo/ne-ti/frames
+promo/ne-ti/*.wav

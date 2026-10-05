@@ -1,0 +1,409 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>NE-TI SEO case</title>
+<style>
+@font-face{font-family:U;font-weight:600;src:url(../fonts/unbounded-cyrillic-600-normal.woff2)format('woff2');unicode-range:U+0400-04FF}
+@font-face{font-family:U;font-weight:600;src:url(../fonts/unbounded-latin-600-normal.woff2)format('woff2')}
+@font-face{font-family:U;font-weight:800;src:url(../fonts/unbounded-cyrillic-800-normal.woff2)format('woff2');unicode-range:U+0400-04FF}
+@font-face{font-family:U;font-weight:800;src:url(../fonts/unbounded-latin-800-normal.woff2)format('woff2')}
+@font-face{font-family:M;font-weight:500;src:url(../fonts/manrope-cyrillic-500-normal.woff2)format('woff2');unicode-range:U+0400-04FF}
+@font-face{font-family:M;font-weight:500;src:url(../fonts/manrope-latin-500-normal.woff2)format('woff2')}
+@font-face{font-family:M;font-weight:700;src:url(../fonts/manrope-cyrillic-700-normal.woff2)format('woff2');unicode-range:U+0400-04FF}
+@font-face{font-family:M;font-weight:700;src:url(../fonts/manrope-latin-700-normal.woff2)format('woff2')}
+@font-face{font-family:M;font-weight:800;src:url(../fonts/manrope-cyrillic-800-normal.woff2)format('woff2');unicode-range:U+0400-04FF}
+@font-face{font-family:M;font-weight:800;src:url(../fonts/manrope-latin-800-normal.woff2)format('woff2')}
+:root{--magenta:#ec4899;--violet:#8b5cf6;--cyan:#22d3ee;--lime:#b6f35c;--orange:#ff7a1a;--wa:#25d366;
+--grad:linear-gradient(100deg,#ff7a1a 0%,#ec4899 33%,#8b5cf6 66%,#22d3ee 100%);--g:'Liberation Sans',Arial,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1920px;overflow:hidden;background:#07060d}
+body{font-family:M,sans-serif;color:#f4f1ff;-webkit-font-smoothing:antialiased}
+#stage{position:relative;width:1080px;height:1920px;overflow:hidden;background:#0b0a12}
+.abs{position:absolute;left:0;top:0;will-change:transform,opacity}
+.blob{position:absolute;left:0;top:0;border-radius:50%}
+#grain{position:absolute;inset:-200px;opacity:.06;z-index:50;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+#vig{position:absolute;inset:0;z-index:49;pointer-events:none;background:radial-gradient(ellipse at 50% 50%,transparent 55%,rgba(0,0,0,.6) 100%)}
+#flash{position:absolute;inset:0;z-index:48;background:#fff;opacity:0}
+#cam{position:absolute;inset:0;transform-origin:50% 50%}
+.grad{background:var(--grad);background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent}
+.line{overflow:hidden;padding:4px 0 12px;line-height:1.02}
+.line>span{display:inline-block;font-family:U;font-weight:800;letter-spacing:-.035em;white-space:nowrap}
+
+/* hook */
+#hook{left:0;width:1080px;text-align:center;top:760px}
+#hook .line>span{font-size:82px}
+
+/* google */
+#glogo{font-family:var(--g);font-weight:700;font-size:150px;letter-spacing:-6px;display:flex;white-space:nowrap}
+#glogo span{display:inline-block}
+#gbox{width:960px;height:132px;border-radius:66px;background:#303134;border:2px solid #5f6368;display:flex;align-items:center;gap:26px;padding:0 44px;font-family:var(--g);font-size:44px;color:#e8eaed;box-shadow:0 20px 60px -20px rgba(0,0,0,.8)}
+#gbox svg{flex:none}
+#gtext{white-space:nowrap}
+#caret{display:inline-block;width:3px;height:52px;background:#8ab4f8;vertical-align:middle;margin-left:4px}
+#gph{color:#9aa0a6}
+#sugg{width:960px;border-radius:0 0 40px 40px;background:#303134;padding:10px 0 20px;font-family:var(--g);font-size:40px;color:#e8eaed;overflow:hidden}
+#sugg div{display:flex;align-items:center;gap:30px;padding:18px 44px}
+#sugg b{font-weight:700}
+#sugg svg{flex:none;opacity:.6}
+#tabs{display:flex;gap:46px;font-family:var(--g);font-size:36px;color:#9aa0a6;white-space:nowrap}
+#tabs span:first-child{color:#e8eaed;border-bottom:5px solid #e8eaed;padding-bottom:14px}
+.res{width:980px;padding:30px 36px;border-radius:36px;font-family:var(--g)}
+.res .site{display:flex;align-items:center;gap:20px}
+.res .fav{width:64px;height:64px;border-radius:50%;background:#fff;display:grid;place-items:center;font:700 22px var(--g);color:#111;flex:none}
+.res .dom{font-size:34px;color:#dadce0}
+.res .url{font-size:28px;color:#bdc1c6;margin-top:2px}
+.res h3{font-size:46px;line-height:1.25;color:#8ab4f8;font-weight:400;margin-top:16px}
+.res p{font-size:33px;line-height:1.45;color:#bdc1c6;margin-top:10px}
+.res p b{color:#e8eaed}
+.blurred .dom,.blurred .url,.blurred h3,.blurred p{filter:blur(9px)}
+.skel{width:980px;height:270px;border-radius:36px;padding:36px;background:rgba(255,255,255,.03);overflow:hidden}
+.skel i{display:block;height:26px;border-radius:13px;background:linear-gradient(90deg,#2a2b2f 0%,#3a3b40 50%,#2a2b2f 100%);background-size:200% 100%;margin-bottom:22px}
+#me{background:#17181c;border:3px solid transparent}
+#meglow{width:1000px;border-radius:40px;padding:4px;background:var(--grad);background-size:300% 100%;filter:blur(0)}
+#badge{font-family:U;font-weight:800;font-size:54px;padding:18px 34px;border-radius:30px;background:linear-gradient(135deg,#ffd23f,#ff7a1a);color:#1a1200;box-shadow:0 20px 60px -10px rgba(255,170,40,.8);white-space:nowrap}
+#ring{width:200px;height:200px;border-radius:50%;border:8px solid #ffd23f}
+#cursor{width:96px;height:96px;z-index:40}
+#ripple{width:60px;height:60px;border-radius:50%;background:rgba(138,180,248,.55)}
+
+/* console */
+#gsc{width:1000px}
+#gschead{display:flex;align-items:center;gap:20px;font-family:var(--g);font-size:36px;color:#e8eaed}
+#gschead .nl{width:64px;height:64px;border-radius:16px;background:#fff;color:#111;display:grid;place-items:center;font:700 24px var(--g)}
+#gschead small{display:block;font-size:26px;color:#9aa0a6}
+.kpi{width:310px;height:220px;border-radius:30px;padding:28px 30px;font-family:var(--g);color:#fff}
+.kpi small{font-size:28px;opacity:.9}
+.kpi b{display:block;font-size:92px;font-weight:700;margin-top:18px;letter-spacing:-2px}
+#k1{background:linear-gradient(135deg,#1a73e8,#4285f4)}
+#k2{background:linear-gradient(135deg,#5e35b1,#7e57c2)}
+#k3{background:#23242a;border:2px solid #3c4043}
+#chart{width:1000px;height:520px;border-radius:30px;background:#17181c;border:2px solid #2d2e33;overflow:hidden}
+#qtab{width:1000px;border-radius:30px;background:#17181c;border:2px solid #2d2e33;padding:20px 0;font-family:var(--g)}
+#qtab .qh{display:flex;justify-content:space-between;padding:10px 36px 18px;font-size:26px;color:#9aa0a6;border-bottom:2px solid #2d2e33}
+.qr{position:relative;display:flex;justify-content:space-between;align-items:center;padding:24px 36px;font-size:34px;color:#e8eaed}
+.qr b{font-size:40px;color:#8ab4f8}
+.qr .bar{position:absolute;left:0;top:8px;bottom:8px;border-radius:0 18px 18px 0;background:linear-gradient(90deg,rgba(66,133,244,.35),rgba(66,133,244,.05));transform-origin:0 50%}
+.qr span,.qr b{position:relative}
+
+/* summary */
+.sum{width:960px;height:210px;border-radius:40px;background:rgba(255,255,255,.06);border:2px solid rgba(255,255,255,.12);display:flex;align-items:center;gap:34px;padding:0 44px}
+.sum .ic{width:120px;height:120px;border-radius:34px;display:grid;place-items:center;font-size:58px;flex:none}
+.sum b{display:block;font-family:U;font-weight:800;font-size:62px;letter-spacing:-.03em;line-height:1.05}
+.sum small{font-size:32px;color:#c9c5dd}
+
+/* cta */
+#mark{width:200px;height:200px;border-radius:58px;display:grid;place-items:center;font:800 112px U;color:#fff;background:conic-gradient(from 210deg,#ff7a1a,#ec4899,#8b5cf6,#22d3ee,#ff7a1a);box-shadow:0 30px 90px -20px rgba(236,72,153,.8)}
+#word{font-family:U;font-weight:800;font-size:76px;white-space:nowrap}
+#word i{font-style:normal;color:var(--magenta)}
+#cta .line>span{font-size:104px}
+#cta{left:0;width:1080px;text-align:center;top:300px}
+#wabtn{width:900px;height:190px;border-radius:95px;display:flex;align-items:center;justify-content:center;gap:26px;font-weight:800;font-size:56px;color:#04140b;background:linear-gradient(135deg,#5cf08f,#25d366 45%,#12b886);box-shadow:0 30px 90px -20px rgba(37,211,102,.9),inset 0 3px 0 rgba(255,255,255,.5);overflow:hidden;white-space:nowrap}
+#wabtn svg{width:76px;height:76px}
+#bshine{position:absolute;top:-30%;width:220px;height:160%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.7),transparent);transform:rotate(20deg)}
+.pring{width:900px;height:190px;border-radius:999px;border:4px solid var(--wa)}
+.cf{width:18px;height:30px;border-radius:4px;z-index:41}
+#orgnote{font-size:38px;color:#c9c5dd;white-space:nowrap;padding:22px 38px;border-radius:999px;background:rgba(182,243,92,.1);border:2px solid rgba(182,243,92,.35)}
+#orgnote b{color:#b6f35c}
+#handle{font-size:36px;color:#a39fbd;font-weight:700;white-space:nowrap}
+#cap{font-size:34px;color:#c9c5dd;white-space:nowrap;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="blob" id="b1"></div><div class="blob" id="b2"></div><div class="blob" id="b3"></div>
+  <div id="cam">
+    <!-- 1. hook -->
+    <div class="abs" id="hook" style="position:absolute">
+      <div class="line"><span>Где клиенты</span></div>
+      <div class="line"><span>ищут <span class="grad" id="ghook">подрядчика?</span></span></div>
+    </div>
+
+    <!-- 2. google -->
+    <div class="abs" id="glogo"><span style="color:#4285f4">G</span><span style="color:#ea4335">o</span><span style="color:#fbbc05">o</span><span style="color:#4285f4">g</span><span style="color:#34a853">l</span><span style="color:#ea4335">e</span></div>
+    <div class="abs" id="sugg">
+      <div id="s1"><svg width="40" height="40" viewBox="0 0 24 24"><path fill="#9aa0a6" d="M15.5 14h-.8l-.3-.3A6.5 6.5 0 1 0 14 15.5l.3.3v.8l5 5 1.5-1.5-5-5zm-6 0A4.5 4.5 0 1 1 14 9.5 4.5 4.5 0 0 1 9.5 14z"/></svg><span>забивка свай <b>астана</b></span></div>
+      <div id="s2"><svg width="40" height="40" viewBox="0 0 24 24"><path fill="#9aa0a6" d="M15.5 14h-.8l-.3-.3A6.5 6.5 0 1 0 14 15.5l.3.3v.8l5 5 1.5-1.5-5-5zm-6 0A4.5 4.5 0 1 1 14 9.5 4.5 4.5 0 0 1 9.5 14z"/></svg><span>забивка свай <b>цена</b></span></div>
+      <div id="s3"><svg width="40" height="40" viewBox="0 0 24 24"><path fill="#9aa0a6" d="M15.5 14h-.8l-.3-.3A6.5 6.5 0 1 0 14 15.5l.3.3v.8l5 5 1.5-1.5-5-5zm-6 0A4.5 4.5 0 1 1 14 9.5 4.5 4.5 0 0 1 9.5 14z"/></svg><span>забивка свай <b>астана цена за метр</b></span></div>
+    </div>
+    <div class="abs" id="gbox">
+      <svg width="48" height="48" viewBox="0 0 24 24"><path fill="#9aa0a6" d="M15.5 14h-.8l-.3-.3A6.5 6.5 0 1 0 14 15.5l.3.3v.8l5 5 1.5-1.5-5-5zm-6 0A4.5 4.5 0 1 1 14 9.5 4.5 4.5 0 0 1 9.5 14z"/></svg>
+      <div style="flex:1;overflow:hidden"><span id="gtext"></span><span id="caret"></span><span id="gph">Поиск</span></div>
+      <svg width="44" height="44" viewBox="0 0 24 24"><path fill="#8ab4f8" d="M12 15a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.9V21h2v-2.1A7 7 0 0 0 19 12h-2z"/></svg>
+    </div>
+    <div class="abs" id="tabs"><span>Все</span><span>Картинки</span><span>Видео</span><span>Новости</span><span>Карты</span></div>
+
+    <div class="abs skel" id="sk1"><i style="width:40%"></i><i style="width:85%"></i><i style="width:70%"></i><i style="width:55%"></i></div>
+    <div class="abs skel" id="sk2"><i style="width:35%"></i><i style="width:80%"></i><i style="width:75%"></i><i style="width:50%"></i></div>
+    <div class="abs skel" id="sk3"><i style="width:45%"></i><i style="width:90%"></i><i style="width:65%"></i><i style="width:60%"></i></div>
+
+    <div class="abs res blurred" id="c1"><div class="site"><div class="fav" style="background:#ddd"></div><div><div class="dom">svaeboika.kz</div><div class="url">https://svaeboika.kz › Товары и услуги</div></div></div><h3>Забивка свай в Астане от специалистов</h3><p>Забивка свай в Астане. Услуга. от 2 500 ₸/пог.м. Описание характеристики…</p></div>
+    <div class="abs res blurred" id="c2"><div class="site"><div class="fav" style="background:#e9c400"></div><div><div class="dom">svaeboy.kz</div><div class="url">https://www.svaeboy.kz › Проекты</div></div></div><h3>Забивка свай для строительства МЖК</h3><p>Наименование работ. Забивка свай С50-30, С30-30; место выполнения работ…</p></div>
+    <div class="abs" id="meglow"></div>
+    <div class="abs res" id="me"><div class="site"><div class="fav">NE</div><div><div class="dom">ne-ti.kz</div><div class="url">https://ne-ti.kz › Услуги</div></div></div><h3>Забивка свай в Астане и по Казахстану — цена, смета | NE-TI</h3><p><b>Забивка железобетонных свай сваебойной установкой СП-49</b> (дизель-молоты 2,5 и 3 тонны) — Астана и весь Казахстан. Опытные машинисты, оперативный выезд.</p></div>
+    <div class="abs" id="ring"></div>
+    <div class="abs" id="badge">№1 в Google</div>
+    <div class="abs" id="ripple"></div>
+
+    <!-- 4. search console -->
+    <div class="abs" id="gsc"><div id="gschead"><div class="nl">NE</div><div>Google Search Console<small>ne-ti.kz · последние 28 дней</small></div></div></div>
+    <div class="abs kpi" id="k1"><small>Всего кликов</small><b id="v1">0</b></div>
+    <div class="abs kpi" id="k2"><small>Всего показов</small><b id="v2">0</b></div>
+    <div class="abs kpi" id="k3"><small>Средний CTR</small><b id="v3">0%</b></div>
+    <div class="abs" id="chart"><svg id="csvg" width="1000" height="520"></svg></div>
+    <div class="abs" id="orgnote">🌱 Органика — <b>без оплаты за клик</b></div>
+    <div class="abs" id="qtab">
+      <div class="qh"><span>Запрос</span><span>Клики</span></div>
+      <div class="qr" id="q0"><i class="bar" style="width:92%"></i><span>забивка свай астана</span><b>17</b></div>
+      <div class="qr" id="q1"><i class="bar" style="width:62%"></i><span>динамические испытания свай</span><b>11</b></div>
+      <div class="qr" id="q2"><i class="bar" style="width:14%"></i><span>забивка свай</span><b>2</b></div>
+    </div>
+
+    <!-- 5. summary -->
+    <div class="abs" id="cap">Кейс NE-TI · ne-ti.kz</div>
+    <div class="abs sum" id="u0"><div class="ic" style="background:linear-gradient(135deg,#ff7a1a,#ec4899)">⚡</div><div><b>7 дней</b><small>сайт под ключ</small></div></div>
+    <div class="abs sum" id="u1"><div class="ic" style="background:linear-gradient(135deg,#ffd23f,#ff7a1a)">🏆</div><div><b>1 месяц</b><small>до ТОП Google по запросам</small></div></div>
+    <div class="abs sum" id="u2"><div class="ic" style="background:linear-gradient(135deg,#4285f4,#22d3ee)">👆</div><div><b>52 перехода</b><small>из Google за месяц — без рекламы</small></div></div>
+
+    <!-- 6. cta -->
+    <div class="abs pring" id="pr1"></div><div class="abs pring" id="pr2"></div>
+    <div class="abs" id="cta" style="position:absolute">
+      <div class="line"><span>Хотите</span></div>
+      <div class="line"><span class="grad" id="gcta">так же?</span></div>
+    </div>
+    <div class="abs" id="wabtn"><svg viewBox="0 0 24 24"><use href="#wa"/></svg><span>Бесплатный аудит</span><div id="bshine"></div></div>
+    <div class="abs" id="mark">G</div>
+    <div class="abs" id="word">GO-WORK<i>.KZ</i></div>
+    <div class="abs" id="handle">Instagram · @alikhan_seiilbek</div>
+    <div id="conf"></div>
+    <svg class="abs" id="cursor" viewBox="0 0 32 32"><path d="M6 3 L6 25 L11.5 19.5 L15.5 28.5 L19.5 26.8 L15.6 18 L23.5 18 Z" fill="#fff" stroke="#07060d" stroke-width="1.8" stroke-linejoin="round"/></svg>
+  </div>
+  <div id="flash"></div><div id="vig"></div><div id="grain"></div>
+</div>
+<svg width="0" height="0" style="position:absolute"><symbol id="wa" viewBox="0 0 24 24"><path fill="currentColor" d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm5.8 14.13c-.24.68-1.42 1.3-1.95 1.34-.5.05-.97.23-3.27-.68-2.76-1.09-4.5-3.92-4.64-4.1-.13-.18-1.1-1.47-1.1-2.8 0-1.33.7-1.99.95-2.26.24-.27.53-.34.71-.34h.51c.16 0 .38-.06.6.46.23.54.77 1.87.84 2 .07.14.11.3.02.48-.09.18-.14.29-.27.45-.14.16-.29.35-.41.47-.14.14-.28.28-.12.55.16.27.7 1.16 1.51 1.88 1.04.93 1.92 1.21 2.19 1.35.27.14.43.11.59-.07.16-.18.68-.79.86-1.06.18-.27.36-.23.61-.14.25.09 1.58.75 1.85.88.27.14.45.2.52.32.07.11.07.66-.17 1.33Z"/></symbol></svg>
+<script>
+const $ = (id) => document.getElementById(id);
+const cl = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+const pr = (t, a, b) => cl((t - a) / (b - a));
+const lerp = (a, b, k) => a + (b - a) * k;
+const E = {
+  outExpo: (k) => (k >= 1 ? 1 : 1 - Math.pow(2, -10 * k)),
+  inExpo: (k) => (k <= 0 ? 0 : Math.pow(2, 10 * k - 10)),
+  outCubic: (k) => 1 - Math.pow(1 - k, 3),
+  inCubic: (k) => k * k * k,
+  inOutCubic: (k) => (k < .5 ? 4 * k ** 3 : 1 - Math.pow(-2 * k + 2, 3) / 2),
+  inOutExpo: (k) => (k <= 0 ? 0 : k >= 1 ? 1 : k < .5 ? Math.pow(2, 20 * k - 10) / 2 : (2 - Math.pow(2, -20 * k + 10)) / 2),
+  outBack: (k, s = 1.70158) => 1 + (s + 1) * Math.pow(k - 1, 3) + s * Math.pow(k - 1, 2),
+  inBack: (k, s = 1.70158) => (s + 1) * k ** 3 - s * k * k,
+  outElastic: (k) => (k <= 0 ? 0 : k >= 1 ? 1 : Math.pow(2, -10 * k) * Math.sin((k * 10 - .75) * (2 * Math.PI) / 3) + 1),
+};
+const spring = (t, t0, amp, f = 22, d = 7) => (t < t0 ? 0 : amp * Math.exp(-(t - t0) * d) * Math.sin((t - t0) * f));
+let seed = 11; const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+function T(el, o = {}) {
+  const { x = 0, y = 0, s = 1, sx = 1, sy = 1, r = 0, rx = 0, ry = 0, op = 1, b = 0, c = true } = o;
+  el.style.transform = `translate(${x}px,${y}px)${c ? ' translate(-50%,-50%)' : ''} perspective(1600px) rotateX(${rx}deg) rotateY(${ry}deg) rotate(${r}deg) scale(${s * sx},${s * sy})`;
+  el.style.opacity = op; el.style.filter = b > .1 ? `blur(${b.toFixed(2)}px)` : 'none';
+  el.style.visibility = op <= .002 ? 'hidden' : 'visible';
+}
+function lineIn(span, t, t0, dur = .75, out0 = 99, outDur = .4) {
+  const k = E.outExpo(pr(t, t0, t0 + dur)), q = E.inCubic(pr(t, out0, out0 + outDur));
+  span.style.transform = `translateY(${(1 - k) * 118 - q * 118}%) rotate(${(1 - k) * 6}deg)`;
+  span.style.opacity = t < t0 ? 0 : 1;
+}
+
+/* ---- данные Search Console (28 дней) ---- */
+const CLICKS = [2,1,2,5,4,2,1,0,5,3,5,2,3,0,0,1,1,4,2,2,4,0,0,1,2,0,0,0];
+const IMPR = [27,25,30,48,109,23,52,22,22,34,47,40,33,30,15,14,31,35,40,32,22,14,18,34,33,22,12,16];
+const CW = 1000, CH = 520, PX = 60, PT = 70, PB = 70;
+const xs = (i) => PX + i * (CW - 2 * PX) / (CLICKS.length - 1);
+const yc = (v) => CH - PB - v / 6 * (CH - PT - PB);
+const yi = (v) => CH - PB - v / 120 * (CH - PT - PB);
+const svg = $('csvg');
+const pth = (arr, fy) => 'M' + arr.map((v, i) => `${xs(i).toFixed(1)} ${fy(v).toFixed(1)}`).join(' L');
+svg.innerHTML = `
+  <defs><linearGradient id="fa" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4285f4" stop-opacity=".45"/><stop offset="1" stop-color="#4285f4" stop-opacity="0"/></linearGradient>
+  <clipPath id="clip"><rect id="cliprect" x="0" y="0" width="0" height="${CH}"/></clipPath></defs>
+  <text x="${PX}" y="46" fill="#9aa0a6" font-family="Liberation Sans" font-size="26">Клики и показы по дням</text>
+  ${[0, 1, 2, 3].map((k) => `<line x1="${PX}" x2="${CW - PX}" y1="${yc(k * 2)}" y2="${yc(k * 2)}" stroke="#2d2e33" stroke-width="2"/>`).join('')}
+  <text x="${PX}" y="${CH - 24}" fill="#9aa0a6" font-family="Liberation Sans" font-size="24">05.09</text>
+  <text x="${CW - PX}" y="${CH - 24}" fill="#9aa0a6" font-family="Liberation Sans" font-size="24" text-anchor="end">02.10</text>
+  <g clip-path="url(#clip)">
+    <path d="${pth(CLICKS, yc)} L${xs(CLICKS.length - 1)} ${CH - PB} L${xs(0)} ${CH - PB} Z" fill="url(#fa)"/>
+    <path d="${pth(IMPR, yi)}" fill="none" stroke="#a78bfa" stroke-width="5" stroke-linejoin="round"/>
+    <path d="${pth(CLICKS, yc)}" fill="none" stroke="#4285f4" stroke-width="7" stroke-linejoin="round"/>
+  </g>
+  <circle id="cdot" r="14" fill="#fff" stroke="#4285f4" stroke-width="6"/>`;
+
+const QUERY = 'забивка свай астана';
+const conf = [];
+const PC = ['#ff7a1a', '#ec4899', '#8b5cf6', '#22d3ee', '#b6f35c', '#ffd23f'];
+for (let i = 0; i < 46; i++) {
+  const d = document.createElement('div'); d.className = 'abs cf'; d.style.background = PC[i % PC.length]; $('conf').appendChild(d);
+  const a = -Math.PI / 2 + (rnd() - .5) * 2.6, v = 1300 + rnd() * 1300;
+  conf.push({ el: d, vx: Math.cos(a) * v, vy: Math.sin(a) * v, spin: rnd() * 1440 - 720, s: .6 + rnd() * .9 });
+}
+const gl = [...$('glogo').children];
+
+function render(t) {
+  // фон
+  const pal = t < 9 ? ['#3b1d8f', '#0e4a8a', '#7a1f5c'] : t < 17.6 ? ['#0e3f8a', '#4c1d95', '#0f5f5a'] : ['#6d28d9', '#059669', '#db2777'];
+  [['b1', 220, 300, 1300], ['b2', 900, 1150, 1200], ['b3', 420, 1780, 1100]].forEach(([id, x, y, sz], i) => {
+    const el = $(id); el.style.width = el.style.height = sz + 'px';
+    el.style.background = `radial-gradient(circle, ${pal[i]}cc 0%, ${pal[i]}00 65%)`;
+    el.style.opacity = .75 * cl(t / .6);
+    T(el, { x: x + Math.sin(t * .5 + i) * 140, y: y + Math.cos(t * .4 + i) * 160 });
+  });
+  document.querySelectorAll('.grad').forEach((g) => (g.style.backgroundPosition = `${(t * 40) % 300}% 0`));
+  $('meglow').style.backgroundPosition = `${(t * 60) % 300}% 0`;
+  const fr = Math.floor(t * 24);
+  $('grain').style.transform = `translate(${(fr * 73) % 200 - 100}px,${(fr * 151) % 200 - 100}px)`;
+  const shx = spring(t, 5.55, 16, 50, 8) + spring(t, 6.15, 10, 55, 9) + spring(t, 18.15, 10, 50, 8) + spring(t, 20.05, 8, 60, 10);
+  const shy = spring(t, 5.55, -12, 44, 8) + spring(t, 9.95, 8, 45, 9);
+  $('cam').style.transform = `translate(${shx}px,${shy}px) scale(${1 + .02 * Math.sin(t * .6)})`;
+  $('flash').style.opacity = [[5.55, .3], [8.6, .5], [17.55, .3]].reduce((m, [ft, a]) => Math.max(m, t >= ft ? a * Math.exp(-(t - ft) * 9) : 0), 0);
+
+  /* 1. hook 0–1.5 */
+  [...$('hook').children].forEach((l, i) => lineIn(l.firstElementChild, t, .1 + i * .12, .7, 1.15 + i * .04, .3));
+  $('hook').style.visibility = t > 1.6 ? 'hidden' : 'visible';
+
+  /* 2. google home 1.4–5.2 */
+  {
+    const k = pr(t, 4.55, 5.1), e = E.inOutExpo(k);
+    const out = pr(t, 8.75, 9.1);
+    gl.forEach((s, i) => {
+      const ki = E.outBack(pr(t, 1.45 + i * .06, 1.95 + i * .06), 3);
+      s.style.transform = `translateY(${(1 - ki) * 120}px) scale(${Math.max(0, ki)})`;
+      s.style.opacity = cl(ki * 2);
+    });
+    T($('glogo'), { x: 540, y: lerp(720, 150, e), s: lerp(1, .5, e) * (1 - out * .3), op: t < 1.4 ? 0 : 1 - out });
+    const kb = E.outBack(pr(t, 1.8, 2.4), 1.8);
+    T($('gbox'), { x: 540, y: lerp(900, 290, e), s: (.7 + .3 * kb) * (1 - spring(t, 2.25, .03, 30, 8)) * (1 - out * .3), op: cl(kb * 2) * (1 - out) });
+    $('gbox').style.borderColor = t > 2.25 && t < 4.55 ? '#8ab4f8' : '#5f6368';
+    const n = Math.floor(QUERY.length * pr(t, 2.45, 3.75));
+    $('gtext').textContent = QUERY.slice(0, n);
+    $('gph').style.display = n ? 'none' : 'inline';
+    $('caret').style.opacity = (t > 2.25 && t < 4.6) && (Math.floor(t * 3) % 2 === 0 || (t > 2.45 && t < 3.75)) ? 1 : 0;
+    // подсказки
+    const ks = E.outExpo(pr(t, 3.0, 3.35)), ksOut = pr(t, 4.25, 4.45);
+    T($('sugg'), { x: 540, y: 900 + 66 + 150, s: 1, sy: ks * (1 - ksOut), op: ks * (1 - ksOut) });
+    $('sugg').style.transformOrigin = '50% 0';
+    ['s1', 's2', 's3'].forEach((id, i) => { $(id).style.opacity = cl((t - 3.05 - i * .06) * 6); $(id).style.background = id === 's1' && t > 3.8 ? 'rgba(255,255,255,.08)' : 'none'; });
+    T($('tabs'), { x: 540, y: 410, op: E.outExpo(pr(t, 4.9, 5.3)) * (1 - out), b: (1 - pr(t, 4.9, 5.3)) * 6 });
+  }
+
+  /* 3. results 5.0–9.0 */
+  {
+    const out = pr(t, 8.75, 9.1);
+    [['sk1', 640], ['sk2', 940], ['sk3', 1240]].forEach(([id, y], i) => {
+      const k = E.outExpo(pr(t, 4.95 + i * .05, 5.3 + i * .05)), q = pr(t, 5.35, 5.55);
+      T($(id), { x: 540, y: y + (1 - k) * 60, op: k * (1 - q) });
+      [...$(id).children].forEach((s) => (s.style.backgroundPosition = `${(-t * 160) % 200}% 0`));
+    });
+    // конкуренты сначала на 1-2 месте, затем сдвигаются вниз
+    const push = E.outBack(pr(t, 5.5, 6.0), 1.6);
+    [['c1', 640, 1010], ['c2', 960, 1330]].forEach(([id, y0, y1], i) => {
+      const k = E.outExpo(pr(t, 5.3 + i * .07, 5.7 + i * .07));
+      T($(id), { x: 540, y: lerp(y0, y1, push) + (1 - k) * 80, op: k * (1 - out), b: out * 10 });
+    });
+    // наш результат вылетает снизу на №1
+    const km = pr(t, 5.2, 5.6), em = E.outBack(km, 1.4);
+    const zoom = E.inExpo(pr(t, 8.3, 8.75));
+    const my = lerp(2200, 690, em);
+    T($('me'), { x: 540, y: my, s: (1 + spring(t, 5.6, .05, 22, 7)) * (1 + zoom * 2.2), r: (1 - E.outExpo(km)) * -6, op: (t < 5.2 ? 0 : 1) * (1 - out), b: zoom * 10 });
+    const gk = E.outExpo(pr(t, 5.65, 6.1));
+    const gh = $('me').offsetHeight + 8;
+    $('meglow').style.height = gh + 'px';
+    T($('meglow'), { x: 540, y: my, s: (1 + spring(t, 5.6, .05, 22, 7)) * (1 + zoom * 2.2) * (1 + .006 * Math.sin(t * 6)), op: gk * (1 - out) * (.85 + .15 * Math.sin(t * 5)) });
+    $('meglow').style.boxShadow = `0 0 ${60 + 30 * Math.sin(t * 5)}px rgba(236,72,153,.6)`;
+    // бейдж №1 и кольцо
+    const kbd = E.outBack(pr(t, 6.1, 6.55), 3);
+    T($('badge'), { x: 800, y: my - 220, s: Math.max(0, kbd) * (1 + .03 * Math.sin(t * 6)), r: (1 - kbd) * -30 + 4, op: cl(kbd * 2) * (1 - out) * (1 - zoom) });
+    const kr = pr(t, 6.15, 6.85);
+    T($('ring'), { x: 800, y: my - 220, s: .3 + E.outExpo(kr) * 3, op: kr > 0 && kr < 1 ? 1 - kr : 0 });
+    // курсор нажимает на ссылку
+    const kc = E.outCubic(pr(t, 7.2, 7.85));
+    const cx = lerp(1000, 400, kc), cy = lerp(1800, 760, kc) - Math.sin(kc * Math.PI) * 120;
+    T($('cursor'), { x: cx + 30, y: cy + 40, s: 1 - spring(t, 7.95, .25, 30, 9) - (t > 7.88 && t < 7.96 ? .12 : 0), r: -8, op: (t < 7.2 ? 0 : cl(kc * 3)) * (1 - pr(t, 8.25, 8.4)) });
+    const rp = pr(t, 7.95, 8.5);
+    T($('ripple'), { x: 400, y: 760, s: E.outExpo(rp) * 9, op: rp > 0 && rp < 1 ? .6 * (1 - rp) : 0 });
+    $('me').querySelector('h3').style.textDecoration = t > 7.85 ? 'underline' : 'none';
+  }
+
+  /* 4. search console 8.9–14.6 */
+  {
+    const out = E.inCubic(pr(t, 14.35, 14.7));
+    const kh = E.outExpo(pr(t, 8.9, 9.4));
+    T($('gsc'), { x: 540, y: 200 - (1 - kh) * 40 - out * 60, op: kh * (1 - out) });
+    [['k1', 205, 52, 'v1'], ['k2', 540, 880, 'v2'], ['k3', 875, 5.9, 'v3']].forEach(([id, x, val, vid], i) => {
+      const t0 = 9.1 + i * .12, k = E.outBack(pr(t, t0, t0 + .55), 2.2);
+      T($(id), { x, y: 450 + (1 - E.outExpo(pr(t, t0, t0 + .55))) * 120 - out * 80, s: Math.max(0, .5 + .5 * k) + spring(t, t0 + 1.25, .05, 30, 8), op: cl(k * 2) * (1 - out), rx: (1 - k) * 40 });
+      const kv = E.outExpo(pr(t, t0 + .1, t0 + 1.25));
+      $(vid).textContent = id === 'k3' ? (val * kv).toFixed(1).replace('.', ',') + '%' : Math.round(val * kv);
+    });
+    const kc = E.outExpo(pr(t, 9.7, 10.2));
+    T($('chart'), { x: 540, y: 880 - out * 60, s: .9 + .1 * kc, op: kc * (1 - out) });
+    const draw = E.inOutCubic(pr(t, 10.0, 11.6));
+    $('cliprect').setAttribute('width', CW * draw);
+    const di = Math.min(CLICKS.length - 1, Math.floor(draw * (CLICKS.length - 1) + .001));
+    const fx = PX + draw * (CW - 2 * PX), idx = draw * (CLICKS.length - 1), i0 = Math.floor(idx), i1 = Math.min(i0 + 1, CLICKS.length - 1);
+    const fy = yc(lerp(CLICKS[i0], CLICKS[i1], idx - i0));
+    $('cdot').setAttribute('cx', fx); $('cdot').setAttribute('cy', fy); $('cdot').style.opacity = draw > 0 && draw < 1 ? 1 : 0;
+    const kq = E.outExpo(pr(t, 11.5, 12.0));
+    T($('qtab'), { x: 540, y: 1460 - out * 60, op: kq * (1 - out), s: .92 + .08 * kq });
+    ['q0', 'q1', 'q2'].forEach((id, i) => {
+      const k = E.outExpo(pr(t, 11.75 + i * .14, 12.35 + i * .14));
+      $(id).style.transform = `translateX(${(1 - k) * 120}px)`; $(id).style.opacity = k;
+      $(id).querySelector('.bar').style.transform = `scaleX(${E.outCubic(pr(t, 12.0 + i * .14, 12.9 + i * .14))})`;
+    });
+    const ko = E.outBack(pr(t, 12.9, 13.4), 2.4);
+    T($('orgnote'), { x: 540, y: 1760 - out * 60, s: Math.max(0, ko), op: cl(ko * 2) * (1 - out) });
+    $('q0').style.background = t > 13.1 ? `rgba(255,210,63,${.12 + .06 * Math.sin(t * 6)})` : 'none';
+    $('q0').style.boxShadow = t > 13.1 ? 'inset 6px 0 0 #ffd23f' : 'none';
+  }
+
+  /* 5. summary 14.6–17.7 */
+  {
+    const out = E.inCubic(pr(t, 17.35, 17.7));
+    const kc = E.outExpo(pr(t, 14.6, 15.0));
+    T($('cap'), { x: 540, y: 520 - out * 60, op: kc * (1 - out) });
+    [['u0', 760], ['u1', 1010], ['u2', 1260]].forEach(([id, y], i) => {
+      const t0 = 14.75 + i * .22, k = E.outBack(pr(t, t0, t0 + .6), 1.6), side = i % 2 ? 1 : -1;
+      T($(id), { x: 540 + side * (1 - k) * 1200, y: y + Math.sin(t * 2 + i) * 6 - out * 80, r: side * (1 - E.outExpo(pr(t, t0, t0 + .6))) * 10, op: (t < t0 ? 0 : 1) * (1 - out) });
+      const ic = $(id).querySelector('.ic'), ki = E.outBack(pr(t, t0 + .3, t0 + .75), 3);
+      ic.style.transform = `scale(${Math.max(0, ki)}) rotate(${(1 - ki) * -120}deg)`;
+    });
+  }
+
+  /* 6. CTA 17.6–21 */
+  {
+    [...$('cta').children].forEach((l, i) => lineIn(l.firstElementChild, t, 17.7 + i * .1, .8));
+    $('cta').style.visibility = t < 17.6 ? 'hidden' : 'visible';
+    const kb = E.outBack(pr(t, 18.0, 18.5), 2.2);
+    const press = spring(t, 20.05, .09, 26, 7) + (t > 19.97 && t < 20.05 ? .05 : 0);
+    T($('wabtn'), { x: 540, y: 820, s: Math.max(0, kb) * (1 - press), op: cl(kb * 2) });
+    const sh = Math.max(pr(t, 18.6, 19.1), pr(t, 20.3, 20.8));
+    $('bshine').style.left = lerp(-300, 1100, E.inOutCubic(sh)) + 'px'; $('bshine').style.opacity = sh > 0 && sh < 1 ? 1 : 0;
+    [['pr1', 0], ['pr2', .6]].forEach(([id, off]) => {
+      const tt = t - 18.5 - off, k = tt > 0 ? (tt % 1.2) / 1.2 : 0;
+      T($(id), { x: 540, y: 820, sx: 1 + E.outCubic(k) * .18, sy: 1 + E.outCubic(k) * .8, op: tt > 0 ? (1 - k) * .8 : 0 });
+    });
+    const km = E.outBack(pr(t, 18.4, 18.9), 2.6);
+    T($('mark'), { x: 540, y: 1300, s: Math.max(0, km) * .75, r: (1 - km) * -200, op: cl(km * 2) });
+    const kw = E.outExpo(pr(t, 18.6, 19.1));
+    T($('word'), { x: 540, y: 1470 + (1 - kw) * 50, op: kw, b: (1 - kw) * 10 });
+    const kh = E.outExpo(pr(t, 18.8, 19.3));
+    T($('handle'), { x: 540, y: 1570, op: kh });
+    const kc = E.outCubic(pr(t, 19.4, 19.95));
+    if (t >= 9) T($('cursor'), { x: lerp(1000, 640, kc) + 30, y: lerp(1850, 850, kc) + 40, r: -8, s: 1 - spring(t, 20.02, .25, 30, 9) - (t > 19.97 && t < 20.05 ? .12 : 0), op: t < 19.4 ? 0 : cl(kc * 3) * (1 - pr(t, 20.6, 20.9)) });
+    conf.forEach((c) => {
+      const dt = t - 20.05, on = dt > 0 && dt < .95;
+      T(c.el, { x: 640 + c.vx * dt * .75, y: 820 + c.vy * dt * .75 + 2600 * dt * dt, r: c.spin * dt, sx: c.s, sy: Math.cos(dt * 18 + c.spin) * c.s, op: on ? cl((.95 - dt) * 3) : 0 });
+    });
+  }
+}
+window.render = render;
+window.DURATION = 21;
+document.fonts.ready.then(() => (window.READY = true));
+if (location.search.includes('play')) { const st = performance.now(); (function loop() { render(((performance.now() - st) / 1000) % 21); requestAnimationFrame(loop); })(); } else render(0);
+</script>
+</body>
+</html>
