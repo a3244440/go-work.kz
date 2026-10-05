@@ -41,8 +41,10 @@ function layout({ url, title, desc, h1, kicker, lead, crumbs, body, jsonld = [] 
   <meta property="og:image" content="${SITE}/assets/img/og.png">
   <meta property="og:locale" content="ru_RU">
   <meta name="twitter:card" content="summary_large_image">
-  <link rel="icon" href="/favicon.ico" sizes="48x48">
-  <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/assets/img/gw-icon-96.png" type="image/png" sizes="96x96">
+  <link rel="icon" href="/assets/img/gw-icon-48.png" type="image/png" sizes="48x48">
+  <link rel="icon" href="/assets/img/gw-icon-192.png" type="image/png" sizes="192x192">
+  <link rel="shortcut icon" href="/assets/img/gw-favicon.ico">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <link rel="manifest" href="/site.webmanifest">
   <link rel="preconnect" href="https://fonts.googleapis.com">
