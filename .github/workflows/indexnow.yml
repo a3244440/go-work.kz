@@ -1,0 +1,23 @@
+name: IndexNow
+# После каждого обновления сайта сообщает Bing и Яндексу (IndexNow) обо всех страницах из sitemap.xml
+on:
+  push:
+    branches: [claude/trusting-cray-aeyjke]
+    paths-ignore: ['promo/**', 'README.md']
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Подождать публикацию GitHub Pages
+        run: sleep 120
+      - name: Отправить URL в IndexNow
+        run: |
+          URLS=$(grep -oE '<loc>[^<]+' sitemap.xml | sed 's/<loc>//' | python3 -c 'import sys,json;print(json.dumps([l.strip() for l in sys.stdin if l.strip()]))')
+          BODY=$(python3 -c "import json,sys;print(json.dumps({'host':'go-work.kz','key':'75fa71a809e6202e8c8f80a47dd987a1','keyLocation':'https://go-work.kz/75fa71a809e6202e8c8f80a47dd987a1.txt','urlList':json.loads(sys.argv[1])}))" "$URLS")
+          for EP in https://api.indexnow.org/indexnow https://yandex.com/indexnow; do
+            CODE=$(curl -s -o /dev/null -w '%{http_code}' -X POST "$EP" -H 'Content-Type: application/json; charset=utf-8' -d "$BODY")
+            echo "$EP -> $CODE"
+          done
