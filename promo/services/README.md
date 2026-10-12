@@ -32,3 +32,8 @@ python3 mix_vo.py   # → gw2_vo.wav
 ffmpeg -framerate 60 -i frames2/f%04d.jpg -i gw2_vo.wav -c:v libx264 -crf 21 -pix_fmt yuv420p \
   -c:a aac -b:a 192k -af loudnorm=I=-16:TP=-1.5:LRA=11 -shortest go-work-services-voiceover.mp4
 ```
+
+## Версия с голосом Ali v4 одним дублем (~39.8 с)
+
+`voice-ali/ali_v4_full.mp3` — вся озвучка одним файлом (ElevenLabs v4). `mix_user.py` режет её по паузам
+между фразами и ставит каждую фразу на свою сцену; анимация растянута по `warp_u.json` (`render3.mjs` → `frames3/`).
