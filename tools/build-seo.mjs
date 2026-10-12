@@ -2,7 +2,7 @@
 // Создаёт /uslugi/, /uslugi/<услуга>/, /uslugi/<услуга>/<город>/, /goroda/<город>/, /audit/ и sitemap.xml
 import fs from 'node:fs';
 import path from 'node:path';
-import { CITIES, SERVICES, COMP } from './data.mjs';
+import { CITIES, SERVICES, COMP, AI_PACKS, AI_EXAMPLES } from './data.mjs';
 
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
 const SITE = 'https://go-work.kz';
@@ -14,10 +14,11 @@ const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replac
 const cap = (s) => s[0].toUpperCase() + s.slice(1);
 
 const WA_ICO = '<svg class="wa-ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-wa"/></svg>';
-const waBtn = (label = 'Бесплатный аудит сайта', cls = 'btn-lg') =>
-  `<a class="btn btn-wa ${cls} js-wa" href="${WA}" target="_blank" rel="noopener"><span class="btn-shine"></span>${WA_ICO}<span>${label}</span></a>`;
+const waBtn = (label = 'Бесплатный аудит сайта', cls = 'btn-lg', text) =>
+  `<a class="btn btn-wa ${cls} js-wa" href="${text ? 'https://wa.me/77783244440?text=' + encodeURIComponent(text) : WA}" target="_blank" rel="noopener"><span class="btn-shine"></span>${WA_ICO}<span>${label}</span></a>`;
+const tg = (n) => n.toLocaleString('ru-RU').replace(/\u00a0/g, ' ');
 
-function layout({ url, title, desc, h1, kicker, lead, crumbs, body, jsonld = [] }) {
+function layout({ url, title, desc, h1, kicker, lead, crumbs, body, jsonld = [], cta = [] }) {
   const canonical = SITE + url;
   const bc = {
     '@context': 'https://schema.org', '@type': 'BreadcrumbList',
@@ -63,6 +64,7 @@ ${[bc, ...jsonld].map((j) => `  <script type="application/ld+json">${JSON.string
     <a href="/" class="logo"><span class="logo-mark">G</span><span class="logo-text">GO-WORK<span class="accent">.KZ</span></span></a>
     <nav class="nav-links" id="navLinks">
       <a href="/uslugi/">Услуги</a>
+      <a href="/ai-roliki/">ИИ-ролики</a>
       <a href="/goroda/">Города</a>
       <a href="/#portfolio">Портфолио</a>
       <a href="/audit/">Аудит</a>
@@ -79,7 +81,7 @@ ${[bc, ...jsonld].map((j) => `  <script type="application/ld+json">${JSON.string
         <p class="kicker reveal">${esc(kicker)}</p>
         <h1 class="p-title reveal">${h1}</h1>
         <p class="p-lead reveal">${lead}</p>
-        <div class="hero-cta reveal">${waBtn()}<a class="btn btn-ghost btn-lg" href="#details"><span>Подробнее</span></a></div>
+        <div class="hero-cta reveal">${waBtn(cta[0], 'btn-lg', cta[1])}<a class="btn btn-ghost btn-lg" href="#details"><span>${cta[2] || 'Подробнее'}</span></a></div>
       </div>
     </section>
 ${body}
@@ -104,7 +106,7 @@ ${body}
           <div class="footer-links"><a href="https://www.instagram.com/alikhan_seiilbek/" target="_blank" rel="noopener">Instagram</a><a class="js-wa" href="${WA}" target="_blank" rel="noopener">WhatsApp</a></div>
           <p class="f-note"><a class="tel-link" href="tel:+77783244440">+7 778 324 44 40</a></p>
         </div>
-        <div><b>Услуги</b>${SERVICES.map((s) => `<a href="/uslugi/${s.slug}/">${s.name}</a>`).join('')}<a href="/audit/">Бесплатный аудит</a></div>
+        <div><b>Услуги</b>${SERVICES.map((s) => `<a href="/uslugi/${s.slug}/">${s.name}</a>`).join('')}<a href="/ai-roliki/">ИИ-ролики для бизнеса</a><a href="/audit/">Бесплатный аудит</a></div>
         <div><b>Города</b><div class="f-cities">${CITIES.map((c) => `<a href="/goroda/${c.slug}/">${c.name}</a>`).join('')}</div></div>
       </div>
       <small>© ${new Date().getFullYear()} go-work.kz</small>
@@ -274,6 +276,64 @@ write('/audit/', layout({
     sec('', 'Вопросы', `Частые <span class="grad-text">вопросы</span>`, faqBlock(auditFaq)),
   jsonld: [faqLd(auditFaq)],
 }), '0.9');
+
+
+/* ---------- ИИ-ролики ---------- */
+{
+  const url = '/ai-roliki/';
+  const packCard = (p) => `<article class="pack reveal${p.best ? ' best' : ''}">
+          ${p.best ? '<span class="pack-badge">Выгоднее</span>' : ''}
+          <p class="pack-name">Пакет «${p.name}»</p>
+          <p class="pack-count"><b>${p.count}</b> ИИ-роликов от 1 минуты</p>
+          <p class="pack-price">${tg(p.price)} <span>₸</span></p>
+          <p class="pack-per">≈ ${tg(p.per)} ₸ за ролик${p.save ? ` · <b>экономия ${tg(p.save)} ₸</b>` : ''}</p>
+          <ul class="pack-list">${['Сценарий под ваш бизнес', 'Озвучка', 'VFX-звуки', 'Монтаж', 'Токены Higgsfield включены'].map((x) => `<li>${x}</li>`).join('')}</ul>
+          <p class="pack-note">${p.note}</p>
+          ${waBtn(`Заказать ${p.count} роликов`, p.best ? 'btn-lg pulse' : 'btn-lg', `Здравствуйте! Хочу пакет «${p.name}»: ${p.count} ИИ-роликов за ${tg(p.price)} ₸`)}
+        </article>`;
+  const fmtViews = (v) => v >= 1000 ? (v / 1000).toFixed(v >= 100000 ? 0 : 1).replace('.0', '').replace('.', ',') + ' тыс.' : String(v);
+  const examples = AI_EXAMPLES.filter((e) => e.views >= 10000);
+  const exBlock = examples.length
+    ? `        <div class="ex-grid">${examples.map((e) => `<a class="ex reveal" href="${e.url}" target="_blank" rel="noopener"><div class="ex-media"${e.thumb ? ` style="background-image:url('${e.thumb}')"` : ''}><span class="ex-play">▶</span><span class="ex-views">👁 ${fmtViews(e.views)}</span></div><div class="ex-info"><b>${esc(e.title)}</b><span>${esc(e.niche || '')}</span></div></a>`).join('')}</div>`
+    : `        <div class="p-box ex-empty reveal"><h3>Ролики, которые набирают 10 000+ просмотров</h3><p>Свежие примеры с реальной статистикой — в Instagram. Там видно и сами ролики, и количество просмотров.</p><div class="p-cta-inline"><a class="btn btn-ghost btn-lg" href="https://www.instagram.com/alikhan_seiilbek/" target="_blank" rel="noopener"><span>Смотреть в Instagram</span></a></div></div>`;
+  const inc = [
+    ['📝', 'Сценарий под ваш бизнес', 'Разбираю нишу, аудиторию и оффер. Пишу сценарий с цепляющим началом в первые 2 секунды — именно они решают, досмотрят ли ролик.'],
+    ['🎙', 'Озвучка', 'Живой ИИ-голос на русском или казахском под характер бренда: экспертный, дружелюбный, энергичный.'],
+    ['🔊', 'VFX-звуки', 'Звуковой дизайн под каждое движение: «вжухи», удары, щелчки. Ролик звучит как дорогая реклама.'],
+    ['🎬', 'Монтаж', 'Динамичный монтаж под Reels, TikTok и Shorts: вертикальный формат, субтитры, ритм, призыв к действию.'],
+    ['⚡', 'Токены Higgsfield', 'Генерация видео в Higgsfield уже в цене — вам не нужно покупать подписки и разбираться в нейросетях.'],
+  ];
+  const faq = [
+    ['Что такое ИИ-ролик?', 'Это видео, созданное нейросетями: персонажи, сцены и движение генерируются в Higgsfield по сценарию, затем добавляются озвучка, звуки и монтаж. Снимать ничего не нужно.'],
+    ['Сколько длится один ролик?', 'Каждый ролик — от 1 минуты. Хронометраж подбираем под задачу и площадку.'],
+    ['Что нужно от меня?', 'Рассказать о бизнесе, продукте и клиентах, прислать логотип и, если есть, фото товара. Сценарии и всё производство — на мне.'],
+    ['Подойдёт ли для рекламы?', 'Да. Ролики подходят для Reels, TikTok, YouTube Shorts, таргетированной рекламы и сайта.'],
+    ['Чем пакет на 20 роликов выгоднее?', `Один ролик в пакете «Бизнес» обходится примерно в ${tg(25000)} ₸ вместо ${tg(30000)} ₸ — экономия ${tg(100000)} ₸ на всём пакете.`],
+    ['На каком языке озвучка?', 'На русском или казахском — по вашему выбору.'],
+  ];
+  const offers = AI_PACKS.map((p) => ({ '@type': 'Offer', name: `${p.count} ИИ-роликов от 1 минуты`, price: p.price, priceCurrency: 'KZT', availability: 'https://schema.org/InStock', url: SITE + url }));
+  const desc = 'ИИ-ролики для бизнеса под ключ: сценарий, озвучка, VFX-звуки, монтаж и токены Higgsfield. 10 роликов — 300 000 ₸, 20 роликов — 500 000 ₸.';
+  write(url, layout({
+    url, title: 'ИИ-ролики для бизнеса: 10 роликов — 300 000 ₸ | GO-WORK.KZ', desc,
+    h1: 'ИИ-ролики <span class="grad-text">для вашего бизнеса</span>', kicker: 'Видеоконтент · Higgsfield',
+    lead: 'Премиальные видео, созданные нейросетями: без съёмок, актёров и студии. Сценарий, озвучка, VFX-звуки и монтаж — под ключ.',
+    crumbs: [['Главная', '/'], ['ИИ-ролики', url]],
+    cta: ['Обсудить ролики в WhatsApp', 'Здравствуйте! Хочу заказать ИИ-ролики для бизнеса', 'Смотреть пакеты'],
+    body:
+      sec('details', 'Пакеты', `Выберите <span class="grad-text">пакет</span>`, `        <div class="packs">${AI_PACKS.map(packCard).join('')}</div>`) +
+      sec('', 'Что входит', `Всё под ключ — <span class="grad-text">от идеи до ролика</span>`,
+        `        <div class="cards p-cards inc-cards">${inc.map(([i, t, d]) => `<article class="card reveal"><div class="card-ico ic-${(inc.findIndex((x) => x[1] === t) % 4) + 1}">${i}</div><h3>${t}</h3><p>${d}</p></article>`).join('')}</div>`) +
+      sec('', 'Примеры', `Ролики с <span class="grad-text">10 000+ просмотров</span>`, exBlock) +
+      sec('', 'Для чего', `Где работают <span class="grad-text">ИИ-ролики</span>`,
+        `        <ul class="p-checks reveal">${['Reels и Stories в Instagram', 'TikTok и YouTube Shorts', 'Таргетированная реклама', 'Презентация товара или услуги', 'Видео на сайт и в WhatsApp-рассылки', 'Запуск акций и новых продуктов'].map((x) => `<li>${x}</li>`).join('')}</ul>`) +
+      sec('', 'Как работаю', `Этапы <span class="grad-text">работы</span>`,
+        `        <ol class="steps p-steps">${[['Бриф', 'Разбираю бизнес, аудиторию и цели роликов.'], ['Сценарии', 'Пишу сценарии и согласую их с вами.'], ['Генерация', 'Создаю сцены и персонажей в Higgsfield.'], ['Звук и монтаж', 'Озвучка, VFX-звуки, субтитры, монтаж.'], ['Сдача', 'Передаю готовые ролики для публикации.']].map(([t, d], i) => `<li class="step reveal"><span class="step-n">0${i + 1}</span><h3>${t}</h3><p>${d}</p></li>`).join('')}</ol>`) +
+      sec('', 'Коммерческое предложение', `Предложение <span class="grad-text">одним взглядом</span>`,
+        `        <div class="offer-imgs">${[['ai-roliki-10', '10 ИИ-роликов от 1 минуты — 300 000 ₸'], ['ai-roliki-20', '20 ИИ-роликов от 1 минуты — 500 000 ₸']].map(([f, a]) => `<img class="reveal" src="/assets/img/offers/${f}.jpg" alt="Коммерческое предложение: ${a}" width="800" height="1000" loading="lazy">`).join('')}</div>`) +
+      sec('', 'Вопросы', `Частые <span class="grad-text">вопросы</span>`, faqBlock(faq)),
+    jsonld: [{ '@context': 'https://schema.org', '@type': 'Service', name: 'ИИ-ролики для бизнеса', serviceType: 'Производство видео с помощью ИИ', description: desc, url: SITE + url, areaServed: { '@type': 'Country', name: 'Казахстан' }, provider: { '@type': 'ProfessionalService', name: 'GO-WORK.KZ', url: SITE + '/' }, offers }, faqLd(faq)],
+  }), '0.9');
+}
 
 /* ---------- sitemap ---------- */
 fs.writeFileSync(path.join(ROOT, 'sitemap.xml'),
