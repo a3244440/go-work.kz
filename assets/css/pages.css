@@ -88,3 +88,13 @@ a.chip:hover { color: #fff; border-color: var(--magenta); background: rgba(236,7
 @media (max-width: 1080px) { .inc-cards { grid-template-columns: repeat(3, 1fr); } .ex-grid { grid-template-columns: repeat(3, 1fr); } }
 @media (max-width: 760px) { .packs, .offer-imgs { grid-template-columns: 1fr; } .inc-cards, .ex-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 480px) { .inc-cards { grid-template-columns: 1fr; } }
+
+/* Love Story */
+.packs.three { grid-template-columns: repeat(3, minmax(0, 1fr)); max-width: none; }
+.packs.one { grid-template-columns: minmax(0, 520px); }
+.pack.love { background: radial-gradient(circle at 100% 0, rgba(236,72,153,.28), transparent 55%), radial-gradient(circle at 0 100%, rgba(255,90,120,.18), transparent 55%), var(--surface-2); border-color: rgba(236,72,153,.55); box-shadow: 0 30px 80px -40px rgba(236,72,153,.8); }
+.pack.love .pack-badge { background: linear-gradient(135deg, #ff5a8a, #ec4899); }
+.pack.love .pack-count b, .pack.love .pack-price span, .pack.love .pack-list li::before { color: #ff5a8a; }
+@media (max-width: 1080px) { .packs.three { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 760px) { .packs.three { grid-template-columns: 1fr; } }
+.pack-per b { white-space: nowrap; }

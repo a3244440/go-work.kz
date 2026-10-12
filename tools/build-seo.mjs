@@ -2,7 +2,7 @@
 // Создаёт /uslugi/, /uslugi/<услуга>/, /uslugi/<услуга>/<город>/, /goroda/<город>/, /audit/ и sitemap.xml
 import fs from 'node:fs';
 import path from 'node:path';
-import { CITIES, SERVICES, COMP, AI_PACKS, AI_EXAMPLES } from './data.mjs';
+import { CITIES, SERVICES, COMP, AI_PACKS, AI_EXAMPLES, LOVE_PACK } from './data.mjs';
 
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
 const SITE = 'https://go-work.kz';
@@ -106,7 +106,7 @@ ${body}
           <div class="footer-links"><a href="https://www.instagram.com/alikhan_seiilbek/" target="_blank" rel="noopener">Instagram</a><a class="js-wa" href="${WA}" target="_blank" rel="noopener">WhatsApp</a></div>
           <p class="f-note"><a class="tel-link" href="tel:+77783244440">+7 778 324 44 40</a></p>
         </div>
-        <div><b>Услуги</b>${SERVICES.map((s) => `<a href="/uslugi/${s.slug}/">${s.name}</a>`).join('')}<a href="/ai-roliki/">ИИ-ролики для бизнеса</a><a href="/audit/">Бесплатный аудит</a></div>
+        <div><b>Услуги</b>${SERVICES.map((s) => `<a href="/uslugi/${s.slug}/">${s.name}</a>`).join('')}<a href="/ai-roliki/">ИИ-ролики для бизнеса</a><a href="/ai-roliki/love-story/">ИИ-ролик Love Story</a><a href="/audit/">Бесплатный аудит</a></div>
         <div><b>Города</b><div class="f-cities">${CITIES.map((c) => `<a href="/goroda/${c.slug}/">${c.name}</a>`).join('')}</div></div>
       </div>
       <small>© ${new Date().getFullYear()} go-work.kz</small>
@@ -291,6 +291,16 @@ write('/audit/', layout({
           <p class="pack-note">${p.note}</p>
           ${waBtn(`Заказать ${p.count} роликов`, p.best ? 'btn-lg pulse' : 'btn-lg', `Здравствуйте! Хочу пакет «${p.name}»: ${p.count} ИИ-роликов за ${tg(p.price)} ₸`)}
         </article>`;
+  const loveCard = (more = true) => `<article class="pack love reveal">
+          <span class="pack-badge">Спеццена</span>
+          <p class="pack-name">ИИ «Love Story» ❤</p>
+          <p class="pack-count"><b>1</b> ролик на 1 минуту</p>
+          <p class="pack-price">${tg(LOVE_PACK.price)} <span>₸</span></p>
+          <p class="pack-per">На свадьбу, предложение или чтобы завоевать сердце</p>
+          <ul class="pack-list">${LOVE_PACK.list.map((x) => `<li>${x}</li>`).join('')}</ul>
+          <p class="pack-note">${more ? '<a class="p-link" href="/ai-roliki/love-story/">Подробнее о Love Story →</a>' : 'Покажите на тое, отправьте любимому человеку или сделайте предложение по-новому.'}</p>
+          ${waBtn('Заказать Love Story', 'btn-lg', `Здравствуйте! Хочу ИИ-ролик Love Story за ${tg(LOVE_PACK.price)} ₸`)}
+        </article>`;
   const fmtViews = (v) => v >= 1000 ? (v / 1000).toFixed(v >= 100000 ? 0 : 1).replace('.0', '').replace('.', ',') + ' тыс.' : String(v);
   const examples = AI_EXAMPLES.filter((e) => e.views >= 10000);
   const exBlock = examples.length
@@ -311,8 +321,8 @@ write('/audit/', layout({
     ['Чем пакет на 20 роликов выгоднее?', `Один ролик в пакете «Бизнес» обходится примерно в ${tg(25000)} ₸ вместо ${tg(30000)} ₸ — экономия ${tg(100000)} ₸ на всём пакете.`],
     ['На каком языке озвучка?', 'На русском или казахском — по вашему выбору.'],
   ];
-  const offers = AI_PACKS.map((p) => ({ '@type': 'Offer', name: `${p.count} ИИ-роликов от 1 минуты`, price: p.price, priceCurrency: 'KZT', availability: 'https://schema.org/InStock', url: SITE + url }));
-  const desc = 'ИИ-ролики для бизнеса под ключ: сценарий, озвучка, VFX-звуки, монтаж и токены Higgsfield. 10 роликов — 300 000 ₸, 20 роликов — 500 000 ₸.';
+  const offers = [...AI_PACKS.map((p) => ({ '@type': 'Offer', name: `${p.count} ИИ-роликов от 1 минуты`, price: p.price, priceCurrency: 'KZT', availability: 'https://schema.org/InStock', url: SITE + url })), { '@type': 'Offer', name: 'ИИ-ролик Love Story, 1 минута', price: LOVE_PACK.price, priceCurrency: 'KZT', availability: 'https://schema.org/InStock', url: SITE + url + 'love-story/' }];
+  const desc = 'ИИ-ролики под ключ: сценарий, озвучка, VFX-звуки, монтаж и токены Higgsfield. 10 роликов — 300 000 ₸, 20 — 500 000 ₸, Love Story — 100 000 ₸.';
   write(url, layout({
     url, title: 'ИИ-ролики для бизнеса: 10 роликов — 300 000 ₸ | GO-WORK.KZ', desc,
     h1: 'ИИ-ролики <span class="grad-text">для вашего бизнеса</span>', kicker: 'Видеоконтент · Higgsfield',
@@ -320,7 +330,7 @@ write('/audit/', layout({
     crumbs: [['Главная', '/'], ['ИИ-ролики', url]],
     cta: ['Обсудить ролики в WhatsApp', 'Здравствуйте! Хочу заказать ИИ-ролики для бизнеса', 'Смотреть пакеты'],
     body:
-      sec('details', 'Пакеты', `Выберите <span class="grad-text">пакет</span>`, `        <div class="packs">${AI_PACKS.map(packCard).join('')}</div>`) +
+      sec('details', 'Пакеты', `Выберите <span class="grad-text">пакет</span>`, `        <div class="packs three">${AI_PACKS.map(packCard).join('')}${loveCard()}</div>`) +
       sec('', 'Что входит', `Всё под ключ — <span class="grad-text">от идеи до ролика</span>`,
         `        <div class="cards p-cards inc-cards">${inc.map(([i, t, d]) => `<article class="card reveal"><div class="card-ico ic-${(inc.findIndex((x) => x[1] === t) % 4) + 1}">${i}</div><h3>${t}</h3><p>${d}</p></article>`).join('')}</div>`) +
       sec('', 'Примеры', `Ролики с <span class="grad-text">10 000+ просмотров</span>`, exBlock) +
@@ -333,6 +343,36 @@ write('/audit/', layout({
       sec('', 'Вопросы', `Частые <span class="grad-text">вопросы</span>`, faqBlock(faq)),
     jsonld: [{ '@context': 'https://schema.org', '@type': 'Service', name: 'ИИ-ролики для бизнеса', serviceType: 'Производство видео с помощью ИИ', description: desc, url: SITE + url, areaServed: { '@type': 'Country', name: 'Казахстан' }, provider: { '@type': 'ProfessionalService', name: 'GO-WORK.KZ', url: SITE + '/' }, offers }, faqLd(faq)],
   }), '0.9');
+
+  /* ---------- Love Story ---------- */
+  {
+    const lurl = '/ai-roliki/love-story/';
+    const lfaq = [
+      ['Что такое ИИ-ролик Love Story?', 'Это минутный фильм о вашей паре, созданный нейросетями: по вашим фото ИИ «оживляет» вас в красивых кино-сценах — знакомство, первое свидание, предложение, свадьба. Снимать ничего не нужно.'],
+      ['Что нужно от нас?', 'Несколько чётких фото каждого и пары вместе, а также ваша история: как познакомились, важные моменты, любимые места. Всё остальное — сценарий, генерация, озвучка и монтаж — делаю я.'],
+      ['Где показать ролик?', 'На свадьбе или тое на экране, в момент предложения руки и сердца, на годовщине, в Instagram или просто отправить любимому человеку.'],
+      ['Сколько длится ролик?', 'Около 1 минуты — идеальная длина, чтобы растрогать и не затянуть.'],
+      ['На каком языке озвучка?', 'На русском или казахском — по вашему выбору. Можно сделать ролик и без голоса, только с музыкой и звуками.'],
+      ['Это безопасно для наших фото?', 'Фото используются только для создания вашего ролика и не публикуются без вашего согласия.'],
+    ];
+    const ldesc = `ИИ-ролик Love Story по вашим фото: минутный фильм о вашей паре для свадьбы, тоя, предложения или признания. Спеццена — ${tg(LOVE_PACK.price)} ₸.`;
+    write(lurl, layout({
+      url: lurl, title: `ИИ-ролик Love Story на свадьбу — ${tg(LOVE_PACK.price)} ₸ | GO-WORK.KZ`, desc: ldesc,
+      h1: 'ИИ-ролик <span class="grad-text">Love Story</span>', kicker: 'Свадьба · предложение · признание',
+      lead: 'Минутный фильм о вашей любви, созданный нейросетями по вашим фото. Растрогает гостей на тое и того, кому вы хотите признаться в чувствах.',
+      crumbs: [['Главная', '/'], ['ИИ-ролики', url], ['Love Story', lurl]],
+      cta: ['Заказать Love Story', `Здравствуйте! Хочу ИИ-ролик Love Story за ${tg(LOVE_PACK.price)} ₸`, 'Что входит'],
+      body:
+        sec('details', 'Спеццена', `Один ролик — <span class="grad-text">одна большая история</span>`, `        <div class="packs one">${loveCard(false)}</div>`) +
+        sec('', 'Для какого момента', `Когда <span class="grad-text">дарят Love Story</span>`,
+          `        <div class="cards p-cards">${[['💍', 'Свадьба и той', 'Покажите историю вашей пары гостям на большом экране — это момент, который запомнят все.'], ['🌹', 'Предложение руки и сердца', 'Включите ролик перед главным вопросом — и ответ будет «да».'], ['💌', 'Завоевать сердце', 'Признайтесь в чувствах так, как не признавался никто: кино, где вы двое — главные герои.'], ['🎂', 'Годовщина и праздник', 'Подарите воспоминания: от первой встречи до сегодняшнего дня.']].map(([i, t, d], k) => `<article class="card reveal"><div class="card-ico ic-${(k % 4) + 1}">${i}</div><h3>${t}</h3><p>${d}</p></article>`).join('')}</div>`) +
+        sec('', 'Как это работает', `От ваших фото <span class="grad-text">до фильма</span>`,
+          `        <ol class="steps p-steps">${[['Ваша история', 'Рассказываете, как познакомились и что для вас важно.'], ['Фото', 'Присылаете несколько чётких фото.'], ['Сценарий', 'Пишу трогательный сценарий и согласую с вами.'], ['Генерация', 'ИИ создаёт кино-сцены с вами в главных ролях.'], ['Монтаж и звук', 'Озвучка, VFX-звуки, монтаж — и фильм готов.']].map(([t, d], i) => `<li class="step reveal"><span class="step-n">0${i + 1}</span><h3>${t}</h3><p>${d}</p></li>`).join('')}</ol>`) +
+        sec('', 'Вопросы', `Частые <span class="grad-text">вопросы</span>`, faqBlock(lfaq)) +
+        sec('', 'Для бизнеса', `Нужны ролики <span class="grad-text">для бизнеса?</span>`, `        <p class="p-text reveal">Пакеты на 10 и 20 ИИ-роликов для Reels, TikTok и рекламы — <a class="p-link" href="${url}">смотреть пакеты →</a></p>`),
+      jsonld: [{ '@context': 'https://schema.org', '@type': 'Service', name: 'ИИ-ролик Love Story', serviceType: 'Свадебное видео с помощью ИИ', description: ldesc, url: SITE + lurl, areaServed: { '@type': 'Country', name: 'Казахстан' }, provider: { '@type': 'ProfessionalService', name: 'GO-WORK.KZ', url: SITE + '/' }, offers: { '@type': 'Offer', price: LOVE_PACK.price, priceCurrency: 'KZT', availability: 'https://schema.org/InStock', url: SITE + lurl } }, faqLd(lfaq)],
+    }), '0.8');
+  }
 }
 
 /* ---------- sitemap ---------- */

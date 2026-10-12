@@ -263,3 +263,6 @@ export const AI_PACKS = [
 // Примеры роликов. Добавляйте только реальные ролики с подтверждёнными просмотрами:
 // { title: 'Кофейня — ИИ-реклама', url: 'https://www.instagram.com/reel/XXXX/', views: 12400, niche: 'Кафе', thumb: '/assets/img/examples/coffee.jpg' }
 export const AI_EXAMPLES = [];
+
+// Love Story — один ролик по спеццене
+export const LOVE_PACK = { name: 'Love Story', price: 100000, list: ['Сценарий по вашей истории любви', 'Ваши фото → ИИ-герои в кино-сценах', 'Озвучка и VFX-звуки', 'Монтаж в стиле кино', 'Токены Higgsfield включены'] };
