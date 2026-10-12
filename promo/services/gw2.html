@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<title>GO-WORK services reel</title>
+<style>
+@font-face{font-family:Mo;font-weight:500;src:url(fonts/montserrat-cyrillic-500-normal.woff2)format('woff2');unicode-range:U+0400-04FF}
+@font-face{font-family:Mo;font-weight:500;src:url(fonts/montserrat-latin-500-normal.woff2)format('woff2')}
+@font-face{font-family:Mo;font-weight:600;src:url(fonts/montserrat-cyrillic-600-normal.woff2)format('woff2');unicode-range:U+0400-04FF}
+@font-face{font-family:Mo;font-weight:600;src:url(fonts/montserrat-latin-600-normal.woff2)format('woff2')}
+@font-face{font-family:Mo;font-weight:700;src:url(fonts/montserrat-cyrillic-700-normal.woff2)format('woff2');unicode-range:U+0400-04FF}
+@font-face{font-family:Mo;font-weight:700;src:url(fonts/montserrat-latin-700-normal.woff2)format('woff2')}
+@font-face{font-family:Mo;font-weight:800;src:url(fonts/montserrat-cyrillic-800-normal.woff2)format('woff2');unicode-range:U+0400-04FF}
+@font-face{font-family:Mo;font-weight:800;src:url(fonts/montserrat-latin-800-normal.woff2)format('woff2')}
+:root{--p:#5512d6;--p2:#3f08a8;--w:#f8f6ff;--hl:#d8c9ff}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1920px;overflow:hidden}
+body{font-family:Mo,sans-serif;-webkit-font-smoothing:antialiased}
+#stage{position:relative;width:1080px;height:1920px;overflow:hidden;background:var(--p)}
+.abs{position:absolute;left:0;top:0;will-change:transform,opacity}
+#grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.06) 1px,transparent 1px);background-size:54px 54px}
+#glow{position:absolute;inset:0;background:radial-gradient(circle at 50% 40%,rgba(160,110,255,.35),transparent 60%)}
+#splash{border-radius:62% 38% 55% 45% / 48% 60% 40% 52%;z-index:5}
+#layer{position:absolute;inset:0;z-index:6}
+.ring{border-radius:50%;border:3px solid rgba(255,255,255,.5)}
+.t{white-space:nowrap;text-align:center;letter-spacing:-.01em}
+.hl{display:inline-block;padding:0 .22em;border-radius:.16em}
+.pill{padding:26px 46px;border-radius:999px;background:#fff;color:var(--p);font-weight:700;font-size:44px;white-space:nowrap;box-shadow:0 20px 50px -20px rgba(20,0,60,.6)}
+#trash{width:170px;height:170px;border-radius:50%;background:#fff;display:grid;place-items:center;box-shadow:0 0 0 18px rgba(255,255,255,.12),0 30px 60px -20px rgba(0,0,0,.4)}
+#cursor{width:70px;height:70px;z-index:20}
+.orb{border-radius:50%;border:2px solid rgba(255,255,255,.28)}
+.orb i{position:absolute;width:20px;height:20px;border-radius:50%;background:#fff;left:50%;top:-10px;margin-left:-10px;box-shadow:0 0 18px 4px rgba(255,255,255,.6)}
+#icon{width:320px;height:320px;border-radius:50%;background:radial-gradient(circle at 35% 30%,rgba(255,255,255,.45),rgba(255,255,255,.12) 60%);border:3px solid rgba(255,255,255,.6);display:grid;place-items:center;box-shadow:0 0 90px rgba(190,150,255,.65)}
+#icon svg{position:absolute;width:150px;height:150px}
+.lab{color:#fff;text-align:center;white-space:nowrap}
+.lab b{display:block;font-weight:800;font-size:76px;letter-spacing:-.02em}
+.lab span{display:block;font-weight:500;font-size:42px;opacity:.85;margin-top:10px}
+.sp{display:flex;align-items:center;gap:22px;padding:28px 50px;border-radius:999px;background:#fff;color:var(--p);font-weight:700;font-size:48px;white-space:nowrap;border:3px solid var(--hl);box-shadow:0 24px 60px -30px rgba(85,18,214,.6)}
+.sp em{font-style:normal;font-size:52px}
+#wabtn{display:flex;align-items:center;gap:20px;padding:30px 56px;border-radius:999px;background:linear-gradient(135deg,#5cf08f,#25d366 50%,#12b886);color:#04140b;font-weight:800;font-size:46px;white-space:nowrap;box-shadow:0 24px 60px -20px rgba(37,211,102,.8)}
+#wabtn svg{width:56px;height:56px}
+#mark{width:200px;height:200px;border-radius:56px;display:grid;place-items:center;font:800 112px Mo;color:#fff;background:conic-gradient(from 210deg,#ff7a1a,#ec4899,#8b5cf6,#22d3ee,#ff7a1a);box-shadow:0 30px 90px -20px rgba(0,0,0,.5)}
+#grain{position:absolute;inset:-200px;opacity:.05;z-index:30;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="grid"></div><div id="glow"></div>
+  <div class="abs" id="splash"></div>
+  <div id="layer">
+    <!-- S0 -->
+    <div class="abs ring" id="r0"></div><div class="abs ring" id="r1"></div><div class="abs ring" id="r2"></div>
+    <div class="abs t" id="bism" style="color:#fff;font-weight:600;font-size:44px;letter-spacing:.42em">БИСМИЛЛЯХ</div>
+    <!-- S1 -->
+    <div class="abs t" id="s1a" style="color:#fff;font-weight:600;font-size:58px">Каждый бизнес <span class="hl" id="s1hl" style="background:#fff;color:var(--p);font-weight:800;font-size:76px">растёт</span></div>
+    <div class="abs t" id="s1b" style="color:#fff;font-weight:600;font-size:58px">с внимания клиентов.</div>
+    <div class="abs pill" id="p0">Дорогой таргет</div>
+    <div class="abs pill" id="p1">Нет заявок</div>
+    <div class="abs pill" id="p2">Скучный контент</div>
+    <div class="abs" id="trash"><svg width="80" height="80" viewBox="0 0 24 24"><path fill="#5512d6" d="M9 3h6l1 2h4v2H4V5h4l1-2zm-3 6h12l-1 12H7L6 9zm4 2v8h1.5v-8H10zm3.5 0v8H15v-8h-1.5z"/></svg></div>
+    <!-- S2 -->
+    <div class="abs t" id="s2a" style="color:var(--p);font-weight:600;font-size:64px">Тогда появляемся</div>
+    <div class="abs t" id="s2b" style="color:var(--p);font-weight:800;font-size:130px"><span class="hl" id="s2hl" style="position:relative">мы.<i id="s2box" style="position:absolute;left:0;top:8%;height:84%;background:var(--hl);border-radius:16px;z-index:-1;width:0"></i></span></div>
+    <div class="abs" id="s2tag" style="padding:12px 26px;border-radius:14px;background:var(--p);color:#fff;font-weight:700;font-size:34px;white-space:nowrap">GO-WORK.KZ</div>
+    <!-- S3 -->
+    <div class="abs orb" id="o1"><i></i></div><div class="abs orb" id="o2"><i></i></div><div class="abs orb" id="o3"><i></i></div>
+    <div class="abs" id="icon">
+      <svg id="ic0" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M10 9.2v5.6l4.6-2.8z" fill="#fff"/><path d="M3 8.5h2M3 12h2M3 15.5h2M19 8.5h2M19 12h2M19 15.5h2" stroke-linecap="round"/></svg>
+      <svg id="ic1" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V6M16 20v-8M3 21h18"/><path d="M14 5l3-2 3 2M17 3v7"/></svg>
+      <svg id="ic2" viewBox="0 0 24 24" fill="#fff"><path d="M12 21s-7.5-4.6-9.4-9.3C1.2 8.3 3.3 5 6.6 5c2 0 3.6 1.1 4.4 2.6h2C13.8 6.1 15.4 5 17.4 5c3.3 0 5.4 3.3 4 6.7C19.5 16.4 12 21 12 21z"/></svg>
+      <svg id="ic3" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="2.4" fill="#fff"/><path d="M7.8 7.8a6 6 0 0 0 0 8.4M16.2 7.8a6 6 0 0 1 0 8.4M5 5a10 10 0 0 0 0 14M19 5a10 10 0 0 1 0 14"/></svg>
+    </div>
+    <div class="abs lab" id="l0"><b>ИИ-ролики</b><span>для вашего бизнеса</span></div>
+    <div class="abs lab" id="l1"><b>Реклама с инфографикой</b><span>для таргета</span></div>
+    <div class="abs lab" id="l2"><b>Love Story</b><span>ролики для свадеб</span></div>
+    <div class="abs lab" id="l3"><b>Охват за копейки</b><span>дешевле, чем таргет</span></div>
+    <!-- S4 -->
+    <div class="abs t" id="s4h" style="color:var(--p);font-weight:800;font-size:74px">А ещё <span class="hl" style="background:var(--hl)">сделаем</span></div>
+    <div class="abs sp" id="q0"><em>🌐</em>Сайты</div>
+    <div class="abs sp" id="q1"><em>⚙️</em>Платформы</div>
+    <div class="abs sp" id="q2"><em>🎯</em>Контекстную рекламу</div>
+    <div class="abs sp" id="q3"><em>📈</em>SEO в Google и Яндекс</div>
+    <div class="abs sp" id="q4"><em>🤖</em>GEO-оптимизацию</div>
+    <!-- S5 -->
+    <div class="abs t" id="b0" style="color:#fff;font-weight:600;font-size:64px">Можно работать</div>
+    <div class="abs t" id="b1" style="font-weight:800;font-size:104px"><span class="hl" style="background:#fff;color:var(--p)">бартером</span></div>
+    <div class="abs t" id="b2" style="color:#fff;font-weight:600;font-size:64px">или за долю</div>
+    <div class="abs t" id="b3" style="font-weight:800;font-size:104px"><span class="hl" style="background:#fff;color:var(--p)">в проекте</span></div>
+    <div class="abs" id="hs" style="font-size:150px">🤝</div>
+    <!-- S6 -->
+    <div class="abs t" id="c0" style="color:var(--p);font-weight:600;font-size:66px">Пишите —</div>
+    <div class="abs t" id="c1" style="color:var(--p);font-weight:800;font-size:84px">обсудим <span class="hl" style="background:var(--hl)">ваш бизнес</span></div>
+    <div class="abs t" id="c2" style="color:var(--p);font-weight:500;font-size:44px;opacity:.85">и как мы можем помочь друг другу</div>
+    <div class="abs" id="wabtn"><svg viewBox="0 0 24 24"><path fill="#04140b" d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21c5.46 0 9.91-4.45 9.91-9.91C21.95 6.45 17.5 2 12.04 2zm5.8 14.13c-.24.68-1.42 1.3-1.95 1.34-.5.05-.97.23-3.27-.68-2.76-1.09-4.5-3.92-4.64-4.1-.13-.18-1.1-1.47-1.1-2.8 0-1.33.7-1.99.95-2.26.24-.27.53-.34.71-.34h.51c.16 0 .38-.06.6.46.23.54.77 1.87.84 2 .07.14.11.3.02.48-.09.18-.14.29-.27.45-.14.16-.29.35-.41.47-.14.14-.28.28-.12.55.16.27.7 1.16 1.51 1.88 1.04.93 1.92 1.21 2.19 1.35.27.14.43.11.59-.07.16-.18.68-.79.86-1.06.18-.27.36-.23.61-.14.25.09 1.58.75 1.85.88.27.14.45.2.52.32.07.11.07.66-.17 1.33z"/></svg>Написать в WhatsApp</div>
+    <!-- S7 -->
+    <div class="abs" id="mark">G</div>
+    <div class="abs t" id="e0" style="color:#fff;font-weight:800;font-size:92px">GO-WORK<span style="color:#ffd23f">.KZ</span></div>
+    <div class="abs t" id="e1" style="color:#fff;font-weight:600;font-size:46px;opacity:.9">ИИ-ролики · сайты · реклама · SEO</div>
+    <div class="abs t" id="e2" style="color:#fff;font-weight:700;font-size:50px">WhatsApp +7 778 324 44 40</div>
+    <div class="abs t" id="e3" style="color:#fff;font-weight:600;font-size:40px;opacity:.85">go-work.kz · @alikhan_seiilbek</div>
+    <div class="abs t" id="e4" style="color:#fff;font-weight:600;font-size:52px;letter-spacing:.06em">Ассаламу алейкум</div>
+    <svg class="abs" id="cursor" viewBox="0 0 32 32"><path d="M6 3 L6 25 L11.5 19.5 L15.5 28.5 L19.5 26.8 L15.6 18 L23.5 18 Z" fill="#fff" stroke="#1d0a4a" stroke-width="1.8" stroke-linejoin="round"/></svg>
+  </div>
+  <div id="grain"></div>
+</div>
+<script>
+const $ = (id) => document.getElementById(id);
+const cl = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+const pr = (t, a, b) => cl((t - a) / (b - a));
+const lerp = (a, b, k) => a + (b - a) * k;
+const E = {
+  outExpo: (k) => (k >= 1 ? 1 : 1 - Math.pow(2, -10 * k)),
+  inCubic: (k) => k * k * k,
+  outCubic: (k) => 1 - Math.pow(1 - k, 3),
+  inOutCubic: (k) => (k < .5 ? 4 * k ** 3 : 1 - Math.pow(-2 * k + 2, 3) / 2),
+  outBack: (k, s = 1.70158) => 1 + (s + 1) * Math.pow(k - 1, 3) + s * Math.pow(k - 1, 2),
+  inBack: (k, s = 1.70158) => (s + 1) * k ** 3 - s * k * k,
+};
+const spring = (t, t0, amp, f = 22, d = 7) => (t < t0 ? 0 : amp * Math.exp(-(t - t0) * d) * Math.sin((t - t0) * f));
+function T(el, o = {}) {
+  const { x = 0, y = 0, s = 1, sx = 1, sy = 1, r = 0, op = 1, b = 0 } = o;
+  el.style.transform = `translate(${x}px,${y}px) translate(-50%,-50%) rotate(${r}deg) scale(${s * sx},${s * sy})`;
+  el.style.opacity = op; el.style.filter = b > .1 ? `blur(${b.toFixed(2)}px)` : 'none';
+  el.style.visibility = op <= .002 ? 'hidden' : 'visible';
+}
+// появление/уход элемента: снизу с размытием
+function show(el, t, t0, t1, x, y, o = {}) {
+  const k = E.outExpo(pr(t, t0, t0 + (o.dur || .7)));
+  const q = E.inCubic(pr(t, t1, t1 + (o.outDur || .35)));
+  T(el, { x, y: y + (1 - k) * (o.dy ?? 60) - q * (o.qy ?? 70), s: (o.s0 ?? 1) + (1 - (o.s0 ?? 1)) * k, op: (t < t0 ? 0 : cl(k * 1.4)) * (1 - q), b: (1 - k) * 10 + q * 10, r: o.r || 0 });
+}
+const P = '#5512d6', W = '#f8f6ff';
+// переходы фона: [время, цвет, x, y]
+const TR = [[7.35, W, 540, 1300], [10.15, P, 540, 960], [17.35, W, 540, 900], [22.15, P, 540, 960], [26.15, W, 540, 960], [29.75, P, 540, 1150]];
+
+function render(t) {
+  // фон
+  let base = P;
+  for (const [tt, c] of TR) if (t >= tt + .62) base = c;
+  $('stage').style.background = base;
+  const onW = base === W;
+  $('grid').style.opacity = onW ? .0 : 1;
+  $('glow').style.opacity = onW ? 0 : 1;
+  $('grid').style.backgroundPosition = `0 ${(t * 14) % 54}px`;
+  const sp = $('splash'); let act = null;
+  for (const tr of TR) if (t >= tr[0] && t < tr[0] + .62) act = tr;
+  if (act) {
+    const k = E.inOutCubic(pr(t, act[0], act[0] + .62)); const D = 80 + k * 4200;
+    sp.style.width = sp.style.height = D + 'px'; sp.style.background = act[1];
+    T(sp, { x: act[2], y: act[3], r: k * 90 });
+  } else T(sp, { op: 0 });
+  const fr = Math.floor(t * 24);
+  $('grain').style.transform = `translate(${(fr * 73) % 200 - 100}px,${(fr * 151) % 200 - 100}px)`;
+
+  /* S0 — Бисмиллях: мягкие волны */
+  ['r0', 'r1', 'r2'].forEach((id, i) => {
+    const tt = t - .1 - i * .45, k = tt > 0 ? (tt % 1.35) / 1.35 : 0;
+    const on = t < 2.3 || (t > 30 && t < 34);
+    T($(id), { x: 540, y: t > 30 ? 560 : 960, s: .2 + E.outCubic(k) * 4.2, op: on && tt > 0 ? (1 - k) * .55 : 0 });
+    $(id).style.width = $(id).style.height = '300px';
+  });
+  show($('bism'), t, .35, 2.0, 540, 960, { dy: 20, dur: 1.0, outDur: .4 });
+
+  /* S1 — внимание и боль */
+  show($('s1a'), t, 2.4, 4.25, 540, 860, { dur: .7 });
+  const kh = E.outBack(pr(t, 2.85, 3.3), 2.6);
+  $('s1hl').style.transform = `scale(${Math.max(0, kh)}) rotate(${(1 - kh) * -8}deg)`;
+  $('s1hl').style.display = 'inline-block';
+  show($('s1b'), t, 3.35, 4.3, 540, 980, { dur: .7 });
+  const kt = E.outBack(pr(t, 4.45, 4.9), 2.2);
+  const bump = [5.15, 5.95, 6.75].reduce((m, tb) => m + spring(t, tb, .09, 30, 9), 0);
+  T($('trash'), { x: 540, y: 1300, s: Math.max(0, kt) * (1 + bump), op: (t < 4.45 ? 0 : 1) * (1 - pr(t, 7.3, 7.4)) });
+  ['p0', 'p1', 'p2'].forEach((id, i) => {
+    const t0 = 4.55 + i * .8, tIn = t0 + .45;
+    const k = E.outBack(pr(t, t0, t0 + .45), 2), q = E.inBack(pr(t, tIn + .05, tIn + .4), 1.6);
+    const wob = Math.sin((t - t0) * 9) * 3 * (1 - q);
+    T($(id), { x: 540 + (i - 1) * 40 * (1 - q), y: lerp(900, 1300, q) + (1 - k) * -60, s: Math.max(0, k) * (1 - q * .85), r: (i - 1) * 6 + wob + q * 40, op: (t < t0 ? 0 : 1) * (1 - pr(t, tIn + .3, tIn + .4)) });
+  });
+
+  /* S2 — Тогда появляемся мы */
+  show($('s2a'), t, 7.75, 10.0, 540, 820, { dur: .7 });
+  const k2 = E.outBack(pr(t, 8.05, 8.5), 1.8);
+  T($('s2b'), { x: 540, y: 990, s: Math.max(0, k2), op: (t < 8.05 ? 0 : 1) * (1 - pr(t, 10.0, 10.15)) });
+  const sel = E.inOutCubic(pr(t, 8.75, 9.25));
+  $('s2box').style.width = sel * 100 + '%';
+  show($('s2tag'), t, 9.35, 10.0, 650, 1130, { dy: 20, dur: .4, s0: .5 });
+
+  /* курсор: S2 выделение, S6 клик */
+  {
+    let x = -200, y = -200, op = 0, s = 1;
+    if (t > 8.4 && t < 10.1) {
+      const k = E.outCubic(pr(t, 8.4, 8.75));
+      x = lerp(900, 430, k); y = lerp(1300, 1060, k);
+      x += sel * 230;
+      op = cl((t - 8.4) * 5) * (1 - pr(t, 9.9, 10.05)); s = 1 - spring(t, 8.75, .15, 30, 9);
+    }
+    if (t > 28.2 && t < 29.75) {
+      const k = E.outCubic(pr(t, 28.2, 28.75));
+      x = lerp(950, 620, k); y = lerp(1700, 1300, k);
+      op = cl((t - 28.2) * 5) * (1 - pr(t, 29.4, 29.6)); s = 1 - spring(t, 28.8, .25, 30, 9) - (t > 28.75 && t < 28.82 ? .12 : 0);
+    }
+    T($('cursor'), { x: x + 25, y: y + 30, s, op, r: -8 });
+  }
+
+  /* S3 — орбита услуг */
+  {
+    const on = pr(t, 10.45, 10.95), off = E.inCubic(pr(t, 17.1, 17.4));
+    [['o1', 470, 14], ['o2', 700, -9], ['o3', 960, 6]].forEach(([id, d, sp2], i) => {
+      $(id).style.width = $(id).style.height = d + 'px';
+      T($(id), { x: 540, y: 780, s: (.6 + .4 * E.outExpo(pr(t, 10.45 + i * .08, 11.2 + i * .08))) * (1 + off * .3), r: t * sp2 + i * 70, op: cl(on * 2) * (1 - off) });
+    });
+    const items = [10.55, 12.3, 14.05, 15.8];
+    let cur = 0; items.forEach((st, i) => { if (t >= st) cur = i; });
+    const ki = E.outBack(pr(t, 10.5, 11.0), 2.2);
+    const pulse = items.reduce((m, st, i) => m + (i ? spring(t, st, .08, 26, 8) : 0), 0);
+    T($('icon'), { x: 540, y: 780, s: Math.max(0, ki) * (1 + pulse + .02 * Math.sin(t * 3)) * (1 - off), op: (t < 10.5 ? 0 : 1) * (1 - off) });
+    ['ic0', 'ic1', 'ic2', 'ic3'].forEach((id, i) => {
+      const k = E.outBack(pr(t, items[i], items[i] + .4), 2.5), q = i < 3 ? E.inBack(pr(t, items[i + 1] - .15, items[i + 1] + .1)) : 0;
+      $(id).style.transform = `scale(${Math.max(0, k) * (1 - q)}) rotate(${(1 - k) * -90 + q * 90}deg)`;
+      $(id).style.opacity = t >= items[i] && q < 1 ? 1 : 0;
+    });
+    ['l0', 'l1', 'l2', 'l3'].forEach((id, i) => {
+      const end = i < 3 ? items[i + 1] - .2 : 17.1;
+      show($(id), t, items[i] + .1, end, 540, 1240, { dur: .6, dy: 70, qy: 60, outDur: .25 });
+    });
+  }
+
+  /* S4 — А ещё сделаем */
+  show($('s4h'), t, 17.65, 22.0, 540, 520, { dur: .7 });
+  ['q0', 'q1', 'q2', 'q3', 'q4'].forEach((id, i) => {
+    const t0 = 18.05 + i * .32, side = i % 2 ? 1 : -1;
+    const k = E.outBack(pr(t, t0, t0 + .55), 1.6), q = E.inCubic(pr(t, 21.85 + i * .03, 22.1 + i * .03));
+    T($(id), { x: 540 + side * (1 - k) * 900, y: 720 + i * 165 + Math.sin(t * 2 + i) * 5 - q * 80, r: side * (1 - E.outExpo(pr(t, t0, t0 + .55))) * 10, op: (t < t0 ? 0 : 1) * (1 - q), b: q * 8 });
+  });
+
+  /* S5 — бартер */
+  [['b0', 640, 22.45], ['b1', 780, 22.75], ['b2', 920, 23.25], ['b3', 1060, 23.55]].forEach(([id, y, t0]) => show($(id), t, t0, 26.0, 540, y, { dur: .7, s0: id === 'b1' || id === 'b3' ? .7 : 1 }));
+  const kk = E.outBack(pr(t, 24.3, 24.8), 2.6);
+  T($('hs'), { x: 540, y: 1320 + Math.sin(t * 3) * 8, s: Math.max(0, kk) * (1 + spring(t, 24.8, .06, 26, 8)), r: (1 - kk) * -30 + Math.sin(t * 2.4) * 4, op: (t < 24.3 ? 0 : 1) * (1 - pr(t, 25.95, 26.1)) });
+
+  /* S6 — пишите */
+  show($('c0'), t, 26.4, 29.6, 540, 700, { dur: .7 });
+  show($('c1'), t, 26.7, 29.6, 540, 830, { dur: .7 });
+  show($('c2'), t, 27.15, 29.6, 540, 950, { dur: .7 });
+  const kw = E.outBack(pr(t, 27.6, 28.1), 2.2);
+  T($('wabtn'), { x: 540, y: 1250, s: Math.max(0, kw) * (1 - spring(t, 28.8, .08, 26, 7)), op: (t < 27.6 ? 0 : 1) * (1 - pr(t, 29.55, 29.7)) });
+
+  /* S7 — финал */
+  const km = E.outBack(pr(t, 30.15, 30.65), 2.6);
+  T($('mark'), { x: 540, y: 560, s: Math.max(0, km) * (1 + .015 * Math.sin(t * 3)), r: (1 - km) * -120, op: t < 30.15 ? 0 : 1 });
+  show($('e0'), t, 30.45, 99, 540, 780, { dur: .7 });
+  show($('e1'), t, 30.7, 99, 540, 880, { dur: .7 });
+  show($('e2'), t, 31.0, 99, 540, 1060, { dur: .7 });
+  show($('e3'), t, 31.2, 99, 540, 1140, { dur: .7 });
+  show($('e4'), t, 31.75, 99, 540, 1420, { dur: 1.0, dy: 30 });
+}
+window.render = render;
+window.DURATION = 34;
+document.fonts.ready.then(() => (window.READY = true));
+if (location.search.includes('play')) { const st = performance.now(); (function l() { render(((performance.now() - st) / 1000) % 34); requestAnimationFrame(l); })(); } else render(0);
+</script>
+</body>
+</html>
