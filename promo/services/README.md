@@ -37,3 +37,8 @@ ffmpeg -framerate 60 -i frames2/f%04d.jpg -i gw2_vo.wav -c:v libx264 -crf 21 -pi
 
 `voice-ali/ali_v4_full.mp3` — вся озвучка одним файлом (ElevenLabs v4). `mix_user.py` режет её по паузам
 между фразами и ставит каждую фразу на свою сцену; анимация растянута по `warp_u.json` (`render3.mjs` → `frames3/`).
+
+`mix_user2.py` — дубль 2 (`voice-ali/ali_v4_full_2.mp3`), без реверба на голосе и с EQ для чёткости:
+```bash
+ffmpeg -i voice-ali/ali_v4_full_2.mp3 -af "highpass=f=90,equalizer=f=220:t=q:w=1.0:g=-4,equalizer=f=450:t=q:w=1.2:g=-2,equalizer=f=3500:t=q:w=1.0:g=3.5,highshelf=f=7500:g=2.5,acompressor=threshold=-22dB:ratio=3:attack=8:release=120:makeup=2" -ar 48000 -ac 1 voc/ali_v4_full_2_clean.wav
+```
