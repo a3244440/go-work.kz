@@ -18,3 +18,17 @@ python3 mix_ali.py          # → gw2_ali.wav
 ffmpeg -framerate 60 -i frames/f%04d.jpg -i gw2_ali.wav -c:v libx264 -crf 21 -pix_fmt yuv420p \
   -c:a aac -b:a 192k -af loudnorm=I=-18:TP=-1.5:LRA=11 -shortest go-work-services-ali.mp4
 ```
+
+## Версия с полной озвучкой Ali (~48.6 с)
+
+Фразы голоса длиннее исходных сцен, поэтому анимация растянута по времени: `warp.json` — опорные точки
+(время сюжета gw2.html → реальное время). `render2.mjs` рендерит кадры в `frames2/`, `mix_vo.py` сводит
+голос (`voice-ali/l1…l7`, `bism2`, `salam2`) и SFX, события которых переводятся через тот же warp.
+
+```bash
+node render2.mjs
+mkdir -p voc && for f in voice-ali/*.mp3; do b=$(basename ${f%.mp3}); ffmpeg -y -i $f -af "highpass=f=85,highpass=f=85" -ar 48000 -ac 1 -c:a pcm_s16le voc/$b.wav; done
+python3 mix_vo.py   # → gw2_vo.wav
+ffmpeg -framerate 60 -i frames2/f%04d.jpg -i gw2_vo.wav -c:v libx264 -crf 21 -pix_fmt yuv420p \
+  -c:a aac -b:a 192k -af loudnorm=I=-16:TP=-1.5:LRA=11 -shortest go-work-services-voiceover.mp4
+```
