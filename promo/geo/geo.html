@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>GO-WORK.KZ: сайт, SEO и GEO</title>
+<style>
+@font-face{font-family:Onest;font-weight:400;src:url(fonts/onest-cyrillic-400-normal.woff2) format("woff2"),url(fonts/onest-latin-400-normal.woff2) format("woff2")}
+@font-face{font-family:Onest;font-weight:500;src:url(fonts/onest-cyrillic-500-normal.woff2) format("woff2"),url(fonts/onest-latin-500-normal.woff2) format("woff2")}
+@font-face{font-family:Onest;font-weight:600;src:url(fonts/onest-cyrillic-600-normal.woff2) format("woff2"),url(fonts/onest-latin-600-normal.woff2) format("woff2")}
+@font-face{font-family:Onest;font-weight:700;src:url(fonts/onest-cyrillic-700-normal.woff2) format("woff2"),url(fonts/onest-latin-700-normal.woff2) format("woff2")}
+:root{--bg:#f1f1f1;--ink:#0d0d0d;--ink2:#4a4a4a;--mut:#8a8a8a;--lime:#d4ff3a;--or:#ff5a1f;--card:#1c1c1c}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1920px;overflow:hidden;background:var(--bg);font-family:Onest,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}
+.sc{position:absolute;inset:0;overflow:hidden;visibility:hidden}
+.abs{position:absolute}
+.dark{background:#0b0b0b;color:#fff}
+.light{background:var(--bg)}
+.mark{font-size:30px;color:var(--mut);letter-spacing:.01em}
+.big{font-weight:500;letter-spacing:-.055em;line-height:.92}
+.w{display:inline-block;will-change:transform}
+/* S1 */
+#s1 .l{position:absolute;left:80px;right:40px;font-size:128px}
+#strike{position:absolute;height:14px;background:var(--or);border-radius:8px;transform-origin:left center}
+/* чат */
+.chips{position:absolute;left:0;right:0;display:flex;justify-content:center;gap:16px}
+.chip{padding:18px 34px;border-radius:999px;background:#fff;font-size:36px;font-weight:500;color:var(--ink2)}
+.chip.on{background:var(--ink);color:#fff}
+.chat{position:absolute;left:60px;right:60px;background:#fff;border-radius:44px;padding:44px;box-shadow:0 50px 100px -50px rgba(0,0,0,.35)}
+.chat-top{display:flex;align-items:center;gap:18px;font-size:30px;color:var(--mut);margin-bottom:34px}
+.chat-top b{width:54px;height:54px;border-radius:16px;background:var(--ink);color:var(--lime);display:grid;place-items:center;font-size:28px}
+.ub{margin-left:auto;max-width:86%;background:var(--ink);color:#fff;border-radius:34px 34px 8px 34px;padding:28px 34px;font-size:40px;line-height:1.25;width:fit-content}
+.cursor{display:inline-block;width:4px;height:42px;background:currentColor;vertical-align:-6px;margin-left:4px}
+.dots{display:flex;gap:10px;padding:26px 30px;background:var(--bg);border-radius:30px;width:fit-content;margin-top:30px}
+.dots i{width:14px;height:14px;border-radius:50%;background:#999}
+.ans{margin-top:30px;font-size:34px;color:var(--ink2);line-height:1.3}
+.row{display:grid;grid-template-columns:56px 1fr auto;align-items:center;gap:20px;padding:24px 26px;border-radius:26px;background:var(--bg);margin-top:16px}
+.row i{font-style:normal;font-size:30px;color:var(--mut)}
+.row .bar{height:18px;border-radius:9px;background:#dcdcdc}
+.row.me{background:var(--lime);box-shadow:0 0 0 0 rgba(212,255,58,.0)}
+.row.me i{color:var(--ink)}
+.row.me b{font-size:44px;font-weight:600;letter-spacing:-.03em;display:block}
+.row.me small{font-size:26px;color:#3b3b3b}
+.badge{font-size:24px;background:var(--ink);color:#fff;padding:10px 16px;border-radius:999px;white-space:nowrap}
+.note{position:absolute;font-size:46px;font-weight:600;color:var(--or);letter-spacing:-.03em}
+/* S4 */
+.svc{position:absolute;left:60px;right:60px;border-top:2px solid rgba(0,0,0,.1)}
+.svc .r{display:grid;grid-template-columns:90px 1fr;gap:10px 18px;padding:40px 26px;border-bottom:2px solid rgba(0,0,0,.1);border-radius:28px}
+.svc .n{font-size:30px;color:var(--mut);padding-top:16px}
+.svc b{font-size:66px;font-weight:500;letter-spacing:-.045em;line-height:1}
+.svc p{grid-column:2;font-size:32px;color:var(--ink2);line-height:1.3}
+.svc .r.geo{background:var(--ink);color:#fff;border:0}
+.svc .r.geo p{color:#bdbdbd}
+.svc .r.geo b span{color:var(--lime)}
+.tag{position:absolute;padding:16px 28px;border-radius:999px;font-size:32px;font-weight:500;background:#fff;white-space:nowrap}
+/* S5 */
+.giant{position:absolute;left:0;right:0;text-align:center;font-size:330px;font-weight:500;letter-spacing:-.07em;line-height:.85;color:#fff}
+.serp{position:absolute;left:50%;width:720px;margin-left:-360px;background:#fff;border-radius:40px;padding:34px;color:var(--ink)}
+.serp .g{display:flex;gap:16px;align-items:center;padding:20px 26px;border-radius:999px;background:var(--bg);font-size:30px;color:var(--ink2)}
+.serp .g b{color:#4285f4;font-size:36px}
+.serp .row{margin-top:14px}
+.stat{position:absolute;width:300px;height:400px;border-radius:30px;padding:30px;display:flex;flex-direction:column;justify-content:space-between;background:var(--card);color:#fff}
+.stat b{font-size:110px;font-weight:500;letter-spacing:-.06em;line-height:.85}
+.stat span{font-size:30px;line-height:1.25}
+/* S6 */
+.btn{display:inline-flex;align-items:center;gap:22px;padding:40px 64px;border-radius:999px;background:var(--ink);color:#fff;font-size:46px;font-weight:500}
+.btn svg{width:56px;height:56px}
+.wordmark{position:absolute;left:0;right:0;text-align:center;font-size:166px;font-weight:600;letter-spacing:-.075em;line-height:.8;white-space:nowrap}
+.wordmark span{color:var(--or)}
+.logo{display:inline-flex;align-items:center;gap:20px;font-size:44px;font-weight:600;letter-spacing:-.02em}
+.logo i{font-style:normal;width:76px;height:76px;border-radius:22px;background:var(--ink);color:var(--lime);display:grid;place-items:center;font-size:42px;font-weight:700}
+</style>
+</head>
+<body>
+
+<!-- S1: клиенты больше не гуглят -->
+<section class="sc dark" id="s1">
+  <p class="abs mark" style="left:80px;top:300px" id="s1m">// как ищут в 2026</p>
+  <div class="l big" style="top:420px"><span class="w">Клиенты</span> <span class="w">больше</span></div>
+  <div class="l big" style="top:560px"><span class="w">не</span> <span class="w" id="gug">гуглят.</span></div>
+  <div id="strike"></div>
+  <div class="l big" style="top:860px;font-size:112px"><span class="w">Они</span> <span class="w">спрашивают</span></div>
+  <div class="l big" style="top:990px;font-size:200px;color:var(--lime)"><span class="w">ИИ.</span></div>
+  <div class="abs" id="s1chips" style="left:80px;top:1290px;display:flex;gap:14px">
+    <span class="chip" style="background:#1c1c1c;color:#fff">ChatGPT</span><span class="chip" style="background:#1c1c1c;color:#fff">Gemini</span><span class="chip" style="background:#1c1c1c;color:#fff">Claude</span>
+  </div>
+</section>
+
+<!-- S2: чат с ИИ советует ваш бизнес -->
+<section class="sc light" id="s2">
+  <p class="abs mark" style="left:0;right:0;text-align:center;top:190px">(01) Клиент спрашивает ИИ</p>
+  <div class="chips" style="top:270px" id="s2chips"><span class="chip">ChatGPT</span><span class="chip">Gemini</span><span class="chip">Claude</span></div>
+  <div class="chat" style="top:440px" id="chat">
+    <div class="chat-top"><b>✦</b><span id="aiName">ИИ-ассистент</span></div>
+    <div class="ub" id="ub"><span id="ubt"></span><span class="cursor" id="cur"></span></div>
+    <div class="dots" id="dots"><i></i><i></i><i></i></div>
+    <div id="answer">
+      <p class="ans" id="ansT"></p>
+      <div class="row me" id="r1"><i>1</i><div><b>Ваш бизнес</b><small>★ 5,0 · сайт · отзывы · WhatsApp</small></div><span class="badge">советует ИИ</span></div>
+      <div class="row" id="r2"><i>2</i><div class="bar" style="width:78%"></div><span></span></div>
+      <div class="row" id="r3"><i>3</i><div class="bar" style="width:62%"></div><span></span></div>
+    </div>
+  </div>
+  <svg class="abs" id="arrow" width="220" height="200" viewBox="0 0 220 200" style="left:640px;top:1130px"><path id="arrowP" d="M60 190 C 70 110, 120 60, 190 30" fill="none" stroke="#ff5a1f" stroke-width="9" stroke-linecap="round"/><path id="arrowH" d="M150 14 L192 28 L168 66" fill="none" stroke="#ff5a1f" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <p class="abs" id="s2cap" style="left:90px;right:90px;top:1560px;text-align:center;font-size:42px;line-height:1.3;color:var(--ink2)">GEO-оптимизация: чтобы ИИ находил и&nbsp;советовал именно ваш бизнес</p>
+  <p class="note" id="note" style="left:0;right:0;text-align:center;top:1340px;font-size:64px">Это можете быть вы</p>
+</section>
+
+<!-- S3: в любом ИИ -->
+<section class="sc light" id="s3">
+  <h2 class="abs big" style="left:60px;right:60px;top:200px;font-size:104px" id="s3h">В ChatGPT, Gemini<br>или Claude</h2>
+  <div id="s3cards"></div>
+  <p class="abs" style="left:0;right:0;text-align:center;top:1720px;font-size:40px;color:var(--ink2)" id="s3s">в любой нише и любом городе</p>
+</section>
+
+<!-- S4: как это работает -->
+<section class="sc light" id="s4">
+  <p class="abs mark" style="left:0;right:0;text-align:center;top:190px">(02) Как я это делаю</p>
+  <h2 class="abs big" style="left:60px;right:60px;top:250px;font-size:112px;text-align:center" id="s4h">Сайт + SEO + GEO</h2>
+  <div class="svc" style="top:560px">
+    <div class="r" id="v1"><span class="n">01</span><b>Сайт для людей и&nbsp;ИИ</b><p>Быстрый, понятный, с разметкой schema.org</p></div>
+    <div class="r" id="v2"><span class="n">02</span><b>SEO: ТОП Google и&nbsp;Яндекс</b><p>Семантика, техника, Google Maps и Яндекс Карты</p></div>
+    <div class="r geo" id="v3"><span class="n" style="color:#8b8b8b">03</span><b><span>GEO:</span> вас советуют ИИ</b><p>llms.txt, отзывы, упоминания и ответы на вопросы клиентов</p></div>
+  </div>
+  <div id="tags"></div>
+</section>
+
+<!-- S5: доказательство -->
+<section class="sc dark" id="s5">
+  <p class="abs mark" style="left:0;right:0;text-align:center;top:200px;color:#8b8b8b">(03) Реальный кейс</p>
+  <div class="giant" style="top:330px" id="gt">ТОП-3</div>
+  <div class="serp" style="top:680px" id="serp">
+    <div class="g"><b>G</b><span>сайт под ключ астана</span></div>
+    <div class="row"><i>1</i><div class="bar" style="width:80%"></div><span></span></div>
+    <div class="row"><i>2</i><div class="bar" style="width:66%"></div><span></span></div>
+    <div class="row me"><i>3</i><div><b style="font-size:40px">ne-ti.kz</b></div><span class="badge">ТОП-3</span></div>
+    <div class="row"><i>4</i><div class="bar" style="width:70%"></div><span></span></div>
+  </div>
+  <p class="abs" style="left:80px;right:80px;top:1290px;text-align:center;font-size:44px;line-height:1.25;color:#e9e9e9" id="s5c">Сайт за 7 дней.<br>ТОП-3 Google через месяц.</p>
+  <div class="stat" id="st1" style="left:50px;top:1480px"><b>7</b><span>дней до запуска сайта</span></div>
+  <div class="stat" id="st2" style="left:390px;top:1480px;background:var(--or)"><b>24/7</b><span>вас находят, даже ночью</span></div>
+  <div class="stat" id="st3" style="left:730px;top:1480px;background:var(--lime);color:var(--ink)"><b>0₸</b><span>аудит вашего сайта</span></div>
+</section>
+
+<!-- S6: призыв -->
+<section class="sc light" id="s6">
+  <div class="abs" style="left:0;right:0;top:230px;text-align:center" id="s6l"><span class="logo"><i>G</i><span>GO-WORK<span style="color:var(--or)">.KZ</span></span></span></div>
+  <h2 class="abs big" style="left:60px;right:60px;top:420px;font-size:140px;text-align:center" id="s6h">Бесплатный аудит</h2>
+  <p class="abs" style="left:110px;right:110px;top:740px;text-align:center;font-size:46px;line-height:1.3;color:var(--ink2)" id="s6s">Проверю, находят ли вас Google, Яндекс и&nbsp;ИИ-ассистенты</p>
+  <div class="abs" style="left:0;right:0;top:1000px;text-align:center" id="s6b"><span class="btn"><svg viewBox="0 0 24 24"><path fill="#25d366" d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm5.8 14.13c-.24.68-1.42 1.3-1.95 1.34-.5.05-.97.23-3.27-.68-2.76-1.09-4.5-3.92-4.64-4.1-.13-.18-1.1-1.47-1.1-2.8 0-1.33.7-1.99.95-2.26.24-.27.53-.34.71-.34h.51c.16 0 .38-.06.6.46.23.54.77 1.87.84 2 .07.14.11.3.02.48-.09.18-.14.29-.27.45-.14.16-.29.35-.41.47-.14.14-.28.28-.12.55.16.27.7 1.16 1.51 1.88 1.04.93 1.92 1.21 2.19 1.35.27.14.43.11.59-.07.16-.18.68-.79.86-1.06.18-.27.36-.23.61-.14.25.09 1.58.75 1.85.88.27.14.45.2.52.32.07.11.07.66-.17 1.33Z"/></svg>Написать в WhatsApp</span></div>
+  <p class="abs" style="left:0;right:0;top:1200px;text-align:center;font-size:52px;font-weight:500;letter-spacing:-.02em" id="s6p">+7 778 324 44 40</p>
+  <div class="wordmark" style="top:1560px" id="wm">GO-WORK<span>.KZ</span></div>
+</section>
+
+<script>
+const T = { s1: [0, 3.5], s2: [3.5, 10.2], s3: [10.2, 14.8], s4: [14.8, 20.8], s5: [20.8, 25.6], s6: [25.6, 30] };
+const DUR = 30;
+const $ = (id) => document.getElementById(id);
+const cl = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
+const p = (t, a, b) => cl((t - a) / (b - a));
+const eo = (x) => 1 - Math.pow(1 - x, 4);          // ease-out
+const eio = (x) => x < .5 ? 8 * x ** 4 : 1 - Math.pow(-2 * x + 2, 4) / 2;
+const back = (x) => { const c = 1.6; return 1 + (c + 1) * Math.pow(x - 1, 3) + c * Math.pow(x - 1, 2); };
+function set(el, tx = 0, ty = 0, s = 1, r = 0, o = 1) { el.style.transform = `translate(${tx}px,${ty}px) scale(${s}) rotate(${r}deg)`; el.style.opacity = o; }
+function rise(el, t, t0, d = .6, dy = 120) { const k = eo(p(t, t0, t0 + d)); set(el, 0, (1 - k) * dy, 1, 0, k); }
+
+// S3: карточки трёх ассистентов
+const Q = [
+  ['ChatGPT', 'Кто делает ремонт квартир в Астане?'],
+  ['Gemini', 'Лучший салон красоты в Шымкенте'],
+  ['Claude', 'Где заказать мебель в Караганде?'],
+];
+$('s3cards').innerHTML = Q.map(([m, q], i) => `
+  <div class="chat" id="c${i}" style="top:560px">
+    <div class="chat-top"><b>✦</b><span>${m}</span></div>
+    <div class="ub">${q}</div>
+    <div class="row me" style="margin-top:34px"><i>1</i><div><b>Ваш бизнес</b><small>рекомендация ИИ</small></div><span class="badge">№1</span></div>
+    <div class="row"><i>2</i><div class="bar" style="width:${70 - i * 6}%"></div><span></span></div>
+  </div>`).join('');
+
+// S4: теги вокруг GEO
+const TAGS = [['schema.org', 70, 1500, -8], ['llms.txt', 420, 1560, 5], ['отзывы', 760, 1490, -4], ['Google', 120, 1700, 6], ['Яндекс', 430, 1740, -6], ['ChatGPT', 690, 1690, 4], ['Gemini', 250, 1800, -3], ['Claude', 610, 1830, 7]];
+$('tags').innerHTML = TAGS.map(([t, x, y], i) => `<span class="tag" id="tg${i}" style="left:${x}px;top:${y}px;${i > 4 ? 'background:#0d0d0d;color:#fff' : ''}${i == 1 ? 'background:#d4ff3a' : ''}">${t}</span>`).join('');
+
+const UQ = 'Посоветуй хорошую стоматологию в Алматы';
+const ANS = 'Чаще всего клиенты рекомендуют:';
+
+function render(t) {
+  for (const k in T) $(k).style.visibility = (t >= T[k][0] && t < T[k][1]) ? 'visible' : 'hidden';
+  if (t >= 30) $('s6').style.visibility = 'visible';
+
+  // ---------- S1
+  if (t < T.s1[1]) {
+    const words = document.querySelectorAll('#s1 .w');
+    const starts = [0.25, 0.42, 0.62, 0.78, 1.75, 1.95, 2.2];
+    words.forEach((w, i) => { const k = eo(p(t, starts[i], starts[i] + .55)); set(w, 0, (1 - k) * 110, 1, 0, k); });
+    rise($('s1m'), t, 0.05, .5, 30);
+    const g = $('gug'), r = g.getBoundingClientRect();
+    const sk = eio(p(t, 1.15, 1.55));
+    const st = $('strike'); st.style.left = (r.left - 6) + 'px'; st.style.top = (r.top + r.height * .52) + 'px'; st.style.width = (r.width + 12) + 'px';
+    st.style.transform = `scaleX(${sk})`;
+    g.style.color = sk > 0 ? `rgba(255,255,255,${1 - .55 * sk})` : '#fff';
+    const ch = $('s1chips').children; [...ch].forEach((c, i) => { const k = back(p(t, 2.55 + i * .12, 2.95 + i * .12)); set(c, 0, (1 - k) * 60, .6 + .4 * cl(k, 0, 1.2), 0, cl(k * 1.5)); });
+    // выход: весь экран уезжает вверх
+    const out = eio(p(t, 3.15, 3.5));
+    $('s1').style.transform = `translateY(${-out * 1920}px)`;
+  }
+
+  // ---------- S2
+  if (t >= T.s2[0] && t < T.s2[1]) {
+    const lt = t - T.s2[0];
+    const inn = eio(p(t, 3.15, 3.5)); $('s2').style.transform = `translateY(${(1 - inn) * 400}px)`;
+    // активный ассистент меняется
+    const chips = $('s2chips').children; const ai = Math.floor(lt / 1.3) % 3;
+    [...chips].forEach((c, i) => c.classList.toggle('on', i === ai));
+    $('aiName').textContent = ['ChatGPT', 'Gemini', 'Claude'][ai];
+    rise($('chat'), lt, 0.15, .7, 160);
+    // печать вопроса
+    const n = Math.floor(cl((lt - .7) / 1.5) * UQ.length);
+    $('ubt').textContent = UQ.slice(0, n);
+    $('cur').style.opacity = (lt < 2.4 && Math.floor(lt * 3) % 2 === 0) ? 1 : 0;
+    // точки "печатает"
+    const dOn = lt > 2.45 && lt < 3.25;
+    $('dots').style.display = dOn ? 'flex' : 'none';
+    [...$('dots').children].forEach((d, i) => d.style.opacity = .35 + .65 * Math.abs(Math.sin((lt * 6) - i * .8)));
+    // ответ
+    const showA = lt >= 3.25;
+    $('answer').style.display = showA ? 'block' : 'none';
+    const m = Math.floor(cl((lt - 3.25) / .7) * ANS.length); $('ansT').textContent = ANS.slice(0, m);
+    const r1k = back(p(lt, 3.9, 4.45)); set($('r1'), 0, 0, .85 + .15 * r1k, 0, cl(r1k * 1.4));
+    rise($('r2'), lt, 4.15, .45, 40); rise($('r3'), lt, 4.3, .45, 40);
+    // пульс подсветки
+    const pulse = p(lt, 4.6, 5.6); $('r1').style.boxShadow = `0 0 0 ${pulse * 26}px rgba(212,255,58,${.55 * (1 - pulse)})`;
+    // стрелка и подпись
+    const ak = eio(p(lt, 5.2, 5.8)); const P = $('arrowP'); const L = 260; P.style.strokeDasharray = L; P.style.strokeDashoffset = L * (1 - ak);
+    $('arrowH').style.opacity = ak > .95 ? 1 : 0;
+    rise($('s2cap'), lt, 5.9, .6, 40);
+    const nk = back(p(lt, 5.5, 6.0)); set($('note'), 0, (1 - cl(nk)) * 40, .8 + .2 * nk, -3, cl(nk * 1.5));
+    const out = eio(p(t, T.s2[1] - .3, T.s2[1])); $('chat').style.filter = ''; $('s2').style.opacity = 1 - out * .0;
+  }
+
+  // ---------- S3
+  if (t >= T.s3[0] && t < T.s3[1]) {
+    const lt = t - T.s3[0];
+    rise($('s3h'), lt, 0, .5, 80); rise($('s3s'), lt, .4, .5, 30);
+    for (let i = 0; i < 3; i++) {
+      const c = $('c' + i), a = .25 + i * 1.35;
+      const kin = eo(p(lt, a, a + .5)), kout = eio(p(lt, a + 1.25, a + 1.6));
+      const last = i === 2;
+      const x = (1 - kin) * 1100 - (last ? 0 : kout * 1100);
+      set(c, x, 0, 1, (1 - kin) * 6 - (last ? 0 : kout * 6), lt < a ? 0 : 1);
+      const me = c.querySelector('.me'), mk = back(p(lt, a + .35, a + .75)); set(me, 0, 0, .9 + .1 * mk, 0, cl(mk * 1.5));
+    }
+  }
+
+  // ---------- S4
+  if (t >= T.s4[0] && t < T.s4[1]) {
+    const lt = t - T.s4[0];
+    rise($('s4h'), lt, 0, .6, 100);
+    ['v1', 'v2', 'v3'].forEach((id, i) => { const a = .5 + i * .55; const k = eo(p(lt, a, a + .6)); set($(id), (1 - k) * -160, 0, 1, 0, k); });
+    const geo = back(p(lt, 2.3, 2.8)); $('v3').style.transform += ` scale(${1 + .04 * Math.sin(Math.PI * cl(geo))})`;
+    TAGS.forEach((tg, i) => { const a = 2.6 + i * .16; const k = back(p(lt, a, a + .45)); set($('tg' + i), 0, (1 - cl(k)) * 120, .5 + .5 * k, tg[3] * cl(k) + Math.sin(lt * 1.6 + i) * 1.5, cl(k * 1.4)); });
+  }
+
+  // ---------- S5
+  if (t >= T.s5[0] && t < T.s5[1]) {
+    const lt = t - T.s5[0];
+    const gk = eo(p(lt, 0, 1.6)); set($('gt'), 0, 0, 1.4 - .4 * gk, 0, cl(lt / .3));
+    const sk = eo(p(lt, .3, 1.1)); set($('serp'), 0, (1 - sk) * 200, .4 + .6 * sk, (1 - sk) * -10, cl(sk * 1.3));
+    const me = $('serp').querySelector('.me'); const pl = p(lt, 1.2, 2.2); me.style.boxShadow = `0 0 0 ${pl * 24}px rgba(212,255,58,${.6 * (1 - pl)})`;
+    rise($('s5c'), lt, 1.3, .6, 50);
+    ['st1', 'st2', 'st3'].forEach((id, i) => { const a = 1.8 + i * .14; const k = eo(p(lt, a, a + .7)); set($(id), 0, (1 - k) * 600, 1, [-8, 3, 8][i] * (1 - k) + [-4, 2, 5][i], 1); });
+    const out = eio(p(t, T.s5[1] - .35, T.s5[1])); $('s5').style.clipPath = `inset(0 0 ${out * 100}% 0)`;
+  }
+
+  // ---------- S6
+  if (t >= T.s6[0]) {
+    const lt = t - T.s6[0];
+    rise($('s6l'), lt, 0, .5, 40); rise($('s6h'), lt, .15, .6, 110); rise($('s6s'), lt, .45, .6, 50);
+    const bk = back(p(lt, .8, 1.3)); set($('s6b'), 0, (1 - cl(bk)) * 60, .8 + .2 * bk, 0, cl(bk * 1.5));
+    const pulse = (lt > 1.6) ? .5 + .5 * Math.sin((lt - 1.6) * 4) : 0;
+    $('s6b').firstElementChild.style.boxShadow = `0 0 0 ${pulse * 18}px rgba(37,211,102,.18)`;
+    rise($('s6p'), lt, 1.1, .5, 40);
+    const wk = eo(p(lt, 1.4, 2.4)); set($('wm'), 0, (1 - wk) * 260, 1, 0, wk);
+  }
+}
+window.render = render;
+window.DUR = DUR;
+if (location.search.includes('play')) { const t0 = performance.now(); (function f() { render(((performance.now() - t0) / 1000) % DUR); requestAnimationFrame(f); })(); }
+else if (location.search.includes('t=')) render(+new URLSearchParams(location.search).get('t'));
+else render(0);
+</script>
+</body>
+</html>

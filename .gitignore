@@ -6,3 +6,9 @@ promo/map.json
 promo/sfx.wav
 promo/ne-ti/frames
 promo/ne-ti/*.wav
+promo/geo/wav
+promo/geo/scene*.mp4
+promo/geo/video.mp4
+promo/geo/mix.wav
+promo/geo/list.txt
+promo/geo/*.mp4
