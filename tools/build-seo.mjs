@@ -34,7 +34,7 @@ function layout({ url, title, desc, h1, kicker, lead, crumbs, body, jsonld = [],
   <title>${esc(title)}</title>
   <meta name="description" content="${esc(desc)}">
   <link rel="canonical" href="${canonical}">
-  <meta name="theme-color" content="#07060d">
+  <meta name="theme-color" content="#f1f1f1">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="GO-WORK.KZ">
   <meta property="og:url" content="${canonical}">
@@ -51,8 +51,8 @@ function layout({ url, title, desc, h1, kicker, lead, crumbs, body, jsonld = [],
   <link rel="manifest" href="/site.webmanifest">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800&family=Manrope:wght@400;500;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800&family=Manrope:wght@400;500;600;700&display=swap"></noscript>
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&display=swap"></noscript>
   <link rel="stylesheet" href="/assets/css/style.css">
   <link rel="stylesheet" href="/assets/css/pages.css">
 ${[bc, ...jsonld].map((j) => `  <script type="application/ld+json">${JSON.stringify(j)}</script>`).join('\n')}

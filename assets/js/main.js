@@ -18,14 +18,18 @@ const finePointer = window.matchMedia('(pointer: fine)').matches;
 document.querySelectorAll('.js-wa').forEach((a) => (a.href = waLink()));
 
 /* ---------- Год ---------- */
-document.getElementById('year').textContent = new Date().getFullYear();
+const yearEl = document.getElementById('year');
+if (yearEl) yearEl.textContent = new Date().getFullYear();
 
 /* ---------- Навигация ---------- */
 const nav = document.getElementById('nav');
 const waFloat = document.querySelector('.wa-float');
+const darks = [...document.querySelectorAll('.dark')];
 const onScroll = () => {
   const y = window.scrollY;
   nav.classList.toggle('scrolled', y > 30);
+  const mid = nav.offsetHeight / 2;
+  nav.classList.toggle('on-dark', darks.some((d) => { const r = d.getBoundingClientRect(); return r.top <= mid && r.bottom > mid; }));
   waFloat.classList.toggle('show', y > window.innerHeight * 0.6);
 };
 window.addEventListener('scroll', onScroll, { passive: true });
@@ -83,56 +87,20 @@ function countUp(el) {
   requestAnimationFrame(tick);
 }
 
-/* ---------- Эффекты указателя ---------- */
+/* ---------- Эффекты указателя: в новом дизайне только лёгкий сдвиг кнопок ---------- */
 if (finePointer && !reduceMotion) {
-  // свечение за курсором
-  const glow = document.querySelector('.cursor-glow');
-  let gx = 0, gy = 0, tx = 0, ty = 0;
-  window.addEventListener('pointermove', (e) => { tx = e.clientX; ty = e.clientY; }, { passive: true });
-  (function loop() {
-    gx += (tx - gx) * 0.12;
-    gy += (ty - gy) * 0.12;
-    glow.style.left = gx + 'px';
-    glow.style.top = gy + 'px';
-    requestAnimationFrame(loop);
-  })();
-
-  // блик на кнопке WhatsApp + магнитный эффект
-  document.querySelectorAll('.btn').forEach((btn) => {
+  document.querySelectorAll('.hero .btn, .final .btn').forEach((btn) => {
     btn.addEventListener('pointermove', (e) => {
       const r = btn.getBoundingClientRect();
-      const x = e.clientX - r.left, y = e.clientY - r.top;
-      btn.style.setProperty('--x', x + 'px');
-      btn.style.setProperty('--y', y + 'px');
-      const mx = (x - r.width / 2) * 0.18, my = (y - r.height / 2) * 0.3;
-      btn.style.translate = `${mx}px ${my}px`;
+      btn.style.translate = `${(e.clientX - r.left - r.width / 2) * 0.12}px ${(e.clientY - r.top - r.height / 2) * 0.2}px`;
     });
     btn.addEventListener('pointerleave', () => (btn.style.translate = '0 0'));
   });
-
-  // 3D-наклон карточек
-  document.querySelectorAll('.tilt').forEach((card) => {
-    card.addEventListener('pointermove', (e) => {
-      const r = card.getBoundingClientRect();
-      const px = (e.clientX - r.left) / r.width, py = (e.clientY - r.top) / r.height;
-      card.style.setProperty('--mx', px * 100 + '%');
-      card.style.setProperty('--my', py * 100 + '%');
-      card.style.transform = `perspective(900px) rotateY(${(px - 0.5) * 10}deg) rotateX(${(0.5 - py) * 10}deg) translateY(-6px)`;
-    });
-    card.addEventListener('pointerleave', () => (card.style.transform = ''));
-  });
-
-  // параллакс hero
-  const visual = document.querySelector('.hero-visual');
-  window.addEventListener('pointermove', (e) => {
-    const x = (e.clientX / innerWidth - 0.5) * 24, y = (e.clientY / innerHeight - 0.5) * 24;
-    visual.style.translate = `${x}px ${y}px`;
-  }, { passive: true });
 }
 
 /* ---------- Фильтр портфолио ---------- */
 const filters = document.getElementById('filters');
-filters.addEventListener('click', (e) => {
+if (filters) filters.addEventListener('click', (e) => {
   const b = e.target.closest('button');
   if (!b) return;
   filters.querySelectorAll('button').forEach((x) => x.classList.toggle('active', x === b));

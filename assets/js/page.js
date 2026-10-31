@@ -1,8 +1,11 @@
 /* Скрипт внутренних страниц GO-WORK.KZ */
 const nav = document.getElementById('nav');
 const waFloat = document.querySelector('.wa-float');
+const darks = [...document.querySelectorAll('.dark, .final-box')];
 const onScroll = () => {
   nav.classList.toggle('scrolled', scrollY > 30);
+  const mid = nav.offsetHeight / 2;
+  nav.classList.toggle('on-dark', darks.some((d) => { const r = d.getBoundingClientRect(); return r.top <= mid && r.bottom > mid; }));
   waFloat && waFloat.classList.toggle('show', scrollY > innerHeight * 0.5);
 };
 addEventListener('scroll', onScroll, { passive: true });

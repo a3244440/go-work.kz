@@ -4,8 +4,10 @@
 
 ## Структура
 - `index.html` — вся страница (hero, услуги, ИИ-чат, портфолио, этапы, FAQ, CTA)
-- `assets/css/style.css` — дизайн и анимации
-- `assets/js/main.js` — анимации, фильтр портфолио, ИИ-чат, ссылки WhatsApp
+- `assets/css/style.css`: дизайн v2 в стиле mt-webdesign (светло-серая база, чёрные сцены, шрифт Onest, маркеры разделов)
+- `assets/css/pages.css`: стили внутренних SEO-страниц
+- `assets/js/main.js`: шапка, фильтр портфолио, ИИ-чат, ссылки WhatsApp
+- `assets/js/motion.js`: анимации главной по прокрутке (GSAP + ScrollTrigger с cdnjs)
 - `api/chat.js` — серверная функция ИИ (Vercel + Claude API)
 
 ## Что поменять
