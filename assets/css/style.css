@@ -390,3 +390,9 @@ ul, ol { margin: 0; padding: 0; }
 .nav-links.open { color: var(--ink); }
 .logo-text, .btn { white-space: nowrap; }
 @media (max-width: 430px) { .nav-cta .btn { display: none; } }
+.w-zk { display: grid; place-items: center; background: #0e0e0e; padding: 18px; }
+.zk-ui { width: 100%; max-width: 340px; display: grid; gap: 16px; color: #f2efe9; }
+.zk-bar { display: flex; align-items: center; gap: 14px; font-size: .72rem; color: #9d978c; }
+.zk-bar b { font-size: 1.15rem; letter-spacing: .32em; color: #f2efe9; margin-right: auto; font-weight: 600; }
+.zk-h { font-size: clamp(1.25rem, 1rem + .8vw, 1.6rem); line-height: 1.12; letter-spacing: -.03em; }
+.zk-btn { justify-self: start; font-size: .78rem; padding: 8px 14px; border: 1px solid rgba(242, 239, 233, .4); border-radius: 999px; }
