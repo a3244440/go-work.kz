@@ -10,41 +10,6 @@
     if (reduce || !window.gsap || !window.ScrollTrigger) return;
     gsap.registerPlugin(ScrollTrigger);
 
-    /* ---------- Огромный заголовок первого экрана: буквы встают из-под строки, при прокрутке разлетаются ---------- */
-    var mega = document.querySelector('.mega-line');
-    if (mega) {
-      var txt = mega.textContent; mega.textContent = '';
-      // Слова не разрываются при переносе: буквы лежат внутри неразрывного блока слова
-      txt.split(' ').forEach(function (word, wi) {
-        if (wi) mega.appendChild(document.createTextNode(' '));
-        var wd = document.createElement('span'); wd.className = 'mw';
-        word.split('').forEach(function (c) { var sp = document.createElement('span'); sp.className = 'ch'; sp.textContent = c; wd.appendChild(sp); });
-        mega.appendChild(wd);
-      });
-      mega.setAttribute('aria-hidden', 'true');
-      mega.insertAdjacentHTML('afterend', '<span class="sr-only">' + txt + '</span>');
-      var chars = mega.querySelectorAll('.ch');
-      gsap.from(chars, { yPercent: 115, rotationX: -95, opacity: 0, duration: 1.3, ease: 'expo.out', stagger: .035, delay: .25 });
-      gsap.from('.hero-inner > *', { y: 30, opacity: 0, duration: 1.1, ease: 'expo.out', stagger: .12, delay: .7 });
-      gsap.to(chars, {
-        yPercent: function (i) { return (i % 3 - 1) * 38 - 20; }, rotationZ: function (i) { return (i % 2 ? 1 : -1) * (4 + i % 5); }, ease: 'none',
-        scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: .4 }
-      });
-    }
-
-    /* ---------- Манифест: слова проявляются по мере прокрутки, картинки «выпрыгивают» ---------- */
-    var mf = document.querySelector('.mf-text');
-    if (mf) {
-      splitWords(mf);
-      gsap.to(mf.querySelectorAll('.w'), { color: '#0d0d0d', stagger: .12, ease: 'none', scrollTrigger: { trigger: mf, start: 'top 78%', end: 'bottom 50%', scrub: .5 } });
-      mf.querySelectorAll('.mf-pic, .mf-ico').forEach(function (m) {
-        gsap.from(m, { scale: 0, rotation: -25, duration: .9, ease: 'back.out(2)', scrollTrigger: { trigger: m, start: 'top 75%', once: true } });
-      });
-    }
-
-    /* ---------- Белая панель наезжает на первый экран ---------- */
-    gsap.from('.sheet', { borderRadius: '90px 90px 0 0', ease: 'none', scrollTrigger: { trigger: '.sheet', start: 'top bottom', end: 'top 40%', scrub: true } });
-
     /* ---------- Заголовки: слова влетают с разных ракурсов ---------- */
     var angles = [
       { rotationX: -95, yPercent: 40, transformOrigin: '50% 100% -30px' },          // переворот снизу
@@ -185,20 +150,6 @@
       n.parentNode.replaceChild(frag, n);
     });
   }
-
-  /* Огромный заголовок занимает ровно ширину экрана при любом шрифте (на телефоне он переносится и не подгоняется) */
-  function fitMega() {
-    var el = document.querySelector('.mega-line'); if (!el) return;
-    el.style.fontSize = '';
-    if (innerWidth <= 820) return;
-    var h = el.parentNode, cs = getComputedStyle(h);
-    var avail = h.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
-    var w = el.getBoundingClientRect().width, fs = parseFloat(getComputedStyle(el).fontSize);
-    if (w > 0) el.style.fontSize = (fs * avail / w * .985).toFixed(1) + 'px';
-  }
-  fitMega();
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitMega);
-  addEventListener('resize', fitMega);
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run); else run();
 })();

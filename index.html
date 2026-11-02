@@ -28,8 +28,8 @@
   <link rel="manifest" href="/site.webmanifest">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@1,500;1,600&family=Oswald:wght@600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@1,500;1,600&family=Oswald:wght@600;700&display=swap"></noscript>
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@1,500;1,600&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@1,500;1,600&display=swap"></noscript>
   <link rel="stylesheet" href="/assets/css/style.css">
   <link rel="stylesheet" href="/assets/css/pages.css">
 
@@ -57,30 +57,18 @@
   </header>
 
   <main id="top">
-    <!-- ПЕРВЫЙ ЭКРАН: светящийся зал (3D) и огромный заголовок -->
-    <section class="hero hero-scene">
-      <div class="scene-fallback" aria-hidden="true"></div>
-      <canvas class="scene" id="scene" aria-hidden="true"></canvas>
-      <div class="hero-shade" aria-hidden="true"></div>
-      <div class="container hero-inner">
-        <div class="hero-intro">
-          <span class="hero-ava" aria-hidden="true">G</span>
-          <p>Разработка сайтов с ИИ, SEO в Google и Яндекс и реклама для бизнеса в Астане, Алматы и по всему Казахстану.</p>
-        </div>
-        <div class="hero-side">
-          <span class="hero-pill"><i></i>Приём заявок открыт · весь Казахстан</span>
-          <div class="hero-cta">
-            <a class="btn btn-white btn-lg js-wa" href="https://wa.me/77783244440?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5%21%20%D0%A5%D0%BE%D1%87%D1%83%20%D0%B1%D0%B5%D1%81%D0%BF%D0%BB%D0%B0%D1%82%D0%BD%D1%8B%D0%B9%20%D0%B0%D1%83%D0%B4%D0%B8%D1%82%20%D1%81%D0%B0%D0%B9%D1%82%D0%B0" target="_blank" rel="noopener"><svg class="wa-ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-wa"/></svg><span>Бесплатный аудит сайта</span></a>
-            <a class="btn btn-glass btn-lg" href="#portfolio"><span>Смотреть работы</span></a>
-          </div>
-        </div>
-      </div>
-      <h1 class="mega"><span class="mega-line">Сайты, которые продают</span><span class="sr-only"> — разработка сайтов с ИИ, SEO и реклама в Казахстане</span></h1>
-    </section>
-
-    <!-- БЕЛАЯ ПАНЕЛЬ НАЕЗЖАЕТ НА ПЕРВЫЙ ЭКРАН: факты и веер работ -->
-    <section class="sheet">
+    <!-- ПЕРВЫЙ ЭКРАН -->
+    <section class="hero">
+      <div class="orb-lite" aria-hidden="true"><i></i><i></i></div>
+      <canvas class="orb" id="orb" aria-hidden="true"></canvas>
       <div class="container">
+        <p class="pre reveal">Приём заявок открыт · весь Казахстан</p>
+        <h1 class="hero-title reveal">Сайты с <em>ИИ</em>, которые приводят заявки</h1>
+        <p class="lead reveal">Делаю сайты и платформы с ИИ, вывожу их в ТОП Google и Яндекс, настраиваю рекламу. Для малого бизнеса в Алматы, Астане и по всей стране.</p>
+        <div class="hero-cta reveal">
+          <a class="btn btn-ink btn-lg js-wa" href="https://wa.me/77783244440?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5%21%20%D0%A5%D0%BE%D1%87%D1%83%20%D0%B1%D0%B5%D1%81%D0%BF%D0%BB%D0%B0%D1%82%D0%BD%D1%8B%D0%B9%20%D0%B0%D1%83%D0%B4%D0%B8%D1%82%20%D1%81%D0%B0%D0%B9%D1%82%D0%B0" target="_blank" rel="noopener"><svg class="wa-ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-wa"/></svg><span>Бесплатный аудит сайта</span></a>
+          <a class="btn btn-paper btn-lg" href="#portfolio"><span>Смотреть работы</span></a>
+        </div>
         <ul class="hero-facts reveal">
           <li><b>7–14</b> дней до запуска</li>
           <li><b>24/7</b> ИИ отвечает клиентам</li>
@@ -112,19 +100,30 @@
       </div>
     </div>
 
-    <!-- МАНИФЕСТ: текст проявляется по словам при прокрутке -->
-    <section class="manifesto" aria-labelledby="mf-h">
-      <div class="container">
-        <span class="mark">(01) О подходе</span>
-        <h2 class="sr-only" id="mf-h">Как я работаю</h2>
-        <p class="mf-text">Я Алихан, и GO-WORK.KZ <span class="mf-pic"><img src="/assets/img/work/abadan-sport.jpg" alt="" loading="lazy" width="160" height="90"></span> — это разработка сайтов с ИИ для бизнеса в Казахстане. Сначала разбираюсь в вашем деле, потом нахожу баланс дизайна, скорости и SEO <span class="mf-ico mf-g"><svg viewBox="0 0 24 24"><path fill="#4285F4" d="M21.6 12.2c0-.7-.1-1.3-.2-1.9H12v3.7h5.4a4.6 4.6 0 0 1-2 3v2.5h3.2c1.9-1.7 3-4.3 3-7.3Z"/><path fill="#34A853" d="M12 22c2.7 0 5-.9 6.6-2.4l-3.2-2.5c-.9.6-2 1-3.4 1-2.6 0-4.8-1.8-5.6-4.1H3.1v2.6A10 10 0 0 0 12 22Z"/><path fill="#FBBC05" d="M6.4 14c-.2-.6-.3-1.3-.3-2s.1-1.4.3-2V7.4H3.1a10 10 0 0 0 0 9.2L6.4 14Z"/><path fill="#EA4335" d="M12 5.9c1.5 0 2.8.5 3.8 1.5l2.9-2.9A10 10 0 0 0 3.1 7.4L6.4 10c.8-2.4 3-4.1 5.6-4.1Z"/></svg></span>. Сайт ne-ti.kz я собрал за неделю, а через месяц он был в ТОП-3 Google <span class="mf-pic"><img src="/assets/img/work/smart-travel.jpg" alt="" loading="lazy" width="160" height="90"></span>. ИИ-ассистент отвечает вашим клиентам 24/7, а заявки приходят прямо в WhatsApp <span class="mf-ico mf-wa"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-wa"/></svg></span>. У каждого бизнеса своя история — я помогаю ей приводить клиентов <span class="mf-pic"><img src="/assets/img/offers/ai-roliki-10.jpg" alt="" loading="lazy" width="160" height="90"></span></p>
-        <div class="mf-stats reveal">
-          <div><b><span class="count" data-to="24">24</span>/7</b><span>ИИ отвечает клиентам, даже ночью</span></div>
-          <div><b>&lt;<span class="count" data-to="2">2</span> с</b><span>загрузка сайта на телефоне</span></div>
-          <div><b><span class="count" data-to="14">14</span></b><span>дней от брифа до запуска</span></div>
-          <div><b><span class="count" data-to="0">0</span> ₸</b><span>стоит аудит вашего сайта</span></div>
+    <!-- ЧЁРНАЯ СЦЕНА -->
+    <section class="stage dark" aria-labelledby="stage-h">
+      <div class="stage-pin">
+        <span class="stage-mark">(01) Результат</span>
+        <h2 class="giant" id="stage-h">Заявки из&nbsp;поиска</h2>
+        <div class="stage-card" aria-hidden="true">
+          <div class="serp">
+            <div class="serp-g"><b>G</b><span>изготовление сайтов астана</span></div>
+            <div class="serp-row"><i>1</i><span></span></div>
+            <div class="serp-row"><i>2</i><span></span></div>
+            <div class="serp-row me"><i>3</i><span>ne-ti.kz</span><em>ТОП-3</em></div>
+            <div class="serp-row"><i>4</i><span></span></div>
+          </div>
         </div>
-        <div class="mf-cta reveal"><a class="btn btn-ink btn-lg js-wa" href="https://wa.me/77783244440?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5%21%20%D0%A5%D0%BE%D1%87%D1%83%20%D0%B1%D0%B5%D1%81%D0%BF%D0%BB%D0%B0%D1%82%D0%BD%D1%8B%D0%B9%20%D0%B0%D1%83%D0%B4%D0%B8%D1%82%20%D1%81%D0%B0%D0%B9%D1%82%D0%B0" target="_blank" rel="noopener"><svg class="wa-ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-wa"/></svg><span>Хочу так же</span></a></div>
+        <div class="stats-wrap reveal">
+          <div class="stat s1"><b><span class="count" data-to="24">24</span>/7</b><span>ИИ отвечает клиентам, даже ночью</span></div>
+          <div class="stat s2"><b>&lt;<span class="count" data-to="2">2</span>с</b><span>загрузка сайта на телефоне</span></div>
+          <div class="stat s3"><b><span class="count" data-to="14">14</span></b><span>дней от брифа до запуска</span></div>
+          <div class="stat s4"><b><span class="count" data-to="0">0</span>₸</b><span>стоит аудит вашего сайта</span></div>
+        </div>
+      </div>
+      <div class="stage-copy">
+        <p class="reveal">Сайт ne-ti.kz я собрал за неделю, а через месяц он вышел в ТОП-3 Google. Так работаю с каждым проектом: быстро, по цифрам и с отчётами, которые понятны без маркетолога.</p>
+        <a class="btn btn-white btn-lg js-wa reveal" href="https://wa.me/77783244440?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5%21%20%D0%A5%D0%BE%D1%87%D1%83%20%D0%B1%D0%B5%D1%81%D0%BF%D0%BB%D0%B0%D1%82%D0%BD%D1%8B%D0%B9%20%D0%B0%D1%83%D0%B4%D0%B8%D1%82%20%D1%81%D0%B0%D0%B9%D1%82%D0%B0" target="_blank" rel="noopener"><svg class="wa-ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-wa"/></svg><span>Хочу так же</span></a>
       </div>
     </section>
 
@@ -456,7 +455,7 @@
   <script src="/assets/js/main.js" defer></script>
   <script src="/assets/js/motion.js" defer></script>
   <script src="/assets/js/fx3d.js" defer></script>
-  <script type="module" src="/assets/js/scene.js"></script>
+  <script type="module" src="/assets/js/orb.js"></script>
   <script src="/assets/js/analytics.js" defer></script>
 </body>
 </html>
