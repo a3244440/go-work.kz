@@ -1,5 +1,6 @@
-/* GO-WORK.KZ v2 по мотивам mt-webdesign: светло-серая база, чёрные сцены,
-   огромный гротеск Onest, маркеры (01)…(07), анимации по прокрутке. Акцент оранжевый, на чёрном лаймовый. */
+/* GO-WORK.KZ v3: светло-серая база, чёрные сцены, широкий гротеск Unbounded в заголовках,
+   Manrope в тексте, курсив Cormorant Garamond для акцентов, 3D-элементы и анимации по прокрутке.
+   Акцент оранжевый, на чёрном лаймовый. */
 :root {
   --bg: #f1f1f1;
   --paper: #ffffff;
@@ -20,8 +21,10 @@
   --border: var(--line);
   --magenta: var(--accent-ink);
   --radius: 22px;
-  --font-d: var(--f);
-  --f: "Onest", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-d: "Unbounded", "Arial Black", "Helvetica Neue", Arial, sans-serif;
+  --f: "Manrope", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --serif: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  --violet: #7b5cff;
   --wrap: 1320px;
   --ease: cubic-bezier(.2, .7, .2, 1);
   color-scheme: light;
@@ -396,3 +399,89 @@ ul, ol { margin: 0; padding: 0; }
 .zk-bar b { font-size: 1.15rem; letter-spacing: .32em; color: #f2efe9; margin-right: auto; font-weight: 600; }
 .zk-h { font-size: clamp(1.25rem, 1rem + .8vw, 1.6rem); line-height: 1.12; letter-spacing: -.03em; }
 .zk-btn { justify-self: start; font-size: .78rem; padding: 8px 14px; border: 1px solid rgba(242, 239, 233, .4); border-radius: 999px; }
+
+
+/* ================= v3: типографика ================= */
+h1, h2, h3, .giant, .wordmark, .svc-list b, .step-n, .stat b, .fan .card b, .pack-price, .pack-count b, .logo-text, .marquee-track, .final-box h2, .work-cta-inner .big, .chat-name { font-family: var(--font-d); }
+h1 { font-size: clamp(2.2rem, .7rem + 4.4vw, 5.2rem); line-height: 1.02; letter-spacing: -.035em; font-weight: 500; }
+h2 { font-size: clamp(1.8rem, .8rem + 3.1vw, 4rem); line-height: 1.04; letter-spacing: -.03em; font-weight: 500; }
+h3 { letter-spacing: -.01em; font-weight: 500; }
+.hero-title { max-width: 15ch; }
+.giant { font-size: clamp(2.8rem, .8rem + 8.2vw, 10.5rem); letter-spacing: -.05em; line-height: .92; }
+.wordmark { font-size: clamp(2.4rem, .6rem + 9.6vw, 12rem); letter-spacing: -.05em; font-weight: 700; line-height: .9; }
+.svc-list b { font-size: clamp(1.25rem, .85rem + 1.45vw, 2.3rem); letter-spacing: -.03em; }
+.fan .card b { font-size: clamp(2.2rem, 1.1rem + 2.5vw, 4.2rem); letter-spacing: -.05em; }
+.step-n { font-size: clamp(2.8rem, 1.9rem + 2.3vw, 4.6rem); letter-spacing: -.05em; }
+.stat b { font-size: clamp(2.4rem, 1.5rem + 2.3vw, 4.2rem); letter-spacing: -.04em; }
+.marquee-track { font-size: clamp(1.2rem, .8rem + 1.5vw, 2.3rem); letter-spacing: -.03em; }
+.final-box h2 { font-size: clamp(2rem, .9rem + 3.6vw, 4.6rem); }
+.logo-text { letter-spacing: -.02em; }
+/* Курсивные акценты: <em> и <u> внутри заголовков */
+h1 em, h2 em, h1 u, h2 u, .serif { font-family: var(--serif); font-style: italic; font-weight: 600; font-size: 1.16em; letter-spacing: -.01em; line-height: .8; text-decoration: none; color: var(--accent-ink); padding-right: .04em; }
+.dark h2 em, .final-box h2 em { color: var(--lime); }
+
+/* ================= v3: 3D на первом экране ================= */
+.hero { position: relative; isolation: isolate; }
+.hero > .container, .hero .fan { position: relative; z-index: 1; }
+.orb { position: absolute; inset: 0 0 auto 0; height: 100%; width: 100%; z-index: 0; pointer-events: none; opacity: 0; transition: opacity 1.2s var(--ease); }
+.orb.on { opacity: 1; }
+/* Статичная замена 3D на телефонах и без WebGL: два «стеклянных» шара */
+.orb-lite { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+.orb-lite i { position: absolute; border-radius: 50%; background: radial-gradient(circle at 32% 28%, #fff 0 6%, #ffb08a 18%, var(--accent) 46%, #7b5cff 82%, #3a1fb0 100%); box-shadow: inset -14px -18px 40px rgba(40, 10, 120, .35), 0 30px 60px -30px rgba(80, 30, 160, .45); animation: float 7s ease-in-out infinite; }
+.orb-lite i:nth-child(1) { width: 84px; height: 84px; right: -34px; top: 74px; }
+.orb-lite i:nth-child(2) { width: 56px; height: 56px; left: -26px; top: 600px; animation-delay: -3s; background: radial-gradient(circle at 32% 28%, #fff 0 8%, #eaff9a 26%, var(--lime) 55%, #7fb800 100%); }
+.has-orb .orb-lite { display: none; }
+@keyframes float { 50% { transform: translateY(-14px) rotate(8deg); } }
+
+/* ================= v3: заголовки с разных ракурсов ================= */
+.split { perspective: 900px; }
+.split .w { display: inline-block; transform-style: preserve-3d; backface-visibility: hidden; will-change: transform; }
+
+/* ================= v3: две перекрещенные 3D-ленты ================= */
+.ribbons { position: relative; height: clamp(150px, 15vw, 220px); margin-top: clamp(30px, 4vw, 50px); perspective: 1200px; z-index: 2; }
+.ribbons .marquee { position: absolute; left: -4%; right: -4%; top: 50%; margin: 0; padding: 18px 0; transform-origin: 50% 50%; box-shadow: 0 30px 60px -30px rgba(0, 0, 0, .5); }
+.ribbons .marquee:first-child { transform: translateY(-50%) rotateX(14deg) rotate(-3.2deg); z-index: 2; }
+.ribbons .marquee.alt { transform: translateY(-50%) rotateX(-12deg) rotate(2.6deg); background: var(--lime); color: var(--ink); z-index: 1; }
+.ribbons .marquee.alt .marquee-track { animation-direction: reverse; animation-duration: 46s; }
+.ribbons .marquee.alt i { color: var(--accent-ink); }
+
+/* ================= v3: 3D-куб услуг ================= */
+.svc-wrap { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: clamp(24px, 4vw, 60px); align-items: start; }
+.cube-col { position: sticky; top: 26vh; height: 340px; display: grid; place-items: center; perspective: 1000px; }
+.cube { --c: 190px; width: var(--c); height: var(--c); position: relative; transform-style: preserve-3d; will-change: transform; }
+.cube > div { position: absolute; inset: 0; display: grid; place-items: center; align-content: center; gap: 6px; border-radius: 26px; font-family: var(--font-d); font-weight: 600; font-size: 3.1rem; letter-spacing: -.04em; backface-visibility: hidden; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .14), inset 0 -24px 40px rgba(0, 0, 0, .14); }
+.cube > div small { font-family: var(--f); font-size: .8rem; font-weight: 600; letter-spacing: .02em; opacity: .75; }
+.cube .f1 { transform: translateZ(calc(var(--c) / 2)); background: var(--ink); color: #fff; }
+.cube .f2 { transform: rotateY(90deg) translateZ(calc(var(--c) / 2)); background: var(--accent); color: #fff; }
+.cube .f3 { transform: rotateY(180deg) translateZ(calc(var(--c) / 2)); background: var(--lime); color: var(--ink); }
+.cube .f4 { transform: rotateY(-90deg) translateZ(calc(var(--c) / 2)); background: var(--violet); color: #fff; }
+.cube .f5 { transform: rotateX(90deg) translateZ(calc(var(--c) / 2)); background: #fff; color: var(--ink); }
+.cube .f6 { transform: rotateX(-90deg) translateZ(calc(var(--c) / 2)); background: #2b2b2b; color: var(--lime); }
+.cube-shadow { position: absolute; bottom: 8px; width: 170px; height: 26px; border-radius: 50%; background: radial-gradient(closest-side, rgba(0, 0, 0, .28), transparent); }
+@media (max-width: 1000px) { .svc-wrap { grid-template-columns: 1fr; } .cube-col { display: none; } }
+
+/* ================= v3: 3D-наклон карточек ================= */
+.works { perspective: 1400px; }
+.work { transform-style: preserve-3d; will-change: transform; position: relative; }
+.work::after { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; background: radial-gradient(600px circle at var(--mx, 50%) var(--my, 0%), rgba(255, 255, 255, .28), transparent 40%); opacity: 0; transition: opacity .3s; z-index: 3; }
+.work.tilt::after { opacity: 1; }
+.steps, .packs { perspective: 1400px; }
+.step, .pack { transform-style: preserve-3d; }
+.final { perspective: 1400px; }
+.final-box { transform-origin: 50% 100%; }
+
+/* Объёмное GO-WORK.KZ в подвале */
+.footer { perspective: 1200px; }
+.wordmark { transform-style: preserve-3d; will-change: transform; text-shadow: 1px 1px 0 #d9d9d9, 2px 2px 0 #d2d2d2, 3px 3px 0 #cbcbcb, 4px 4px 0 #c4c4c4, 5px 5px 0 #bdbdbd, 6px 6px 0 #b6b6b6, 7px 7px 0 #afafaf, 12px 16px 24px rgba(0, 0, 0, .18); }
+.wordmark span { text-shadow: 1px 1px 0 #e64e14, 2px 2px 0 #d94811, 3px 3px 0 #cc420f, 4px 4px 0 #bf3c0d, 5px 5px 0 #b2360b, 6px 6px 0 #a5300a, 7px 7px 0 #982a08, 12px 16px 24px rgba(0, 0, 0, .18); }
+@media (prefers-reduced-motion: reduce) { .orb { display: none; } .orb-lite i { animation: none; } }
+/* transform карточек портфолио теперь ведёт JS (наклон за курсором) — CSS-переход ему мешал бы */
+.js .works .work { transition: none; }
+.js .works .work:hover { transform: none; }
+
+/* Популярные направления: крупные ссылки-«пилюли» с точными запросами */
+.qlinks { display: flex; flex-wrap: wrap; gap: 10px; perspective: 1000px; }
+.qlinks a { display: inline-flex; align-items: center; min-height: 48px; padding: 10px 20px; border-radius: 999px; background: var(--paper); font-weight: 600; font-size: clamp(.95rem, .85rem + .35vw, 1.15rem); box-shadow: inset 0 0 0 1px var(--line); transition: background .3s var(--ease), color .3s var(--ease), transform .3s var(--ease); }
+.qlinks a:hover { background: var(--ink); color: #fff; transform: translateY(-3px) rotateX(12deg); }
+.qlinks a:nth-child(4n+1):hover { background: var(--accent); }
+.qlinks a:nth-child(4n+3):hover { background: var(--lime); color: var(--ink); }

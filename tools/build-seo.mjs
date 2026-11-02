@@ -51,8 +51,8 @@ function layout({ url, title, desc, h1, kicker, lead, crumbs, body, jsonld = [],
   <link rel="manifest" href="/site.webmanifest">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&display=swap"></noscript>
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@1,500;1,600&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@1,500;1,600&display=swap"></noscript>
   <link rel="stylesheet" href="/assets/css/style.css">
   <link rel="stylesheet" href="/assets/css/pages.css">
 ${[bc, ...jsonld].map((j) => `  <script type="application/ld+json">${JSON.stringify(j)}</script>`).join('\n')}
@@ -106,7 +106,7 @@ ${body}
           <div class="footer-links"><a href="https://www.instagram.com/alikhan_seiilbek/" target="_blank" rel="noopener">Instagram</a><a class="js-wa" href="${WA}" target="_blank" rel="noopener">WhatsApp</a></div>
           <p class="f-note"><a class="tel-link" href="tel:+77783244440">+7 778 324 44 40</a></p>
         </div>
-        <div><b>Услуги</b>${SERVICES.map((s) => `<a href="/uslugi/${s.slug}/">${s.name}</a>`).join('')}<a href="/ai-roliki/">ИИ-ролики для бизнеса</a><a href="/ai-roliki/love-story/">ИИ-ролик Love Story</a><a href="/audit/">Бесплатный аудит</a></div>
+        <div><b>Услуги</b>${SERVICES.map((s) => `<a href="/uslugi/${s.slug}/">${s.name}</a>`).join('')}<a href="/ai-roliki/">ИИ-ролики для бизнеса</a><a href="/ai-roliki/love-story/">ИИ-ролик Love Story</a><a href="/zakazat-sayt/">Заказать сайт</a><a href="/audit/">Бесплатный аудит</a></div>
         <div><b>Города</b><div class="f-cities">${CITIES.map((c) => `<a href="/goroda/${c.slug}/">${c.name}</a>`).join('')}</div></div>
       </div>
       <small>© ${new Date().getFullYear()} go-work.kz</small>
@@ -216,7 +216,7 @@ for (const s of SERVICES) {
 /* ---------- страницы городов ---------- */
 for (const c of CITIES) {
   const url = `/goroda/${c.slug}/`;
-  const desc = `Сайты с ИИ, SEO в Google и Яндекс, Google Ads и Яндекс Директ для бизнеса ${c.loc}. Бесплатный аудит сайта за 24 часа.`;
+  const desc = `Разработка сайтов, SEO-продвижение, контекстная реклама и таргет для бизнеса ${c.loc}: сайты с ИИ, Google и Яндекс, Instagram и TikTok. Бесплатный аудит сайта за 24 часа.`;
   const body =
     sec('details', 'Услуги', `Что я делаю для бизнеса <span class="grad-text">${c.loc}</span>`,
       `        <div class="cards p-cards p-svc">${SERVICES.map((s, i) => `<a class="card reveal" href="/uslugi/${s.slug}/${c.slug}/"><div class="card-ico ic-${(i % 4) + 1}">${s.icon}</div><h3>${s.name}</h3><p>${s.desc(c).split(':')[0]}.</p><span class="p-more">Подробнее →</span></a>`).join('')}</div>`) +
@@ -226,10 +226,10 @@ for (const c of CITIES) {
         <ul class="p-checks p-niches reveal">${c.niches.map((n) => `<li>${cap(n)}</li>`).join('')}</ul>`) +
     sec('', 'Другие города', `Работаю по всему <span class="grad-text">Казахстану</span>`, `        ${chips(CITIES.map((x) => [x.name, `/goroda/${x.slug}/`, x === c]))}`);
   write(url, layout({
-    url, title: `Сайты, SEO и реклама ${c.loc} | GO-WORK.KZ`, desc,
+    url, title: `Разработка сайтов, SEO и реклама ${c.loc} | GO-WORK.KZ`, desc,
     h1: `Сайты, SEO и реклама <span class="grad-text">${c.loc}</span>`,
     kicker: `${c.name} · Казахстан`,
-    lead: `Привожу заявки из поиска малому бизнесу ${c.loc}: сайты и платформы с ИИ, SEO в Google и Яндекс, контекстная реклама.`,
+    lead: `Привожу заявки малому бизнесу ${c.loc}: разработка сайтов и платформ с ИИ, SEO-продвижение в Google и Яндекс, контекстная реклама и таргет.`,
     crumbs: [['Главная', '/'], ['Города', '/goroda/'], [c.name, url]],
     body,
   }), '0.7');
@@ -237,8 +237,8 @@ for (const c of CITIES) {
 
 /* ---------- индекс городов ---------- */
 write('/goroda/', layout({
-  url: '/goroda/', title: 'Города: сайты, SEO и реклама по всему Казахстану | GO-WORK.KZ',
-  desc: 'Создание сайтов, SEO-продвижение и контекстная реклама в 20 городах Казахстана: Алматы, Астана, Шымкент, Караганда и другие.',
+  url: '/goroda/', title: 'Разработка сайтов, SEO и реклама по всему Казахстану | GO-WORK.KZ',
+  desc: 'Разработка сайтов, SEO-продвижение, контекстная реклама и таргет в 20 городах Казахстана: Астана, Алматы, Шымкент, Караганда и другие.',
   h1: 'Работаю по всему <span class="grad-text">Казахстану</span>', kicker: 'География',
   lead: 'Удалённо, но с учётом особенностей каждого города: конкуренции, поисковых систем и местных карт.',
   crumbs: [['Главная', '/'], ['Города', '/goroda/']],
@@ -248,12 +248,12 @@ write('/goroda/', layout({
 
 /* ---------- индекс услуг ---------- */
 write('/uslugi/', layout({
-  url: '/uslugi/', title: 'Услуги: сайты с ИИ, SEO, Google Ads и Яндекс Директ | GO-WORK.KZ',
-  desc: 'Все услуги GO-WORK.KZ: создание сайтов, платформы с ИИ, SEO в Google и Яндекс, Google Ads и Яндекс Директ для бизнеса в Казахстане.',
+  url: '/uslugi/', title: 'Услуги: разработка сайтов, SEO, контекстная реклама и таргет | GO-WORK.KZ',
+  desc: 'Все услуги GO-WORK.KZ: разработка сайтов и платформ с ИИ, SEO-продвижение в Google и Яндекс, контекстная реклама, Google Ads, Яндекс Директ и таргет для бизнеса в Казахстане.',
   h1: 'Услуги, которые <span class="grad-text">приводят клиентов</span>', kicker: 'Услуги',
   lead: 'Каждая услуга — отдельный инструмент получения заявок. Вместе они дают максимальный результат.',
   crumbs: [['Главная', '/'], ['Услуги', '/uslugi/']],
-  body: sec('details', '6 направлений', `Выберите <span class="grad-text">услугу</span>`,
+  body: sec('details', `${SERVICES.length} направлений`, `Выберите <span class="grad-text">услугу</span>`,
     `        <div class="cards p-cards p-svc">${SERVICES.map((s, i) => `<a class="card reveal" href="/uslugi/${s.slug}/"><div class="card-ico ic-${(i % 4) + 1}">${s.icon}</div><h3>${s.name}</h3><p>${s.lead}</p><span class="p-more">Подробнее →</span></a>`).join('')}</div>`) +
     sec('', 'Бесплатно', `Начните с <span class="grad-text">аудита</span>`, `        <p class="p-text reveal">Не знаете, что выбрать? Бесплатный аудит покажет, где вы теряете клиентов. <a class="p-link" href="/audit/">Что входит в аудит →</a></p>`),
 }), '0.9');
@@ -277,6 +277,43 @@ write('/audit/', layout({
   jsonld: [faqLd(auditFaq)],
 }), '0.9');
 
+
+/* ---------- заказать сайт (запросы «заказать сайт», «сайт под ключ», «разработка сайтов казахстан») ---------- */
+{
+  const url = '/zakazat-sayt/';
+  const desc = 'Заказать сайт под ключ в Казахстане: лендинг от 7 дней, сайт компании за 2–3 недели. Дизайн, тексты, SEO-структура, ИИ-ассистент и заявки в WhatsApp. Расчёт стоимости за 24 часа.';
+  const kinds = [
+    ['Лендинг', 'Одна страница под одну услугу или рекламу. Запуск от 7 дней.'],
+    ['Сайт компании', 'Отдельные страницы под каждую услугу и город — основа для SEO. 2–3 недели.'],
+    ['Каталог и интернет-магазин', 'Товары, фильтры, корзина и оплата, выгрузка в Kaspi и CRM по задаче.'],
+    ['Платформа с ИИ', 'Личный кабинет, калькуляторы, онлайн-запись и ИИ-ассистент 24/7.'],
+  ];
+  const order = [['Напишите в WhatsApp', 'Коротко о бизнесе и ссылка на текущий сайт, если он есть.'], ['Аудит и расчёт за 24 часа', 'Пришлю структуру, сроки и стоимость — без скрытых платежей.'], ['Договор и старт', 'Фиксируем объём и сроки, начинаю работу.'], ['Дизайн и тексты', 'Показываю дизайн главных экранов, согласуем.'], ['Запуск и продвижение', 'Публикую сайт, подключаю аналитику и отправляю на индексацию.']];
+  const faq = [
+    ['Сколько стоит заказать сайт?', 'Зависит от типа сайта, количества страниц и функций. Точную стоимость называю после короткого разговора и бесплатного аудита — фиксирую в договоре.'],
+    ['Сколько времени занимает разработка сайта?', 'Лендинг — от 7 дней, сайт компании — 2–3 недели, платформа с личным кабинетом — по техническому заданию.'],
+    ['Можно заказать сайт, если я не в Астане или Алматы?', 'Да. Работаю удалённо со всем Казахстаном: обсуждения в WhatsApp и созвонах, доступы и отчёты онлайн.'],
+    ['Что нужно от меня, чтобы заказать сайт?', 'Рассказать о бизнесе, услугах и ценах, прислать логотип и фото, если они есть. Тексты и структуру делаю сам.'],
+    ['Будет ли сайт продвигаться в Google и Яндексе?', 'Да, SEO-структура закладывается с первого дня: отдельные страницы под услуги, заголовки, микроразметка и карта сайта. Пример — ne-ti.kz вышел в ТОП-3 Google через месяц.'],
+  ];
+  const body =
+    sec('details', 'Что можно заказать', `Какой сайт <span class="grad-text">вам нужен</span>`,
+      `        <div class="cards p-cards">${kinds.map(([t, d], i) => `<article class="card reveal"><div class="card-ico ic-${(i % 4) + 1}">${['◆', '✦', '▲', '●'][i]}</div><h3>${t}</h3><p>${d}</p></article>`).join('')}</div>`) +
+    sec('', 'Как заказать', `5 шагов от заявки до <span class="grad-text">запуска</span>`,
+      `        <ol class="steps p-steps">${order.map(([t, d], i) => `<li class="step reveal"><span class="step-n">0${i + 1}</span><h3>${t}</h3><p>${d}</p></li>`).join('')}</ol>`) +
+    sec('', 'В каждом сайте', `Что <span class="grad-text">входит</span>`, includesBlock(SERVICES[0])) +
+    sec('', 'Города', `Разработка сайтов <span class="grad-text">в вашем городе</span>`,
+      `        <p class="p-text reveal">Заказать сайт можно из любого города Казахстана. Выберите свой — расскажу о местной конкуренции и картах.</p>\n        ${chips(CITIES.map((c) => [c.name, `/uslugi/sozdanie-saytov/${c.slug}/`]))}`) +
+    sec('', 'Вопросы', `Частые <span class="grad-text">вопросы</span>`, faqBlock(faq)) +
+    sec('', 'Вместе с сайтом', `Чтобы сайт приводил <span class="grad-text">клиентов</span>`, `        ${chips(SERVICES.slice(1).map((x) => [x.name, `/uslugi/${x.slug}/`]))}`);
+  write(url, layout({
+    url, title: 'Заказать сайт под ключ в Казахстане — разработка сайтов | GO-WORK.KZ', desc,
+    h1: 'Заказать сайт <span class="grad-text">под ключ</span>', kicker: 'Разработка сайтов · Казахстан',
+    lead: 'Сайт, который приводит заявки: структура под поисковые запросы, понятные тексты, кнопки WhatsApp и звонка, аналитика и ИИ-ассистент по желанию. Расчёт стоимости за 24 часа.',
+    crumbs: [['Главная', '/'], ['Заказать сайт', url]],
+    body, jsonld: [serviceLd(SERVICES[0], null, url, desc), faqLd(faq)],
+  }), '0.9');
+}
 
 /* ---------- ИИ-ролики ---------- */
 {
