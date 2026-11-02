@@ -100,30 +100,52 @@
       </div>
     </div>
 
-    <!-- ЧЁРНАЯ СЦЕНА -->
-    <section class="stage dark" aria-labelledby="stage-h">
-      <div class="stage-pin">
-        <span class="stage-mark">(01) Результат</span>
-        <h2 class="giant" id="stage-h">Заявки из&nbsp;поиска</h2>
-        <div class="stage-card" aria-hidden="true">
-          <div class="serp">
-            <div class="serp-g"><b>G</b><span>изготовление сайтов астана</span></div>
-            <div class="serp-row"><i>1</i><span></span></div>
-            <div class="serp-row"><i>2</i><span></span></div>
-            <div class="serp-row me"><i>3</i><span>ne-ti.kz</span><em>ТОП-3</em></div>
-            <div class="serp-row"><i>4</i><span></span></div>
-          </div>
+    <!-- КАК КЛИЕНТ НАХОДИТ ВАС: живая демонстрация «поиск → сайт → WhatsApp → заявка» -->
+    <section class="section finder-sec" id="finder-sec" aria-labelledby="finder-h">
+      <div class="container finder-grid">
+        <div class="finder-copy">
+          <span class="mark">(01) Как вас находят</span>
+          <h2 class="reveal" id="finder-h">Клиент ищет в&nbsp;Google — и&nbsp;находит <em>вас</em></h2>
+          <ol class="fd-steps" id="fdSteps">
+            <li class="on"><b>01</b><span>Человек вводит запрос в Google</span></li>
+            <li><b>02</b><span>Видит ваш сайт среди первых результатов</span></li>
+            <li><b>03</b><span>Открывает сайт и сразу пишет в WhatsApp</span></li>
+            <li><b>04</b><span>Вам приходит готовая заявка</span></li>
+          </ol>
+          <div class="fd-tabs" id="fdTabs" role="tablist" aria-label="Примеры запросов"></div>
+          <p class="fd-note">Пример пути клиента на сайтах из портфолио. ne-ti.kz — реальный ТОП-3 Google через месяц после запуска.</p>
         </div>
-        <div class="stats-wrap reveal">
-          <div class="stat s1"><b><span class="count" data-to="24">24</span>/7</b><span>ИИ отвечает клиентам, даже ночью</span></div>
-          <div class="stat s2"><b>&lt;<span class="count" data-to="2">2</span>с</b><span>загрузка сайта на телефоне</span></div>
-          <div class="stat s3"><b><span class="count" data-to="14">14</span></b><span>дней от брифа до запуска</span></div>
-          <div class="stat s4"><b><span class="count" data-to="0">0</span>₸</b><span>стоит аудит вашего сайта</span></div>
+        <div class="finder-demo" id="finder" aria-hidden="true">
+          <div class="fd-browser">
+            <div class="fd-bar"><i></i><i></i><i></i><div class="fd-url"><svg viewBox="0 0 24 24"><path d="M7 10V7a5 5 0 0 1 10 0v3h1v11H6V10h1Zm2 0h6V7a3 3 0 0 0-6 0v3Z"/></svg><span id="fdUrl">google.kz</span></div></div>
+            <div class="fd-view">
+              <div class="fd-pane fd-home on" id="fdHome">
+                <div class="fd-logo"><b>G</b><b>o</b><b>o</b><b>g</b><b>l</b><b>e</b></div>
+                <div class="fd-search"><svg viewBox="0 0 24 24"><path d="M10.5 3a7.5 7.5 0 0 1 5.9 12.1l4.8 4.8-1.4 1.4-4.8-4.8A7.5 7.5 0 1 1 10.5 3Zm0 2a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11Z"/></svg><span id="fdQ"></span><i class="fd-caret"></i></div>
+              </div>
+              <div class="fd-pane fd-serp" id="fdSerp">
+                <div class="fd-serp-head"><span class="fd-mini"><b>G</b><b>o</b><b>o</b><b>g</b><b>l</b><b>e</b></span><span class="fd-serp-q" id="fdSerpQ"></span></div>
+                <div class="fd-results" id="fdResults"></div>
+              </div>
+              <div class="fd-pane fd-site" id="fdSite"></div>
+              <div class="fd-cursor" id="fdCursor"><svg viewBox="0 0 24 24"><path d="M4 2l16 9.5-7 1.6L9.6 20 4 2Z"/></svg></div>
+            </div>
+          </div>
+          <div class="fd-phone" id="fdPhone">
+            <div class="fd-wa-head"><span class="fd-wa-ava" id="fdAva">N</span><div><b id="fdBiz">ne-ti.kz</b><small>онлайн</small></div></div>
+            <div class="fd-chat"><div class="fd-typing" id="fdTyping"><i></i><i></i><i></i></div><div class="fd-msg" id="fdMsg"></div></div>
+          </div>
+          <div class="fd-toast" id="fdToast"><span class="fd-check"><svg viewBox="0 0 24 24"><path d="M9.5 16.2 5.3 12l-1.4 1.4 5.6 5.6L20.1 8.4 18.7 7 9.5 16.2Z"/></svg></span><div><b>Новая заявка из Google</b><small id="fdToastSite">ne-ti.kz</small></div></div>
         </div>
       </div>
-      <div class="stage-copy">
-        <p class="reveal">Сайт ne-ti.kz я собрал за неделю, а через месяц он вышел в ТОП-3 Google. Так работаю с каждым проектом: быстро, по цифрам и с отчётами, которые понятны без маркетолога.</p>
-        <a class="btn btn-white btn-lg js-wa reveal" href="https://wa.me/77783244440?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5%21%20%D0%A5%D0%BE%D1%87%D1%83%20%D0%B1%D0%B5%D1%81%D0%BF%D0%BB%D0%B0%D1%82%D0%BD%D1%8B%D0%B9%20%D0%B0%D1%83%D0%B4%D0%B8%D1%82%20%D1%81%D0%B0%D0%B9%D1%82%D0%B0" target="_blank" rel="noopener"><svg class="wa-ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-wa"/></svg><span>Хочу так же</span></a>
+      <div class="container">
+        <div class="fd-stats reveal">
+          <div><b><span class="count" data-to="24">24</span>/7</b><span>ИИ отвечает клиентам, даже ночью</span></div>
+          <div><b>&lt;<span class="count" data-to="2">2</span> с</b><span>загрузка сайта на телефоне</span></div>
+          <div><b><span class="count" data-to="14">14</span></b><span>дней от брифа до запуска</span></div>
+          <div><b><span class="count" data-to="0">0</span> ₸</b><span>стоит аудит вашего сайта</span></div>
+        </div>
+        <div class="fd-cta reveal"><a class="btn btn-ink btn-lg js-wa" href="https://wa.me/77783244440?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5%21%20%D0%A5%D0%BE%D1%87%D1%83%20%D0%B1%D0%B5%D1%81%D0%BF%D0%BB%D0%B0%D1%82%D0%BD%D1%8B%D0%B9%20%D0%B0%D1%83%D0%B4%D0%B8%D1%82%20%D1%81%D0%B0%D0%B9%D1%82%D0%B0" target="_blank" rel="noopener"><svg class="wa-ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-wa"/></svg><span>Хочу так же</span></a></div>
       </div>
     </section>
 
@@ -455,6 +477,7 @@
   <script src="/assets/js/main.js" defer></script>
   <script src="/assets/js/motion.js" defer></script>
   <script src="/assets/js/fx3d.js" defer></script>
+  <script src="/assets/js/finder.js" defer></script>
   <script type="module" src="/assets/js/orb.js"></script>
   <script src="/assets/js/analytics.js" defer></script>
 </body>
