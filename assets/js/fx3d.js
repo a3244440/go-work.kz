@@ -39,8 +39,8 @@
     /* ---------- 3D-куб услуг: крутится сам, при прокрутке и поворачивается к услуге под курсором ---------- */
     var cube = document.getElementById('cube');
     if (cube && getComputedStyle(cube.parentNode).display !== 'none') {
-      // Грань для каждой строки списка: Сайты, ИИ, SEO, SEO Яндекс, Google Ads, Директ, Таргет, ИИ-ролики
-      var faces = [[0, 0], [0, -90], [0, -180], [0, 90], [-90, 0], [-90, 0], [-90, 0], [90, 0]];
+      // Грань для каждой строки списка: Сайты, ИИ, SEO, GEO, SEO Яндекс, Google Ads, Директ, Таргет, ИИ-ролики
+      var faces = [[0, 0], [0, -90], [0, -180], [0, -90], [0, 90], [-90, 0], [-90, 0], [-90, 0], [90, 0]];
       var st = { x: -18, y: 30, tx: -18, ty: 30, hold: false };
       var lastScroll = scrollY;
       document.querySelectorAll('.svc-list li').forEach(function (li, i) {
