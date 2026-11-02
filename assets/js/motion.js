@@ -6,11 +6,25 @@
     gsap.registerPlugin(ScrollTrigger);
     var has = function (s) { return document.querySelector(s); };
 
-    // Веер карточек на первом экране: раскрывается при загрузке и разъезжается при прокрутке
+    // Веер карточек на первом экране: раскрывается при загрузке и разъезжается при прокрутке.
+    // Двигаем только transform (xPercent/yPercent/rotation) — это делает видеокарта, без пересчёта стилей.
     if (has('.fan')) {
       var cards = gsap.utils.toArray('.fan .card');
-      gsap.from(cards, { '--x': '0%', '--y': '40%', '--r0': '0deg', duration: 1.3, ease: 'expo.out', stagger: .07, delay: .2 });
-      gsap.to(cards, { '--s': 1.45, ease: 'none', scrollTrigger: { trigger: '.fan', start: 'top 70%', end: 'bottom top', scrub: true } });
+      var base = cards.map(function (c) {
+        var cs = getComputedStyle(c);
+        return { x: parseFloat(cs.getPropertyValue('--x')) || 0, y: parseFloat(cs.getPropertyValue('--y')) || 0, r: parseFloat(cs.getPropertyValue('--r0')) || 0 };
+      });
+      cards.forEach(function (c, i) { gsap.set(c, { x: 0, y: 0, xPercent: 0, yPercent: 40, rotation: 0, force3D: true }); });
+      gsap.to(cards, {
+        xPercent: function (i) { return base[i].x; }, yPercent: function (i) { return base[i].y; }, rotation: function (i) { return base[i].r; },
+        duration: 1.3, ease: 'expo.out', stagger: .07, delay: .2,
+        onComplete: function () {
+          gsap.to(cards, {
+            xPercent: function (i) { return base[i].x * 1.45; }, rotation: function (i) { return base[i].r * 1.45; }, ease: 'none',
+            scrollTrigger: { trigger: '.fan', start: 'top 70%', end: 'bottom top', scrub: .5 }
+          });
+        }
+      });
     }
 
     var mm = gsap.matchMedia();

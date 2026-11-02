@@ -128,7 +128,7 @@ ul, ol { margin: 0; padding: 0; }
 .hero-facts { list-style: none; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 28px; margin-top: 28px; color: var(--ink-2); font-size: .95rem; }
 .hero-facts b { color: var(--ink); font-weight: 600; }
 .fan { position: relative; height: clamp(280px, 34vw, 470px); margin-top: clamp(44px, 6vw, 76px); }
-.fan .card { --w: clamp(160px, 19vw, 280px); position: absolute; left: 50%; top: 10%; width: var(--w); aspect-ratio: 3 / 4; max-width: 44vw; margin-left: calc(var(--w) / -2); border-radius: 16px; overflow: hidden; background: #ddd; box-shadow: 0 30px 60px -30px rgba(0, 0, 0, .45); --s: 1; transform: translate(calc(var(--x) * var(--s)), var(--y)) rotate(calc(var(--r0) * var(--s))); will-change: transform; display: flex; flex-direction: column; justify-content: space-between; padding: 0; text-align: left; }
+.fan .card { --w: clamp(160px, 19vw, 280px); position: absolute; left: 50%; top: 10%; width: var(--w); aspect-ratio: 3 / 4; max-width: 44vw; margin-left: calc(var(--w) / -2); border-radius: 16px; overflow: hidden; background: #ddd; box-shadow: 0 30px 60px -30px rgba(0, 0, 0, .45); --s: 1; transform: translate(calc(var(--x) * var(--s)), var(--y)) rotate(calc(var(--r0) * var(--s))); will-change: transform; backface-visibility: hidden; contain: layout paint; display: flex; flex-direction: column; justify-content: space-between; padding: 0; text-align: left; }
 .fan .card img { width: 100%; height: 100%; object-fit: cover; object-position: left top; }
 .fan .card:nth-child(1) { --x: -210%; --y: 18%; --r0: -14deg; }
 .fan .card:nth-child(2) { --x: -108%; --y: 4%; --r0: -7deg; }
