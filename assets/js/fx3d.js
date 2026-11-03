@@ -10,6 +10,16 @@
     if (reduce || !window.gsap || !window.ScrollTrigger) return;
     gsap.registerPlugin(ScrollTrigger);
 
+    /* ---------- Первый экран с роботом: GO и WORK выезжают при загрузке и разъезжаются при прокрутке ---------- */
+    if (document.querySelector('.robo-word')) {
+      gsap.from('.rw-l', { xPercent: -60, opacity: 0, duration: 1.4, ease: 'expo.out', delay: .15 });
+      gsap.from('.rw-r', { xPercent: 60, opacity: 0, duration: 1.4, ease: 'expo.out', delay: .25 });
+      gsap.from('.robo-bottom > *', { y: 40, opacity: 0, duration: 1.1, ease: 'expo.out', stagger: .12, delay: .5 });
+      gsap.from('.robo-cases li', { scale: 0, rotation: -40, duration: 1, ease: 'back.out(1.8)', stagger: .1, delay: .9 });
+      gsap.to('.rw-l', { xPercent: -45, ease: 'none', scrollTrigger: { trigger: '.hero-robo', start: 'top top', end: 'bottom top', scrub: .4 } });
+      gsap.to('.rw-r', { xPercent: 45, ease: 'none', scrollTrigger: { trigger: '.hero-robo', start: 'top top', end: 'bottom top', scrub: .4 } });
+    }
+
     /* ---------- Заголовки: слова влетают с разных ракурсов ---------- */
     var angles = [
       { rotationX: -95, yPercent: 40, transformOrigin: '50% 100% -30px' },          // переворот снизу

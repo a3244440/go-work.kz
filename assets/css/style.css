@@ -420,19 +420,6 @@ h3 { letter-spacing: -.01em; font-weight: 500; }
 h1 em, h2 em, h1 u, h2 u, .serif { font-family: var(--serif); font-style: italic; font-weight: 600; font-size: 1.16em; letter-spacing: -.01em; line-height: .8; text-decoration: none; color: var(--accent-ink); padding-right: .04em; }
 .dark h2 em, .final-box h2 em { color: var(--lime); }
 
-/* ================= v3: 3D на первом экране ================= */
-.hero { position: relative; isolation: isolate; }
-.hero > .container, .hero .fan { position: relative; z-index: 1; }
-.orb { position: absolute; inset: 0 0 auto 0; height: 100%; width: 100%; z-index: 0; pointer-events: none; opacity: 0; transition: opacity 1.2s var(--ease); }
-.orb.on { opacity: 1; }
-/* Статичная замена 3D на телефонах и без WebGL: два «стеклянных» шара */
-.orb-lite { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
-.orb-lite i { position: absolute; border-radius: 50%; background: radial-gradient(circle at 32% 28%, #fff 0 6%, #ffb08a 18%, var(--accent) 46%, #7b5cff 82%, #3a1fb0 100%); box-shadow: inset -14px -18px 40px rgba(40, 10, 120, .35), 0 30px 60px -30px rgba(80, 30, 160, .45); animation: float 7s ease-in-out infinite; }
-.orb-lite i:nth-child(1) { width: 84px; height: 84px; right: -34px; top: 74px; }
-.orb-lite i:nth-child(2) { width: 56px; height: 56px; left: -26px; top: 600px; animation-delay: -3s; background: radial-gradient(circle at 32% 28%, #fff 0 8%, #eaff9a 26%, var(--lime) 55%, #7fb800 100%); }
-.has-orb .orb-lite { display: none; }
-@keyframes float { 50% { transform: translateY(-14px) rotate(8deg); } }
-
 /* ================= v3: заголовки с разных ракурсов ================= */
 .split { perspective: 900px; }
 .split .w { display: inline-block; transform-style: preserve-3d; backface-visibility: hidden; will-change: transform; }
@@ -474,7 +461,6 @@ h1 em, h2 em, h1 u, h2 u, .serif { font-family: var(--serif); font-style: italic
 .footer { perspective: 1200px; }
 .wordmark { transform-style: preserve-3d; will-change: transform; text-shadow: 1px 1px 0 #d9d9d9, 2px 2px 0 #d2d2d2, 3px 3px 0 #cbcbcb, 4px 4px 0 #c4c4c4, 5px 5px 0 #bdbdbd, 6px 6px 0 #b6b6b6, 7px 7px 0 #afafaf, 12px 16px 24px rgba(0, 0, 0, .18); }
 .wordmark span { text-shadow: 1px 1px 0 #e64e14, 2px 2px 0 #d94811, 3px 3px 0 #cc420f, 4px 4px 0 #bf3c0d, 5px 5px 0 #b2360b, 6px 6px 0 #a5300a, 7px 7px 0 #982a08, 12px 16px 24px rgba(0, 0, 0, .18); }
-@media (prefers-reduced-motion: reduce) { .orb { display: none; } .orb-lite i { animation: none; } }
 /* transform карточек портфолио теперь ведёт JS (наклон за курсором) — CSS-переход ему мешал бы */
 .js .works .work { transition: none; }
 .js .works .work:hover { transform: none; }
@@ -606,3 +592,67 @@ h1 em, h2 em, h1 u, h2 u, .serif { font-family: var(--serif); font-style: italic
 .rc .c-msg { background: rgba(255, 255, 255, .1); border-radius: 12px 12px 12px 4px; padding: 10px 12px; }
 .ring-floor { position: absolute; left: 15%; right: 15%; bottom: 4%; height: 40px; border-radius: 50%; background: radial-gradient(closest-side, rgba(0, 0, 0, .18), transparent); }
 @media (max-width: 700px) { .carousel3d { --cw: 46vw; height: calc(var(--cw) * 1.9); } }
+
+/* ================= Первый экран с роботом-ассистентом (по мотивам сайта Deadpool) ================= */
+.hero.hero-robo { position: relative; isolation: isolate; min-height: max(100svh, 700px); padding: 0; text-align: left; background: radial-gradient(70% 55% at 50% 42%, #2a2a31 0%, #111114 55%, #09090b 100%); color: #fff; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; }
+.hero-robo::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 42%; z-index: 1; pointer-events: none; background: linear-gradient(transparent, rgba(9, 9, 11, .92)); }
+.robo-word { position: absolute; left: 0; right: 0; top: clamp(70px, 9vh, 110px); z-index: 0; display: flex; justify-content: center; gap: .12em; font: 700 clamp(4rem, 1rem + 14.5vw, 17rem)/.82 var(--font-d); letter-spacing: -.06em; color: #f4f4f4; white-space: nowrap; pointer-events: none; user-select: none; }
+.robo-word span { display: inline-block; will-change: transform; }
+.robo-word .rw-r { color: transparent; -webkit-text-stroke: 2px rgba(255, 255, 255, .85); }
+.robot-cv, .robot-fallback { position: absolute; left: 50%; top: 0; z-index: 2; transform: translateX(-50%); }
+.robot-cv { width: 100%; height: 100%; left: 0; transform: none; opacity: 0; transition: opacity 1s var(--ease); }
+.robot-cv.on { opacity: 1; }
+.robot-fallback { top: 16%; width: min(42vw, 340px); height: auto; filter: drop-shadow(0 40px 50px rgba(0, 0, 0, .6)); }
+.has-robot .robot-fallback { display: none; }
+.robo-bubble { position: absolute; z-index: 4; left: calc(50% + clamp(120px, 12vw, 210px)); top: clamp(150px, 22vh, 230px); width: min(360px, 34vw); padding: 16px 18px 14px; border-radius: 22px 22px 22px 6px; background: rgba(255, 255, 255, .96); color: var(--ink); box-shadow: 0 30px 60px -24px rgba(0, 0, 0, .7); transform-origin: 0 100%; animation: bubbleIn .8s 1.2s cubic-bezier(.2, .9, .3, 1.3) both; }
+@keyframes bubbleIn { from { opacity: 0; transform: scale(.6) translateY(20px); } }
+.rb-name { display: inline-flex; align-items: center; gap: 7px; font-size: .75rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
+.rb-name i { width: 7px; height: 7px; border-radius: 50%; background: var(--wa); box-shadow: 0 0 0 3px rgba(37, 211, 102, .25); }
+.robo-bubble p { margin-top: 8px; min-height: 4.2em; font-size: clamp(.95rem, .85rem + .3vw, 1.08rem); line-height: 1.4; font-weight: 600; }
+.robo-bubble p b { color: var(--accent-ink); }
+.robo-bubble p .cur { display: inline-block; width: 2px; height: 1em; margin-left: 2px; vertical-align: -2px; background: var(--ink); animation: blink 1s steps(1) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+.rb-dots { display: flex; gap: 6px; margin-top: 10px; }
+.rb-dots button { width: 22px; height: 6px; padding: 0; border: 0; border-radius: 99px; background: #ddd; cursor: pointer; transition: background .3s, width .3s; }
+.rb-dots button.on { width: 34px; background: var(--ink); }
+.robo-bottom { position: relative; z-index: 3; display: flex; align-items: flex-end; justify-content: space-between; gap: 30px; padding-bottom: clamp(70px, 9vh, 100px); }
+.robo-left { max-width: 430px; }
+.hero-robo .pre { display: inline-flex; align-items: center; gap: 10px; font-size: .9rem; color: rgba(255, 255, 255, .75); margin-bottom: 14px; }
+.hero-robo .pre::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--wa); box-shadow: 0 0 0 4px rgba(37, 211, 102, .2); }
+.hero-robo .hero-title { max-width: 16ch; margin: 0; color: #fff; font-size: clamp(1.7rem, .9rem + 1.9vw, 2.9rem); }
+.hero-robo .hero-title em { color: var(--lime); }
+.hero-robo .hero-cta { justify-content: flex-start; margin-top: 24px; }
+.btn-glass { background: rgba(255, 255, 255, .12); color: #fff; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .22); }
+.btn-glass:hover { background: rgba(255, 255, 255, .2); }
+.robo-cases { list-style: none; display: flex; gap: 12px; }
+.robo-cases li { width: clamp(108px, 9vw, 132px); aspect-ratio: 1; border-radius: 50%; display: grid; place-content: center; justify-items: center; text-align: center; background: rgba(255, 255, 255, .08); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .18); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+.robo-cases b { font: 600 clamp(1.8rem, 1.2rem + 1.4vw, 2.6rem)/1 var(--font-d); letter-spacing: -.04em; }
+.robo-cases span { font-size: .75rem; opacity: .75; }
+.robo-cases em { font-style: normal; font-size: .7rem; line-height: 1.25; margin-top: 6px; opacity: .9; }
+.robo-cases li.lime { background: var(--lime); color: var(--ink); box-shadow: none; }
+.robo-cases li.accent { background: var(--accent); box-shadow: none; }
+/* Шапка поверх тёмного первого экрана — белая */
+.home .nav:not(.scrolled) { color: #fff; }
+.home .nav:not(.scrolled) .logo { color: #fff; }
+.home .nav:not(.scrolled) .logo-mark { background: #fff; color: var(--ink); }
+.home .nav:not(.scrolled) .btn-ink { background: #fff; color: var(--ink); }
+.home .nav:not(.scrolled) .burger { background: #fff; }
+.home .nav:not(.scrolled) .burger span { background: var(--ink); }
+@media (max-width: 1080px) { .home .nav-links.open { color: var(--ink); } }
+/* Светлая панель наезжает на тёмный экран */
+.sheet { position: relative; z-index: 3; margin-top: -32px; padding-top: clamp(36px, 4vw, 56px); background: var(--bg); border-radius: 32px 32px 0 0; }
+.sheet .hero-facts { margin-top: 0; justify-content: center; }
+@media (max-width: 900px) {
+  .hero.hero-robo { min-height: 0; justify-content: flex-start; padding-top: 70px; }
+  .hero-robo::after { height: 30%; }
+  .robo-word { position: relative; top: auto; font-size: 14.5vw; margin-top: 14px; }
+  .robot-cv { position: relative; height: 80vw; min-height: 300px; margin-top: -12vw; }
+  .robot-fallback { position: relative; left: auto; top: auto; transform: none; margin: -10vw auto 0; width: 50vw; display: block; }
+  .robo-bubble { position: relative; left: auto; top: auto; width: auto; margin: -6px 20px 0; animation-delay: .6s; }
+  .robo-bottom { flex-direction: column; align-items: stretch; padding-top: 26px; padding-bottom: 60px; }
+  .robo-cases { justify-content: space-between; }
+  .robo-cases li { width: 30%; }
+}
+@media (max-width: 520px) { .hero-robo .hero-cta .btn { width: 100%; } }
+@media (prefers-reduced-motion: reduce) { .robo-bubble { animation: none; } }
+@media (max-width: 900px) { .robot-cv { display: none; } .has-robot .robot-cv { display: block; } }
