@@ -1,0 +1,52 @@
+/* GO-WORK.KZ: блок кейсов, слайды по мотивам рекламы Chrome.
+   Цветная панель разворачивается в 3D, карточки вокруг разлетаются и собираются, фон блока меняет цвет.
+   Переключается сам, по точкам и свайпом; карточки слегка двигаются за курсором. */
+(function () {
+  var sec = document.getElementById('cases'), stage = document.getElementById('csStage');
+  if (!sec || !stage) return;
+  var slides = stage.querySelectorAll('.cs-slide'), dots = document.querySelectorAll('#csDots button');
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var cur = 0, timer = 0, visible = false, hover = false;
+
+  // Сцена нарисована в фиксированном размере и масштабируется под ширину блока
+  function fit() {
+    var cs = getComputedStyle(stage), W = parseFloat(cs.getPropertyValue('--W')) || 1000;
+    stage.style.setProperty('--s', Math.min(1, stage.clientWidth / W).toFixed(4));
+  }
+  fit(); addEventListener('resize', fit);
+
+  function go(n) {
+    if (n === cur) return;
+    var old = slides[cur], next = slides[n];
+    old.classList.remove('in'); old.classList.add('out'); old.setAttribute('aria-hidden', 'true');
+    setTimeout(function () { old.classList.remove('out'); }, 1000);
+    next.classList.remove('out');
+    // Новый слайд заходит чуть позже, чтобы старый успел развернуться
+    setTimeout(function () { next.classList.add('in'); }, reduce ? 0 : 260);
+    next.removeAttribute('aria-hidden');
+    dots.forEach(function (d, i) { d.classList.toggle('on', i === n); d.setAttribute('aria-selected', i === n); });
+    sec.style.backgroundColor = next.dataset.bg;
+    cur = n; plan();
+  }
+  function plan() { clearTimeout(timer); if (visible && !hover && !reduce) timer = setTimeout(function () { go((cur + 1) % slides.length); }, 4800); }
+
+  dots.forEach(function (d, i) { d.addEventListener('click', function () { go(i); }); });
+  sec.style.backgroundColor = slides[0].dataset.bg;
+  stage.addEventListener('pointerenter', function () { hover = true; clearTimeout(timer); });
+  stage.addEventListener('pointerleave', function () { hover = false; plan(); stage.style.setProperty('--mx', 0); stage.style.setProperty('--my', 0); });
+  stage.addEventListener('pointermove', function (e) {
+    if (e.pointerType !== 'mouse') return;
+    var r = stage.getBoundingClientRect();
+    stage.style.setProperty('--mx', (((e.clientX - r.left) / r.width - .5) * 2).toFixed(3));
+    stage.style.setProperty('--my', (((e.clientY - r.top) / r.height - .5) * 2).toFixed(3));
+  });
+  // Свайп на телефоне
+  var sx = null;
+  stage.addEventListener('touchstart', function (e) { sx = e.touches[0].clientX; }, { passive: true });
+  stage.addEventListener('touchend', function (e) {
+    if (sx === null) return;
+    var dx = e.changedTouches[0].clientX - sx; sx = null;
+    if (Math.abs(dx) > 40) go((cur + (dx < 0 ? 1 : slides.length - 1)) % slides.length);
+  });
+  new IntersectionObserver(function (e) { visible = e[0].isIntersecting; plan(); }, { threshold: .3 }).observe(stage);
+})();

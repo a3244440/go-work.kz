@@ -11,9 +11,9 @@ const setEmotion = (e, ms) => { bus.emotion = e; bus.until = ms ? performance.no
 /* ---------- Облачко на первом экране ---------- */
 const LINES = [
   'Сәлем! Я робот-ассистент <b>Алихана</b>. Помогаю ему в работе и встречаю гостей сайта.',
-  'Алихан — маркетолог и разработчик с большим опытом: делает <b>сайты с ИИ</b>, продвигает их в Google и Яндексе и настраивает рекламу.',
-  'Наши результаты: <b>BuhTask</b> — ТОП-3 Google за 2 месяца, <b>ne-ti.kz</b> — ТОП-3 за 1 месяц.',
-  'Хотите так же? Нажмите на меня — отвечу на вопросы. Или начнём с <b>бесплатного аудита</b>.',
+  'Алихан, маркетолог и разработчик с большим опытом: делает <b>сайты с ИИ</b>, продвигает их в Google и Яндексе и настраивает рекламу.',
+  'Наши результаты: <b>BuhTask</b>: ТОП-3 Google за 2 месяца, <b>ne-ti.kz</b>: ТОП-3 за 1 месяц.',
+  'Хотите так же? Нажмите на меня, отвечу на вопросы. Или начнём с <b>бесплатного аудита</b>.',
 ];
 const LINE_EMO = ['wave', 'happy', 'love', 'wink'];
 (function bubble() {
@@ -43,17 +43,17 @@ const LINE_EMO = ['wave', 'happy', 'love', 'wink'];
 /* ---------- Окошко с готовыми вопросами ---------- */
 const ANSWERS = {
   site: { q: 'Нужен сайт', emo: 'happy', wa: 'Здравствуйте! Хочу заказать сайт',
-    a: 'Делаю сайты под ключ: <b>лендинг — от 7 дней</b>, сайт компании — 2–3 недели. Быстрые, с SEO-структурой с первого дня и заявками прямо в WhatsApp. <a class="p-link" href="/uslugi/sozdanie-saytov/">Подробнее о сайтах</a>' },
+    a: 'Делаю сайты под ключ: <b>лендинг: от 7 дней</b>, сайт компании: 2–3 недели. Быстрые, с SEO-структурой с первого дня и заявками прямо в WhatsApp. <a class="p-link" href="/uslugi/sozdanie-saytov/">Подробнее о сайтах</a>' },
   ai: { q: 'Платформа с ИИ', emo: 'wink', wa: 'Здравствуйте! Хочу сайт или платформу с ИИ-ассистентом',
     a: 'Сделаю сайт или платформу с <b>ИИ-ассистентом</b>: он отвечает клиентам 24/7 на русском и казахском, считает стоимость и передаёт готовые заявки. Как я, только для вашего бизнеса. <a class="p-link" href="/uslugi/sayty-s-ii/">Подробнее</a>' },
   video: { q: 'ИИ-ролики', emo: 'laugh', wa: 'Здравствуйте! Хочу ИИ-ролики для бизнеса',
-    a: 'ИИ-ролики без съёмок: сценарий, озвучка, VFX-звуки и монтаж. <b>10 роликов — 300 000 ₸</b>, 20 роликов — 500 000 ₸, Love Story — 100 000 ₸. <a class="p-link" href="/ai-roliki/">Смотреть пакеты</a>' },
+    a: 'ИИ-ролики без съёмок: сценарий, озвучка, VFX-звуки и монтаж. <b>10 роликов: 300 000 ₸</b>, 20 роликов: 500 000 ₸, Love Story: 100 000 ₸. <a class="p-link" href="/ai-roliki/">Смотреть пакеты</a>' },
   seo: { q: 'SEO и GEO', emo: 'love', wa: 'Здравствуйте! Хочу продвижение сайта (SEO и GEO)',
-    a: 'Продвигаю в <b>Google и Яндексе</b>, а GEO делает так, чтобы вас советовали ChatGPT и Gemini. Результаты: <b>ne-ti.kz — ТОП-3 за 1 месяц</b>, <b>BuhTask — ТОП-3 за 2 месяца</b>. <a class="p-link" href="/uslugi/prodvizhenie-saytov/">SEO</a> · <a class="p-link" href="/uslugi/geo-optimizaciya/">GEO</a>' },
+    a: 'Продвигаю в <b>Google и Яндексе</b>, а GEO делает так, чтобы вас советовали ChatGPT и Gemini. Результаты: <b>ne-ti.kz: ТОП-3 за 1 месяц</b>, <b>BuhTask: ТОП-3 за 2 месяца</b>. <a class="p-link" href="/uslugi/prodvizhenie-saytov/">SEO</a> · <a class="p-link" href="/uslugi/geo-optimizaciya/">GEO</a>' },
   ads: { q: 'Реклама', emo: 'surprised', wa: 'Здравствуйте! Хочу настроить рекламу',
-    a: 'Настрою <b>Google Ads, Яндекс Директ</b> и таргет в Instagram и TikTok. Запуск за 3–5 рабочих дней, заявки — с первых дней, бюджет под контролем. <a class="p-link" href="/uslugi/kontekstnaya-reklama/">Подробнее</a>' },
+    a: 'Настрою <b>Google Ads, Яндекс Директ</b> и таргет в Instagram и TikTok. Запуск за 3–5 рабочих дней, заявки, с первых дней, бюджет под контролем. <a class="p-link" href="/uslugi/kontekstnaya-reklama/">Подробнее</a>' },
   price: { q: 'Сколько стоит?', emo: 'shy', wa: 'Здравствуйте! Хочу бесплатный аудит и расчёт стоимости',
-    a: 'Цена зависит от задачи, поэтому начнём с <b>бесплатного аудита за 24 часа</b>. После него Алихан назовёт точную стоимость — без скрытых платежей.' },
+    a: 'Цена зависит от задачи, поэтому начнём с <b>бесплатного аудита за 24 часа</b>. После него Алихан назовёт точную стоимость, без скрытых платежей.' },
 };
 const panel = document.getElementById('roboPanel'), hit = document.getElementById('roboHit');
 (function chat() {
@@ -66,6 +66,18 @@ const panel = document.getElementById('roboPanel'), hit = document.getElementByI
   };
   const close = () => { panel.hidden = true; hit.setAttribute('aria-expanded', 'false'); bus.panel = false; hit.focus({ preventScroll: true }); };
   hit.addEventListener('click', () => (panel.hidden ? open() : close()));
+  // «Убрать робота»: прощается, машет и улетает; вернётся после обновления страницы
+  document.getElementById('roboBye').addEventListener('click', () => {
+    panel.hidden = true; bus.panel = false; bus.bye = performance.now();
+    setEmotion('wave', 99999);
+    const note = document.createElement('div'); note.className = 'robo-bye-note'; note.setAttribute('role', 'status');
+    note.textContent = 'Пока-пока! Чтобы я вернулся, просто обновите страницу.';
+    const tipEl = document.getElementById('roboTip');
+    if (tipEl) tipEl.textContent = 'Пока-пока!';
+    document.body.appendChild(note);
+    setTimeout(() => { document.documentElement.classList.add('robo-gone'); bus.gone = true; }, document.documentElement.classList.contains('has-robot') ? 3400 : 0);
+    setTimeout(() => note.remove(), 6500);
+  });
   document.getElementById('roboClose').addEventListener('click', close);
   addEventListener('keydown', (e) => { if (e.key === 'Escape' && !panel.hidden) close(); });
   panel.querySelectorAll('[data-q]').forEach((b) => b.addEventListener('click', () => {
@@ -93,17 +105,17 @@ if (ok) {
 
 // Блоки страницы: где робот висит, какую эмоцию показывает и что говорит
 const STOPS = [
-  ['.sheet', 'right', 'happy', 'Это наши работы — покрутите карусель!'],
+  ['.sheet', 'right', 'happy', 'Это наши кейсы. Переключайте точками!'],
   ['#finder-sec', 'left', 'thinking', 'Вот так клиенты находят сайт в Google.'],
-  ['#services', 'right', 'wink', 'Выберите услугу — или нажмите на меня.'],
+  ['#services', 'right', 'wink', 'Выберите услугу, или нажмите на меня.'],
   ['#portfolio', 'left', 'love', 'BuhTask и ne-ti в ТОП-3. Горжусь!'],
-  ['#ai', 'right', 'laugh', 'А это мой коллега — ИИ-чат. Спросите его!'],
-  ['#ai-video', 'left', 'surprised', 'ИИ-ролики без съёмок — настоящая магия!'],
+  ['#ai', 'right', 'laugh', 'А это мой коллега, ИИ-чат. Спросите его!'],
+  ['#ai-video', 'left', 'surprised', 'ИИ-ролики без съёмок, настоящая магия!'],
   ['#process', 'right', 'happy', 'Всего 4 шага до первых заявок.'],
   ['#popular', 'left', 'thinking', 'Ищете свой город? Он здесь.'],
   ['#faq', 'right', 'shy', 'Немного стесняюсь… но на вопросы отвечу!'],
-  ['.final', 'left', 'love', 'Бесплатный аудит — это правда бесплатно.'],
-  ['.footer', 'right', 'wave', 'Пишите в WhatsApp — Алихан ответит!'],
+  ['.final', 'left', 'love', 'Бесплатный аудит это правда бесплатно.'],
+  ['.footer', 'right', 'wave', 'Пишите в WhatsApp, Алихан ответит!'],
 ];
 
 /* Лицо: рисуется на холсте и натягивается на экран шлема. Голубые светящиеся глаза со «строками» как у дисплея */
@@ -170,7 +182,7 @@ function init(THREE) {
   const body = new THREE.Mesh(new THREE.LatheGeometry(prof, 80), white); rig.add(body);
   const neck = new THREE.Mesh(new THREE.TorusGeometry(.34, .05, 16, 64), ringMat); neck.rotation.x = Math.PI / 2; neck.position.y = .52; rig.add(neck);
 
-  // Голова парит над корпусом; экран — срез сферы, на него натянуто лицо
+  // Голова парит над корпусом; экран, срез сферы, на него натянуто лицо
   const head = new THREE.Group(); head.position.y = 1.08; rig.add(head);
   const shell = new THREE.Mesh(new THREE.SphereGeometry(.62, 64, 48), white); shell.scale.set(1.22, .9, 1.02); head.add(shell);
   const faceCanvas = document.createElement('canvas'); faceCanvas.width = 512; faceCanvas.height = 256;
@@ -230,7 +242,12 @@ function init(THREE) {
   const tip = document.getElementById('roboTip');
   let cur = null, tipUntil = 0;
   function target() {
-    if (bus.panel) { // окно вопросов открыто — робот рядом с ним
+    if (bus.bye) {
+      const el = (performance.now() - bus.bye) / 1000;
+      if (el > 1.6) return { x: W + 260, y: -260, h: st.h * .9, mode: 'side' };
+      return { x: st.x, y: st.y - 10, h: st.h, mode: 'side' };
+    }
+    if (bus.panel) { // окно вопросов открыто, робот рядом с ним
       const r = panel.getBoundingClientRect(), left = bus.side === 'left';
       const sz = mobile ? 92 : 130;
       return { x: mobile ? W - 60 : (left ? r.right + 80 : r.left - 80), y: mobile ? r.top - 60 : r.top + 90, h: sz, mode: 'panel' };
@@ -239,20 +256,20 @@ function init(THREE) {
       const r = hero.getBoundingClientRect();
       if (r.bottom > H * .55) {
         bus.inHero = true;
-        if (mobile && space) { const s = space.getBoundingClientRect(); return { x: W / 2, y: s.top + s.height * .52, h: s.height * .9, mode: 'hero' }; }
+        if (mobile && space) { const s = space.getBoundingClientRect(); return { x: W / 2, y: s.top + s.height * .5, h: s.height * .92, mode: 'hero' }; }
         return { x: W / 2, y: r.top + r.height * .45, h: Math.min(r.height * .5, 520), mode: 'hero' };
       }
     }
     bus.inHero = false;
-    let st = stops[0];
-    for (const s of stops) { const r = s.el.getBoundingClientRect(); if (r.top < H * .6) st = s; }
-    if (st !== cur) {
-      cur = st; bus.side = st.side;
-      if (!bus.until || performance.now() > bus.until) setEmotion(st.emo);
-      tip.textContent = st.say; tipUntil = performance.now() + 3400; tip.classList.add('on');
+    let stop = stops[0];
+    for (const s of stops) { const r = s.el.getBoundingClientRect(); if (r.top < H * .6) stop = s; }
+    if (stop !== cur) {
+      cur = stop; bus.side = stop.side;
+      if (!bus.until || performance.now() > bus.until) setEmotion(stop.emo);
+      tip.textContent = stop.say; tipUntil = performance.now() + 3400; tip.classList.add('on');
     }
-    if (mobile) return { x: 54, y: H - 120, h: 104, mode: 'side' };
-    const left = st.side === 'left';
+    if (mobile) return { x: 44, y: H - 96, h: 74, mode: 'side' };
+    const left = stop.side === 'left';
     const gx = Math.max(58, (W - 1320) / 2 - 20);
     return { x: left ? gx : W - gx, y: H * .6, h: Math.min(150, H * .2), mode: 'side' };
   }
@@ -268,7 +285,7 @@ function init(THREE) {
 
   function loop() {
     raf = 0;
-    if (document.hidden) return;
+    if (document.hidden || bus.gone) return;
     const dt = Math.min(clock.getDelta(), .05), t = clock.elapsedTime;
     const tg = target();
     // Пружина: перелёт с небольшим «нахлёстом»
@@ -342,7 +359,7 @@ function init(THREE) {
     hit.style.width = hw + 'px'; hit.style.height = hh + 'px';
     hit.style.transform = `translate(${st.x - hw / 2}px, ${st.y - st.h * .5}px)`;
     if (tip) {
-      const showTip = !bus.inHero && !bus.panel && performance.now() < tipUntil;
+      const showTip = (bus.bye && performance.now() - bus.bye < 1600) || (!bus.inHero && !bus.panel && performance.now() < tipUntil);
       tip.classList.toggle('on', showTip);
       if (showTip) {
         const left = bus.side === 'left' || mobile;
