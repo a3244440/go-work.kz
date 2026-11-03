@@ -746,3 +746,10 @@ html:not(.has-robot) .robo-hit svg { display: block; filter: drop-shadow(0 10px 
 .work-logo { position: absolute; left: 14px; top: 14px; z-index: 2; display: grid; place-items: center; height: 54px; min-width: 54px; max-width: 150px; padding: 6px; border-radius: 14px; background: #fff; box-shadow: 0 10px 24px -12px rgba(0, 0, 0, .45); }
 .work-logo img { max-height: 42px; max-width: 136px; width: auto; height: auto; object-fit: contain; border-radius: 8px; }
 @media (max-width: 700px) { .cs-stage { --H: 830; } .cs-link { top: 760px; font-size: 1.4rem; padding: 18px 28px; } }
+.cs-circle.dark { background: #111; }
+.cs-circle.dark img { max-height: 150px; border-radius: 0; }
+.work-logo.dark { background: #111; }
+/* Кейсы переключаются прокруткой: блок закрепляется, внизу полоска прогресса */
+.cases.pinned .cs-dots { margin-top: 10px; }
+.cs-progress { width: min(320px, 70%); height: 3px; margin: 14px auto 0; border-radius: 3px; background: rgba(0, 0, 0, .08); overflow: hidden; }
+.cs-progress i { display: block; height: 100%; width: 100%; background: var(--ink); transform-origin: 0 50%; transform: scaleX(var(--p, 0)); }

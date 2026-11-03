@@ -46,7 +46,32 @@
   stage.addEventListener('touchend', function (e) {
     if (sx === null) return;
     var dx = e.changedTouches[0].clientX - sx; sx = null;
-    if (Math.abs(dx) > 40) go((cur + (dx < 0 ? 1 : slides.length - 1)) % slides.length);
+    if (Math.abs(dx) > 40 && !scrollMode) go((cur + (dx < 0 ? 1 : slides.length - 1)) % slides.length);
   });
+  /* Переключение прокруткой: блок закрепляется на экране, и каждый отрезок прокрутки показывает следующий кейс.
+     Без GSAP или при «уменьшении движения» остаётся автопрокрутка по таймеру. */
+  var scrollMode = false;
+  function initScroll() {
+    if (reduce || !window.gsap || !window.ScrollTrigger) return false;
+    gsap.registerPlugin(ScrollTrigger);
+    var N = slides.length, prog = document.getElementById('csProg');
+    var st = ScrollTrigger.create({
+      trigger: sec, start: function () { var n = document.getElementById('nav'); return 'top ' + (n ? Math.round(n.offsetHeight * .7) : 0) + 'px'; }, end: function () { return '+=' + Math.round(innerHeight * .75 * (N - 1)); },
+      pin: true, anticipatePin: 1,
+      onUpdate: function (self) {
+        if (prog) prog.style.setProperty('--p', self.progress.toFixed(3));
+        go(Math.min(N - 1, Math.floor(self.progress * N * .9999)));
+      }
+    });
+    // Точки прокручивают страницу к нужному кейсу
+    dots.forEach(function (d, i) {
+      d.onclick = function () { scrollTo({ top: st.start + (st.end - st.start) * (i + .5) / N, behavior: 'smooth' }); };
+    });
+    sec.classList.add('pinned');
+    return true;
+  }
+  var oldPlan = plan;
+  plan = function () { if (!scrollMode) oldPlan(); };
+  scrollMode = initScroll();
   new IntersectionObserver(function (e) { visible = e[0].isIntersecting; plan(); }, { threshold: .3 }).observe(stage);
 })();
