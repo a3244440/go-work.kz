@@ -766,3 +766,7 @@ html:not(.has-robot) .robo-hit svg { display: block; filter: drop-shadow(0 10px 
 .cs-slide.out .cs-card { transform: translate3d(0, -30px, 0) scale(1.08); transition-duration: .4s, .3s; }
 .cs-chip, .cs-serp, .cs-stat, .cs-ui, .cs-shot { box-shadow: 0 14px 26px -16px rgba(0, 0, 0, .35); }
 .cs-slide:not(.in) .cs-card > * { animation-play-state: paused; }
+.cs-ui.zk { background: #1b1b1b; color: #f3efe8; width: 250px; }
+.cs-ui.zk b { letter-spacing: .3em; font-size: .9rem; }
+.cs-ui.zk em { font-style: normal; font-size: 1.15rem; line-height: 1.25; }
+.cs-ui.zk span { background: #f3efe8; color: #1b1b1b; }
