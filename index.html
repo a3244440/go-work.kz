@@ -60,8 +60,8 @@
     <!-- ПЕРВЫЙ ЭКРАН: 3D-робот — ИИ-ассистент Алихана — встречает гостя перед огромным GO-WORK -->
     <section class="hero hero-robo" id="hero">
       <div class="robo-word" aria-hidden="true"><span class="rw-l">GO</span><span class="rw-r">WORK</span></div>
-      <svg class="robot-fallback" viewBox="0 0 200 260" aria-hidden="true"><defs><radialGradient id="rbw" cx="35%" cy="30%"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#cfd2da"/></radialGradient></defs><ellipse cx="100" cy="250" rx="52" ry="8" fill="#d4ff3a" opacity=".35"/><rect x="58" y="128" width="84" height="104" rx="40" fill="url(#rbw)"/><circle cx="100" cy="170" r="12" fill="#ff5a1f"/><rect x="34" y="138" width="22" height="64" rx="11" fill="url(#rbw)" transform="rotate(14 45 140)"/><rect x="144" y="96" width="22" height="64" rx="11" fill="url(#rbw)" transform="rotate(-150 155 140)"/><rect x="40" y="40" width="120" height="96" rx="44" fill="url(#rbw)"/><rect x="54" y="58" width="92" height="58" rx="28" fill="#111"/><rect x="74" y="76" width="14" height="22" rx="7" fill="#d4ff3a"/><rect x="112" y="76" width="14" height="22" rx="7" fill="#d4ff3a"/><line x1="100" y1="40" x2="100" y2="18" stroke="#cfd2da" stroke-width="5"/><circle cx="100" cy="14" r="8" fill="#ff5a1f"/></svg>
-      <canvas class="robot-cv" id="robot" aria-hidden="true"></canvas>
+      <svg class="robot-fallback" viewBox="0 0 200 280" aria-hidden="true"><defs><radialGradient id="rbw" cx="35%" cy="28%"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#c9ced8"/></radialGradient></defs><ellipse cx="100" cy="268" rx="40" ry="7" fill="#47c8ff" opacity=".25"/><path d="M52 132c0-14 22-20 48-20s48 6 48 20c0 50-20 112-48 118-28-6-48-68-48-118Z" fill="url(#rbw)"/><ellipse cx="40" cy="170" rx="13" ry="40" fill="url(#rbw)" transform="rotate(12 40 170)"/><ellipse cx="160" cy="170" rx="13" ry="40" fill="url(#rbw)" transform="rotate(-12 160 170)"/><ellipse cx="100" cy="62" rx="62" ry="48" fill="url(#rbw)"/><ellipse cx="102" cy="68" rx="46" ry="30" fill="#07080c"/><ellipse cx="84" cy="68" rx="11" ry="8" fill="#47c8ff"/><ellipse cx="120" cy="68" rx="11" ry="8" fill="#47c8ff"/></svg>
+      <div class="robot-space" aria-hidden="true"></div>
       <div class="robo-bubble" id="roboBubble">
         <span class="rb-name"><i></i>ИИ-ассистент Алихана</span>
         <p id="roboText">Сәлем! Я робот-ассистент Алихана.</p>
@@ -494,6 +494,24 @@
       <small>© <span id="year"></span> go-work.kz</small>
     </div>
   </footer>
+
+  <!-- РОБОТ-ПОМОЩНИК: летает по всем блокам, оставляет шлейф, по нажатию отвечает на готовые вопросы -->
+  <canvas class="companion" id="companion" aria-hidden="true"></canvas>
+  <button class="robo-hit" id="roboHit" type="button" aria-label="Открыть помощника: задать вопрос роботу" aria-haspopup="dialog" aria-controls="roboPanel"><svg viewBox="0 0 200 280" aria-hidden="true"><use href="#robo-mini"/></svg></button>
+  <div class="robo-tip" id="roboTip" aria-hidden="true"></div>
+  <div class="robo-panel" id="roboPanel" role="dialog" aria-modal="false" aria-labelledby="roboPanelTitle" hidden>
+    <div class="rp-head"><span class="rp-ava" aria-hidden="true"><i></i><i></i></span><div><b id="roboPanelTitle">Робот-ассистент Алихана</b><small>Отвечу за секунду · 24/7</small></div><button class="rp-close" id="roboClose" type="button" aria-label="Закрыть">×</button></div>
+    <div class="rp-body" id="roboBody" aria-live="polite"><div class="rp-msg bot">Сәлем! Что вам нужно? Выберите вопрос — расскажу, как Алихан поможет.</div></div>
+    <div class="rp-quick" id="roboQuick">
+      <button type="button" data-q="site">Нужен сайт</button>
+      <button type="button" data-q="ai">Платформа с ИИ</button>
+      <button type="button" data-q="video">ИИ-ролики</button>
+      <button type="button" data-q="seo">SEO и GEO</button>
+      <button type="button" data-q="ads">Реклама</button>
+      <button type="button" data-q="price">Сколько стоит?</button>
+    </div>
+  </div>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="robo-mini" viewBox="0 0 200 280"><path d="M52 132c0-14 22-20 48-20s48 6 48 20c0 50-20 112-48 118-28-6-48-68-48-118Z" fill="#f2f4f8"/><ellipse cx="40" cy="170" rx="13" ry="40" fill="#e6e9ef" transform="rotate(12 40 170)"/><ellipse cx="160" cy="170" rx="13" ry="40" fill="#e6e9ef" transform="rotate(-12 160 170)"/><ellipse cx="100" cy="62" rx="62" ry="48" fill="#f2f4f8"/><ellipse cx="102" cy="68" rx="46" ry="30" fill="#07080c"/><ellipse cx="84" cy="68" rx="11" ry="8" fill="#47c8ff"/><ellipse cx="120" cy="68" rx="11" ry="8" fill="#47c8ff"/></symbol></svg>
 
   <a class="wa-float js-wa" href="https://wa.me/77783244440?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5%21%20%D0%A5%D0%BE%D1%87%D1%83%20%D0%B1%D0%B5%D1%81%D0%BF%D0%BB%D0%B0%D1%82%D0%BD%D1%8B%D0%B9%20%D0%B0%D1%83%D0%B4%D0%B8%D1%82%20%D1%81%D0%B0%D0%B9%D1%82%D0%B0" target="_blank" rel="noopener" aria-label="Написать в WhatsApp">
     <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-wa"/></svg>
