@@ -154,7 +154,7 @@ function init(THREE) {
   document.documentElement.classList.add('has-robot');
   const mobile = matchMedia('(max-width: 900px)').matches;
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-  const PR = Math.min(devicePixelRatio || 1, mobile ? 1.4 : 1.6);
+  const PR = Math.min(devicePixelRatio || 1, mobile ? 1.25 : 1.3);
   renderer.setPixelRatio(PR);
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;

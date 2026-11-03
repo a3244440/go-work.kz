@@ -753,3 +753,16 @@ html:not(.has-robot) .robo-hit svg { display: block; filter: drop-shadow(0 10px 
 .cases.pinned .cs-dots { margin-top: 10px; }
 .cs-progress { width: min(320px, 70%); height: 3px; margin: 14px auto 0; border-radius: 3px; background: rgba(0, 0, 0, .08); overflow: hidden; }
 .cs-progress i { display: block; height: 100%; width: 100%; background: var(--ink); transform-origin: 0 50%; transform: scaleX(var(--p, 0)); }
+
+/* Кейсы: без 3D-пересечений и быстрее. Слайд «плоский», у панели своя перспектива,
+   поэтому разворот панели больше не прорезает круг с логотипом; круг и карточки всегда поверх */
+.cs-slide { transform-style: flat; }
+.cs-panel { z-index: 1; transform: perspective(1400px) translateX(45%) rotateY(78deg); transition: transform .7s cubic-bezier(.2, .8, .2, 1), opacity .45s; will-change: transform, opacity; box-shadow: 0 30px 50px -36px rgba(0, 0, 0, .4); }
+.cs-slide.in .cs-panel { transform: perspective(1400px); }
+.cs-slide.out .cs-panel { transform: perspective(1400px) translateX(-45%) rotateY(-78deg); transition-duration: .55s, .35s; }
+.cs-circle { z-index: 2; will-change: transform, opacity; transition: transform .6s .08s cubic-bezier(.2, .9, .3, 1.2), opacity .35s .08s; }
+.cs-card, .cs-link { z-index: 3; }
+.cs-card { will-change: transform, opacity; transition: transform .6s calc(var(--d) * .6) cubic-bezier(.2, .9, .3, 1.15), opacity .35s calc(var(--d) * .6); }
+.cs-slide.out .cs-card { transform: translate3d(0, -30px, 0) scale(1.08); transition-duration: .4s, .3s; }
+.cs-chip, .cs-serp, .cs-stat, .cs-ui, .cs-shot { box-shadow: 0 14px 26px -16px rgba(0, 0, 0, .35); }
+.cs-slide:not(.in) .cs-card > * { animation-play-state: paused; }

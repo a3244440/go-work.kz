@@ -19,10 +19,11 @@
     if (n === cur) return;
     var old = slides[cur], next = slides[n];
     old.classList.remove('in'); old.classList.add('out'); old.setAttribute('aria-hidden', 'true');
-    setTimeout(function () { old.classList.remove('out'); }, 1000);
+    setTimeout(function () { if (!old.classList.contains('in')) old.classList.remove('out'); }, 650);
     next.classList.remove('out');
     // Новый слайд заходит чуть позже, чтобы старый успел развернуться
-    setTimeout(function () { next.classList.add('in'); }, reduce ? 0 : 260);
+    // Новый слайд заходит сразу: старый разворачивается одновременно, без пауз
+    requestAnimationFrame(function () { next.classList.add('in'); });
     next.removeAttribute('aria-hidden');
     dots.forEach(function (d, i) { d.classList.toggle('on', i === n); d.setAttribute('aria-selected', i === n); });
     sec.style.backgroundColor = next.dataset.bg;
