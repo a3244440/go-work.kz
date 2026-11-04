@@ -53,11 +53,11 @@
      Без GSAP или при «уменьшении движения» остаётся автопрокрутка по таймеру. */
   var scrollMode = false;
   function initScroll() {
-    if (reduce || !window.gsap || !window.ScrollTrigger) return false;
+    if (reduce || !window.gsap || !window.ScrollTrigger || matchMedia('(max-width: 900px)').matches) return false;
     gsap.registerPlugin(ScrollTrigger);
     var N = slides.length, prog = document.getElementById('csProg');
     var st = ScrollTrigger.create({
-      trigger: sec, start: function () { var n = document.getElementById('nav'); return 'top ' + (n ? Math.round(n.offsetHeight * .7) : 0) + 'px'; }, end: function () { return '+=' + Math.round(innerHeight * .75 * (N - 1)); },
+      trigger: sec, start: function () { var n = document.getElementById('nav'); return 'top ' + (n ? Math.round(n.offsetHeight * .7) : 0) + 'px'; }, end: function () { return '+=' + Math.round(innerHeight * 1.1 * (N - 1)); },
       pin: true, anticipatePin: 1,
       onUpdate: function (self) {
         if (prog) prog.style.setProperty('--p', self.progress.toFixed(3));
@@ -71,6 +71,14 @@
     sec.classList.add('pinned');
     return true;
   }
+  // Стрелки: на компьютере листают прокруткой страницы, на телефоне переключают слайд
+  function step(d) {
+    var n = (cur + d + slides.length) % slides.length;
+    if (scrollMode) dots[n].onclick(); else go(n);
+  }
+  var prev = document.getElementById('csPrev'), next = document.getElementById('csNext');
+  if (prev) prev.addEventListener('click', function () { step(-1); });
+  if (next) next.addEventListener('click', function () { step(1); });
   var oldPlan = plan;
   plan = function () { if (!scrollMode) oldPlan(); };
   scrollMode = initScroll();

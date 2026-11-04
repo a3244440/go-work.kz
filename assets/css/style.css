@@ -770,3 +770,12 @@ html:not(.has-robot) .robo-hit svg { display: block; filter: drop-shadow(0 10px 
 .cs-ui.zk b { letter-spacing: .3em; font-size: .9rem; }
 .cs-ui.zk em { font-style: normal; font-size: 1.15rem; line-height: 1.25; }
 .cs-ui.zk span { background: #f3efe8; color: #1b1b1b; }
+
+/* Стрелки кейсов */
+.cs-nav { display: flex; align-items: center; justify-content: center; gap: 16px; margin-top: 14px; }
+.cs-nav .cs-dots { margin-top: 0; }
+.cs-arrow { width: 48px; height: 48px; flex: none; display: grid; place-items: center; border: 0; border-radius: 50%; background: var(--ink); color: #fff; cursor: pointer; box-shadow: 0 10px 24px -12px rgba(0, 0, 0, .5); transition: transform .2s, background .2s; }
+.cs-arrow svg { width: 24px; height: 24px; fill: currentColor; }
+.cs-arrow:hover { transform: scale(1.08); }
+.cs-arrow:active { transform: scale(.94); }
+@media (max-width: 700px) { .cs-nav { gap: 10px; } .cs-dots { gap: 9px; } .cs-dots button { width: 15px; height: 15px; } .cases .cs-progress { display: none; } }
