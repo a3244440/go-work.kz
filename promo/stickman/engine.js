@@ -90,7 +90,7 @@
     return { hip, top, sh, headC, kneeN, footN, kneeF, footF, elN, handN, elF, handF };
   }
 
-  /* fig(ctx, {x, y (земля), s (рост в px), dir (1 вправо / −1 влево), pose, color, alpha, glow})
+  /* fig(ctx, {x, y (земля), s (рост в px), dir (1 вправо / −1 влево), pose, color, alpha, glow, rot})
      Возвращает мировые координаты суставов (для реквизита в руках). */
   function fig(ctx, o) {
     const s = o.s || 300, dir = o.dir || 1, p = Object.assign({}, POSE.stand, o.pose || {});
@@ -98,7 +98,9 @@
     const lowest = Math.max(j.footN[1], j.footF[1]);
     const hipY = p.hip !== undefined ? lerp(-lowest, -p.hip * s, p.hipW ?? 1) : -lowest;
     const ox = o.x, oy = o.y + hipY;
-    const W2 = pt => [ox + pt[0], oy + pt[1]];
+    // rot — поворот всей фигуры вокруг точки опоры (x, y): + падает вперёд
+    const rot = (o.rot || 0) * dir, cr = Math.cos(rot), sr = Math.sin(rot);
+    const W2 = pt => { const dx = pt[0], dy = pt[1] + hipY; return [o.x + dx * cr - dy * sr, o.y + dx * sr + dy * cr]; };
     const col = rgb(o.color || PAL.white), far = shade(col, .5), alpha = o.alpha ?? 1, glow = o.glow ?? 1;
     const lw = B.limb * s;
     ctx.save();

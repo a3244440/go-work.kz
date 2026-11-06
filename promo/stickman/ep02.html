@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Stickman EP02 — Keep Going</title>
+<style>
+  @font-face { font-family: Manrope; font-weight: 700; src: url(../fonts/manrope-latin-700-normal.woff2) format('woff2'); }
+  @font-face { font-family: Manrope; font-weight: 800; src: url(../fonts/manrope-latin-800-normal.woff2) format('woff2'); }
+  html, body { margin: 0; background: #000; }
+  canvas { display: block; width: 1080px; height: 1920px; }
+  body.preview canvas { width: auto; height: 100vh; margin: 0 auto; }
+</style>
+</head>
+<body>
+<canvas id="c" width="1080" height="1920"></canvas>
+<script src="engine.js"></script>
+<script>
+const { W, H, clamp, lerp, E, seg, hash, PAL, POSE, mix, walk, fig, text, caption, line, block, star, glowDot, css, mixC, shade, timeline } = SM;
+const ctx = document.getElementById('c').getContext('2d');
+
+/* ---------- 1. Procrastination: маленькие задачи превращаются в огромный ком ---------- */
+const SIT_PHONE = { lean: .05, head: .6, aN: .55, fN: 1.45, aF: .45, fF: 1.55, tN: 2.45, kN: 1.9, tF: 2.25, kF: 1.75, hip: .02 };
+function ball(ctx, x, y, r, rot, label) {
+  ctx.save();
+  ctx.shadowColor = 'rgba(255,255,255,.18)'; ctx.shadowBlur = 40;
+  const g = ctx.createRadialGradient(x - r * .35, y - r * .4, r * .1, x, y, r);
+  g.addColorStop(0, '#a8a8a8'); g.addColorStop(.6, '#4a4a4a'); g.addColorStop(1, '#161616');
+  ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill();
+  ctx.shadowBlur = 0;
+  // трещины/пятна вращаются вместе с шаром
+  ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.clip();
+  ctx.strokeStyle = 'rgba(0,0,0,.35)'; ctx.lineWidth = Math.max(2, r * .025);
+  for (let i = 0; i < 6; i++) {
+    const a = rot + i * 1.05, d = r * (.25 + .5 * hash(i));
+    ctx.beginPath(); ctx.arc(x + Math.cos(a) * d, y + Math.sin(a) * d, r * (.08 + .07 * hash(i + 4)), 0, Math.PI * 2); ctx.stroke();
+  }
+  ctx.restore();
+  if (r > 40) text(ctx, label, x, y, { size: r * .2, weight: 800, color: '#e8e8e8', spacing: r * .02, glow: .4 });
+}
+function s1(ctx, t) {
+  const GY = 1250;
+  caption(ctx, 'Small tasks you avoid', W / 2, 470, t, .25, undefined, { size: 52 });
+  caption(ctx, 'become big problems.', W / 2, 545, t, 3.6, undefined, { size: 52, color: PAL.red });
+  line(ctx, [[40, GY], [1040, GY]], { color: '#3c3c3c', w: 4 });
+  const day = Math.round(1 + 29 * seg(t, .8, 4.4, E.inOut));
+  text(ctx, 'DAY ' + day, W / 2, 650, { size: 28, weight: 800, color: '#7a7a7a', spacing: 3, glow: 0 });
+  const g = seg(t, .8, 4.4, E.in);
+  const r = lerp(24, 250, g);
+  const bx = lerp(900, 640, seg(t, .8, 4.4, E.inOut)) + lerp(0, -40, seg(t, 4.8, 6.2, E.out));
+  // тень шара на героя
+  glowDot(ctx, bx, GY, r * 1.4, '#000000', .6 * g);
+  ball(ctx, bx, GY - r, r, -bx / Math.max(r, 30), 'TASKS');
+  // герой сидит в телефоне → замечает и пугается
+  const k = seg(t, 4.4, 5.0);
+  const pose = mix(Object.assign({}, SIT_PHONE, { head: .6 + Math.sin(t * 1.3) * .05 }), POSE.scared, k);
+  const J = fig(ctx, { x: 230, y: GY, s: 250, pose });
+  if (k < 1) {
+    // телефон с голубым свечением
+    const [hx, hy] = J.handN;
+    ctx.save(); ctx.globalAlpha = 1 - k;
+    glowDot(ctx, hx + 6, hy - 6, 70, '#7fb6ff', .3);
+    ctx.fillStyle = '#cfe2ff'; ctx.shadowColor = '#7fb6ff'; ctx.shadowBlur = 20;
+    ctx.beginPath(); ctx.roundRect(hx - 2, hy - 28, 18, 32, 4); ctx.fill();
+    ctx.restore();
+  }
+}
+
+/* ---------- 2. Run your own race ---------- */
+const FALLEN = { lean: 0, head: -.3, aN: 2.7, fN: .1, aF: 2.5, fF: .1, tN: .12, kN: .3, tF: -.1, kF: .2 };
+function lane(ctx, y, off) {
+  line(ctx, [[0, y], [W, y]], { color: '#444', w: 4 });
+  for (let x = -((off % 120) + 120) % 120; x < W; x += 120) line(ctx, [[x, y + 26], [x + 44, y + 26]], { color: '#2a2a2a', w: 4 });
+}
+function s2(ctx, t) {
+  caption(ctx, 'Stop looking at their lane.', W / 2, 470, t, .25, undefined, { size: 50 });
+  caption(ctx, 'Run your own race.', W / 2, 545, t, 3.9, undefined, { size: 54, weight: 800, color: PAL.gold });
+  const UY = 1000, LY = 1400, SPD = 520;
+  lane(ctx, UY, t * SPD); lane(ctx, LY, t * SPD);
+  text(ctx, 'THEIR LANE', 120, LY + 80, { size: 22, weight: 800, color: '#555', spacing: 3, glow: 0, align: 'left' });
+  text(ctx, 'YOUR LANE', 120, UY + 80, { size: 22, weight: 800, color: '#555', spacing: 3, glow: 0, align: 'left' });
+  // нижний (золотой) бежит ровно
+  const gx = lerp(520, 640, seg(t, 3.6, 6.4));
+  fig(ctx, { x: gx, y: LY, s: 230, pose: walk(t * 12, 1, 1), color: PAL.gold });
+  // верхний оглядывается вниз, отстаёт, спотыкается и падает
+  const look = seg(t, 1.0, 1.5) * (1 - seg(t, 3.0, 3.2));
+  const fall = seg(t, 3.0, 3.45, E.in);
+  const lag = lerp(0, -90, seg(t, 1.5, 3.0));
+  const slide = t > 3.45 ? -(t - 3.45) * SPD * (1 - Math.exp(-(t - 3.45) * 2)) : 0;
+  let pose = walk(t * 12 * (1 - .25 * look), 1, 1);
+  pose = Object.assign({}, pose, { head: pose.head + .75 * look });
+  pose = mix(pose, FALLEN, fall);
+  fig(ctx, { x: 520 + lag + slide, y: UY, s: 230, pose, rot: fall * 1.5 + (t > 3.45 ? Math.sin((t - 3.45) * 18) * .04 * Math.exp(-(t - 3.45) * 6) : 0) });
+}
+
+/* ---------- 3. Comfort zone ---------- */
+const STARS = [[720, 860], [890, 940], [820, 1060], [980, 820], [930, 1130]];
+function s3(ctx, t) {
+  const GY = 1250, CX = 340;
+  caption(ctx, 'Everything you want', W / 2, 470, t, .25, undefined, { size: 52 });
+  caption(ctx, 'is outside your comfort zone.', W / 2, 545, t, 3.4, undefined, { size: 48, color: PAL.gold });
+  line(ctx, [[40, GY], [1040, GY]], { color: '#3c3c3c', w: 4 });
+  // сценарий героя
+  let x = CX, pose;
+  const SIT = { lean: -.1, head: -.1, aN: -.55, fN: .15, aF: -.7, fF: .15, tN: 2.45, kN: 1.9, tF: 2.25, kF: 1.75, hip: .02 };
+  if (t < 2.3) pose = mix(Object.assign({}, SIT, { lean: -.1 + Math.sin(t * 2) * .03 }), POSE.stand, seg(t, 1.6, 2.3));
+  else if (t < 4.5) { x = lerp(CX, 790, seg(t, 2.4, 4.5, E.lin)); pose = mix(POSE.stand, walk(x / 50), seg(t, 2.3, 2.6) * (1 - seg(t, 4.3, 4.5))); }
+  else { x = 790; pose = mix(POSE.stand, POSE.cheer, seg(t, 4.6, 5.0, E.back)); }
+  const out = seg(x, 520, 640);
+  // зона комфорта — светящееся кольцо на земле
+  ctx.save();
+  ctx.strokeStyle = css('#bbbbbb', .7 - .55 * out); ctx.lineWidth = 5;
+  ctx.shadowColor = 'rgba(255,255,255,.4)'; ctx.shadowBlur = 24;
+  ctx.beginPath(); ctx.ellipse(CX, GY, 190, 42, 0, 0, Math.PI * 2); ctx.stroke();
+  ctx.restore();
+  glowDot(ctx, CX, GY - 120, 260, '#ffffff', .07 * (1 - out));
+  text(ctx, 'COMFORT ZONE', CX, GY + 95, { size: 24, weight: 800, color: '#6a6a6a', spacing: 3, glow: 0 });
+  // цели загораются, когда герой выходит из зоны
+  STARS.forEach(([sx, sy], i) => {
+    const on = seg(t, 3.2 + i * .18, 3.6 + i * .18);
+    star(ctx, sx, sy, 18 + 6 * on, t + i, { color: mixC('#777777', PAL.gold, on), alpha: .3 + .7 * on, rot: i });
+  });
+  fig(ctx, { x, y: GY, s: 250, pose, color: mixC(PAL.white, PAL.gold, seg(t, 3.5, 4.3)) });
+}
+
+/* ---------- 4. Rest, don't quit ---------- */
+function s4(ctx, t) {
+  caption(ctx, "When you're tired,", W / 2, 470, t, .25, undefined, { size: 52 });
+  caption(ctx, 'learn to rest, not to quit.', W / 2, 545, t, 3.6, undefined, { size: 50, color: PAL.gold });
+  const gy = x => 1480 - (x - 40) * .5;
+  line(ctx, [[40, gy(40)], [1040, gy(1040)]], { color: '#4a4a4a', w: 4 });
+  const SITR = Object.assign({}, POSE.sitHug, { lean: .1, head: .6 });
+  let x, pose;
+  if (t < 2.1) { const u = seg(t, 0, 2.1, E.out); x = lerp(130, 440, u); pose = mix(walk(x / 42, 1 - .4 * u), POSE.slump, seg(t, 1.5, 2.1)); pose.lean += .15; }
+  else if (t < 4.6) { x = 440; pose = mix(POSE.slump, SITR, seg(t, 2.1, 2.6)); pose = mix(pose, POSE.stand, seg(t, 4.2, 4.6)); }
+  else { x = lerp(440, 820, seg(t, 4.7, 6.6, E.lin)); pose = mix(POSE.stand, walk(x / 42), seg(t, 4.6, 4.9)); pose.lean += .15; }
+  const charge = seg(t, 2.8, 4.4, E.inOut);
+  const col = t < 4.4 ? PAL.white : mixC(PAL.white, PAL.gold, seg(t, 4.4, 5.0));
+  const J = fig(ctx, { x, y: gy(x), s: 250, pose, color: col });
+  // батарейка над головой
+  const ba = seg(t, 1.7, 2.1) * (1 - seg(t, 5.0, 5.4));
+  if (ba > 0) {
+    const bx = J.headC[0] - 45, by = J.headC[1] - 120;
+    ctx.save(); ctx.globalAlpha = ba;
+    ctx.strokeStyle = '#bbbbbb'; ctx.lineWidth = 5; ctx.lineJoin = 'round';
+    ctx.beginPath(); ctx.roundRect(bx, by, 90, 44, 8); ctx.stroke();
+    ctx.fillStyle = '#bbbbbb'; ctx.fillRect(bx + 92, by + 13, 8, 18);
+    const lvl = lerp(.12, 1, charge), c = charge < .5 ? mixC(PAL.red, PAL.gold, charge * 2) : mixC(PAL.gold, PAL.green, charge * 2 - 1);
+    ctx.fillStyle = css(c); ctx.shadowColor = css(c); ctx.shadowBlur = 18;
+    ctx.fillRect(bx + 8, by + 8, 74 * lvl, 28);
+    ctx.restore();
+    text(ctx, charge < 1 ? 'REST' : 'READY', bx + 45, by - 30, { size: 22, weight: 800, color: '#8a8a8a', spacing: 3, glow: 0, alpha: ba });
+  }
+}
+
+/* ---------- 5. The next step ---------- */
+function s5(ctx, t) {
+  const GY = 1450, N = 6, SW = 112, SH = 86, X0 = 270;
+  caption(ctx, "You don't need to see", W / 2, 430, t, .25, undefined, { size: 48 });
+  caption(ctx, 'the whole staircase.', W / 2, 495, t, .6, undefined, { size: 48 });
+  caption(ctx, 'Just take the next step.', W / 2, 590, t, 4.2, undefined, { size: 52, weight: 800, color: PAL.gold });
+  line(ctx, [[60, GY], [X0, GY]], { color: '#555', w: 4 });
+  const P = [[170, GY]];
+  for (let k = 1; k <= N; k++) P.push([X0 + (k - 1) * SW + SW / 2, GY - k * SH]);
+  const TJ = i => 1.1 + i * .62, JD = .36;
+  // ступени: видна только следующая, остальные — едва заметны в «тумане»
+  for (let i = 0; i < N; i++) {
+    const vis = seg(t, TJ(i) - .55, TJ(i) - .2);
+    const passed = seg(t, TJ(i) + JD, TJ(i) + JD + .5);
+    const a = .05 + .95 * vis;
+    block(ctx, X0 + i * SW + 4, GY - (i + 1) * SH, SW - 8, 26, { color: mixC('#cfcfcf', '#5a5a5a', passed), alpha: a, glow: 30 * vis * (1 - passed) });
+  }
+  let pos = P[0], pose = POSE.stand;
+  for (let j = 0; j < N; j++) {
+    const tj = TJ(j);
+    if (t >= tj + JD) { pos = P[j + 1]; const u = (t - tj - JD) / .18; pose = u < 1 ? mix(POSE.crouch, POSE.stand, .3 + .7 * E.out(u)) : POSE.stand; }
+    else if (t >= tj) { const u = (t - tj) / JD; pos = [lerp(P[j][0], P[j + 1][0], E.sine(u)), lerp(P[j][1], P[j + 1][1], u) - Math.sin(Math.PI * u) * 45]; pose = mix(POSE.crouch, walk(1.2), Math.sin(Math.PI * u) * .7 + .3); break; }
+    else if (t >= tj - .14) { pose = mix(POSE.stand, POSE.crouch, (t - tj + .14) / .14 * .4); break; }
+    else break;
+  }
+  const fin = seg(t, TJ(N - 1) + JD + .25, TJ(N - 1) + JD + .7, E.back);
+  if (fin > 0) pose = mix(POSE.stand, POSE.cheer, fin);
+  fig(ctx, { x: pos[0], y: pos[1], s: 240, pose, color: mixC(PAL.white, PAL.gold, seg(t, 4.6, 5.3)) });
+}
+
+/* ---------- 6. Финал ---------- */
+function s6(ctx, t) {
+  glowDot(ctx, W / 2, 900, 420 * seg(t, .2, 1.4, E.out), PAL.gold, .12);
+  caption(ctx, 'Keep going.', W / 2, 900, t, .3, undefined, { size: 80, weight: 800 });
+}
+
+const TL = timeline([
+  { dur: 6.4, draw: s1 },
+  { dur: 6.6, draw: s2 },
+  { dur: 6.2, draw: s3 },
+  { dur: 6.8, draw: s4 },
+  { dur: 6.6, draw: s5 },
+  { dur: 2.8, draw: s6, bg: { spot: .3 } },
+]);
+window.TOTAL = TL.total;
+window.SCENES = TL.list.map(s => s.start);
+window.render = T => TL.draw(ctx, T);
+
+document.fonts.load('700 40px Manrope', 'Aa').then(() => document.fonts.load('800 40px Manrope', 'Aa')).then(() => {
+  window.READY = true;
+  const q = new URLSearchParams(location.search);
+  if (q.has('t')) render(+q.get('t'));
+  else if (q.has('play')) { document.body.classList.add('preview'); const t0 = performance.now(); const loop = () => { render(((performance.now() - t0) / 1000) % TL.total); requestAnimationFrame(loop); }; loop(); }
+  else render(0.8);
+});
+</script>
+</body>
+</html>
