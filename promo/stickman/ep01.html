@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Stickman EP01 — Начни сегодня</title>
+<style>
+  @font-face { font-family: Manrope; font-weight: 700; src: url(../fonts/manrope-cyrillic-700-normal.woff2) format('woff2'); unicode-range: U+0400-04FF; }
+  @font-face { font-family: Manrope; font-weight: 700; src: url(../fonts/manrope-latin-700-normal.woff2) format('woff2'); unicode-range: U+0000-03FF, U+2000-206F, U+2190-22FF; }
+  @font-face { font-family: Manrope; font-weight: 800; src: url(../fonts/manrope-cyrillic-800-normal.woff2) format('woff2'); unicode-range: U+0400-04FF; }
+  @font-face { font-family: Manrope; font-weight: 800; src: url(../fonts/manrope-latin-800-normal.woff2) format('woff2'); unicode-range: U+0000-03FF, U+2000-206F, U+2190-22FF; }
+  html, body { margin: 0; background: #000; }
+  canvas { display: block; width: 1080px; height: 1920px; }
+  body.preview canvas { width: auto; height: 100vh; margin: 0 auto; }
+</style>
+</head>
+<body>
+<canvas id="c" width="1080" height="1920"></canvas>
+<script src="engine.js"></script>
+<script>
+const { W, H, clamp, lerp, E, seg, hash, PAL, POSE, mix, walk, fig, text, caption, line, block, star, glowDot, css, mixC, timeline } = SM;
+const ctx = document.getElementById('c').getContext('2d');
+
+/* ---------- 1. Мечтать / Делать ---------- */
+function s1(ctx, t) {
+  const GY = 1250;
+  caption(ctx, 'МЕЧТАТЬ', 270, 560, t, .25, undefined, { size: 44, spacing: 4, alpha: 1 - .5 * seg(t, 3.5, 5) });
+  caption(ctx, 'ДЕЛАТЬ', 810, 560, t, .25, undefined, { size: 44, spacing: 4 });
+  line(ctx, [[40, GY], [1040, GY]], { color: '#3c3c3c', w: 4 });
+  // мечтатель сидит и смотрит на звезду
+  const dim = seg(t, 3.2, 5.5);
+  star(ctx, 330, 760, 20, t, { alpha: .85 - .4 * dim });
+  fig(ctx, { x: 230, y: GY, s: 250, pose: Object.assign({}, POSE.sitLook, { lean: -.15 + Math.sin(t * 2) * .03 }), color: mixC(PAL.white, '#6d6d6d', dim) });
+  // делающий строит ступени и поднимается
+  const N = 5, bw = 72, bh = 72, x0 = 640;
+  for (let i = 0; i < N; i++) {
+    const a = seg(t, .3 + i * .72, .62 + i * .72, E.back);
+    if (a <= 0) continue;
+    const h = (i + 1) * bh * a;
+    block(ctx, x0 + i * bw + 2, GY - h, bw - 4, h, { color: '#8c8c8c', glow: 18 });
+  }
+  const P = [[585, GY]];
+  for (let k = 1; k <= N; k++) P.push([x0 + (k - 1) * bw + bw / 2, GY - k * bh]);
+  let pos = P[0], pose = POSE.stand;
+  for (let j = 0; j < N; j++) {
+    const tj = .62 + j * .72, jd = .42;
+    if (t >= tj + jd) { pos = P[j + 1]; const u = (t - tj - jd) / .2; if (u < 1) pose = mix(POSE.crouch, POSE.stand, E.out(u) * .9 + .1); else pose = POSE.stand; }
+    else if (t >= tj) { const u = (t - tj) / jd; pos = [lerp(P[j][0], P[j + 1][0], E.sine(u)), lerp(P[j][1], P[j + 1][1], u) - Math.sin(Math.PI * u) * 85]; pose = mix(POSE.crouch, POSE.jump, Math.sin(Math.PI * u) * .85 + .15); break; }
+    else if (t >= tj - .18) { pose = mix(POSE.stand, POSE.crouch, (t - tj + .18) / .18 * .7); break; }
+    else break;
+  }
+  const fin = seg(t, 4.05, 4.5);
+  if (fin > 0) pose = mix(POSE.stand, POSE.reach, fin);
+  const gold = seg(t, 4.7, 5.3);
+  const J = fig(ctx, { x: pos[0], y: pos[1], s: 250, pose, color: mixC(PAL.white, PAL.gold, gold) });
+  // звезда прыгает в руку
+  const grab = seg(t, 4.35, 4.75, E.inOut);
+  const sx = lerp(990, J.handN[0], grab), sy = lerp(560, J.handN[1] - 6, grab);
+  if (gold > 0) glowDot(ctx, sx, sy, 160 * gold, PAL.gold, .35 * gold);
+  star(ctx, sx, sy, 20 + 6 * gold, t, { color: mixC(PAL.white, PAL.gold, gold) });
+}
+
+/* ---------- 2. Идеальный момент ---------- */
+function s2(ctx, t) {
+  const GY = 1250;
+  caption(ctx, 'Ждёшь идеального момента?', W / 2, 500, t, .25, undefined, { size: 50 });
+  caption(ctx, 'Он не наступит.', W / 2, 580, t, 3.5, undefined, { size: 50, color: PAL.gold });
+  line(ctx, [[40, GY], [1040, GY]], { color: '#3c3c3c', w: 4 });
+  // табличка-остановка
+  line(ctx, [[720, GY], [720, GY - 400]], { color: '#6a6a6a', w: 10 });
+  ctx.save();
+  ctx.fillStyle = '#141414'; ctx.strokeStyle = '#8a8a8a'; ctx.lineWidth = 4;
+  ctx.shadowColor = 'rgba(255,255,255,.18)'; ctx.shadowBlur = 24;
+  ctx.beginPath(); ctx.roundRect(600, GY - 520, 240, 130, 14); ctx.fill(); ctx.stroke();
+  ctx.restore();
+  text(ctx, 'ИДЕАЛЬНЫЙ\nМОМЕНТ', 720, GY - 455, { size: 32, weight: 800, spacing: 2, glow: .5 });
+  // счётчик дней
+  const n = Math.floor(1 + 998 * E.in(clamp((t - .7) / 3.2)));
+  text(ctx, 'ДЕНЬ', 330, 760, { size: 24, weight: 800, color: '#7a7a7a', spacing: 4, glow: 0 });
+  text(ctx, String(n).padStart(3, '0'), 330, 812, { size: 56, weight: 800 });
+  // ждущий: стоит → поникает → садится и гаснет
+  let pose = mix(POSE.stand, Object.assign({}, POSE.stand, { head: -.15 }), .5 + .5 * Math.sin(t * 1.5));
+  pose = mix(pose, POSE.slump, seg(t, 1.6, 2.4));
+  pose = mix(pose, POSE.sitHug, seg(t, 2.6, 3.4));
+  fig(ctx, { x: 470, y: GY, s: 250, pose, color: mixC(PAL.white, '#555555', seg(t, 1.2, 4.2)) });
+  // мимо проходит тот, кто не ждал
+  if (t > 3.9) {
+    const u = (t - 3.9) / 2.3, x = lerp(-90, 1180, u);
+    fig(ctx, { x, y: GY, s: 250, pose: walk(x / 52, 1, .35), color: PAL.gold });
+  }
+}
+
+/* ---------- 3. Корни ---------- */
+function branches(x, y, ang, len, depth, seed, spread, out = [], d = 0) {
+  const x2 = x + Math.cos(ang) * len, y2 = y + Math.sin(ang) * len;
+  out.push({ x, y, x2, y2, d, leaf: depth === 0 });
+  if (depth > 0) {
+    const n = hash(seed) > .55 ? 3 : 2;
+    for (let i = 0; i < n; i++) {
+      const a = ang + (i - (n - 1) / 2) * spread + (hash(seed * 7 + i) - .5) * .45;
+      branches(x2, y2, a, len * (.66 + hash(seed + i * 3) * .14), depth - 1, seed * 3 + i + 1, spread * .92, out, d + 1);
+    }
+  }
+  return out;
+}
+const ROOTS = branches(600, 1080, Math.PI / 2, 105, 5, 1.7, .62);
+const TREE = branches(600, 1080, -Math.PI / 2, 150, 4, 4.3, .5);
+function drawBranches(ctx, list, g, o) {
+  for (const b of list) {
+    const p = clamp(g - b.d);
+    if (p <= 0) continue;
+    line(ctx, [[b.x, b.y], [lerp(b.x, b.x2, p), lerp(b.y, b.y2, p)]], { color: o.color, w: Math.max(2, o.w - b.d * o.taper), glow: o.glow, alpha: o.alpha });
+  }
+}
+function s3(ctx, t) {
+  const GY = 1080;
+  caption(ctx, 'Результат растёт', W / 2, 440, t, .25, undefined, { size: 50 });
+  caption(ctx, 'там, где его не видно', W / 2, 510, t, .8, undefined, { size: 50, color: '#9a9a9a' });
+  // земля в разрезе
+  const g = ctx.createLinearGradient(0, GY, 0, 1560);
+  g.addColorStop(0, '#161616'); g.addColorStop(1, 'rgba(0,0,0,0)');
+  ctx.fillStyle = g; ctx.fillRect(0, GY, W, 480);
+  line(ctx, [[0, GY], [W, GY]], { color: '#555', w: 4 });
+  drawBranches(ctx, ROOTS, seg(t, .8, 4.4, E.inOut) * 6, { color: '#8f8f8f', w: 10, taper: 1.5, glow: 14 });
+  // дерево выстреливает
+  const tg = seg(t, 4.5, 5.4, E.out) * 5;
+  drawBranches(ctx, TREE, tg, { color: '#f0f0f0', w: 16, taper: 3, glow: 22 });
+  const lv = seg(t, 5.15, 5.7, E.back);
+  if (lv > 0) for (const b of TREE) if (b.leaf) { glowDot(ctx, b.x2, b.y2, 60 * lv, PAL.gold, .45); glowDot(ctx, b.x2, b.y2, 16 * lv, PAL.gold, 1); }
+  // счётчик дней
+  const day = Math.round(1 + 89 * seg(t, .8, 4.4, E.inOut));
+  text(ctx, 'ДЕНЬ ' + day, 880, 1140, { size: 30, weight: 800, color: '#8a8a8a', spacing: 3, glow: 0 });
+  // поливающий
+  const watering = t < 4.45;
+  let pose = watering ? mix(POSE.water, Object.assign({}, POSE.water, { aN: 1.25 }), .5 + .5 * Math.sin(t * 3)) : mix(POSE.water, POSE.stand, seg(t, 4.45, 4.7));
+  pose = mix(pose, POSE.lookBackUp, seg(t, 4.75, 5.3));
+  const fx = lerp(330, 280, seg(t, 4.75, 5.4));
+  const J = fig(ctx, { x: fx, y: GY, s: 250, pose, color: mixC(PAL.white, PAL.gold, seg(t, 5.3, 6))});
+  // лейка
+  const lc = seg(t, 4.45, 4.7);
+  if (lc < 1) {
+    const [hx, hy] = J.handN;
+    ctx.save(); ctx.globalAlpha = 1 - lc;
+    ctx.translate(hx, hy); ctx.rotate(.25);
+    ctx.fillStyle = '#9a9a9a'; ctx.shadowColor = 'rgba(255,255,255,.3)'; ctx.shadowBlur = 16;
+    ctx.beginPath(); ctx.roundRect(-8, -4, 62, 44, 8); ctx.fill();
+    ctx.strokeStyle = '#9a9a9a'; ctx.lineWidth = 8; ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.moveTo(50, 10); ctx.lineTo(92, -12); ctx.stroke();
+    ctx.restore();
+    // капли
+    if (watering) for (let k = 0; k < 40; k++) {
+      const t0 = .5 + k * .1, u = (t - t0) / .38;
+      if (u < 0 || u > 1) continue;
+      const sx = hx + 88, sy = hy + 10;
+      glowDot(ctx, lerp(sx, 600 + (hash(k) - .5) * 30, u), lerp(sy, GY, u * u), 9, '#cfe8ff', .9);
+    }
+  }
+}
+
+/* ---------- 4. Страх ---------- */
+function s4(ctx, t) {
+  const GY = 1150;
+  caption(ctx, 'Страх всегда кажется', W / 2, 470, t, .25, undefined, { size: 50 });
+  caption(ctx, 'больше, чем он есть', W / 2, 545, t, 3.0, undefined, { size: 50, color: PAL.gold });
+  const k = seg(t, 3.0, 3.9, E.inOut);
+  const gL = lerp(400, 528, k), gR = lerp(980, 572, k);
+  // красное свечение в пропасти и надпись
+  const cx = (gL + gR) / 2;
+  glowDot(ctx, cx, GY + 330, lerp(330, 40, k), PAL.red, .28 * (1 - k * .8));
+  text(ctx, 'СТРАХ', cx, GY + lerp(300, 60, k), { size: lerp(118, 20, k), weight: 800, color: PAL.red, spacing: lerp(10, 1, k), alpha: 1 - seg(t, 3.6, 4.0) });
+  // края обрыва
+  for (const [a, b] of [[0, gL], [gR, W]]) {
+    const g = ctx.createLinearGradient(0, GY, 0, GY + 520);
+    g.addColorStop(0, '#202020'); g.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = g; ctx.fillRect(a, GY, b - a, 520);
+    line(ctx, [[a, GY], [b, GY]], { color: '#666', w: 4 });
+  }
+  // герой
+  let x, pose;
+  if (t < .9) { x = lerp(140, 330, t / .9); pose = mix(walk(x / 50), POSE.stand, seg(t, .7, .9)); }
+  else if (t < 4.0) {
+    x = lerp(330, 300, seg(t, 1.6, 2.0));
+    pose = mix(POSE.stand, POSE.lookDown, seg(t, .9, 1.3));
+    pose = mix(pose, POSE.scared, seg(t, 1.6, 2.0));
+    pose = mix(pose, POSE.stand, seg(t, 3.3, 3.9));
+    if (t > 2.0 && t < 3.3) pose = Object.assign({}, pose, { lean: pose.lean + Math.sin(t * 40) * .015 });
+  } else { x = lerp(300, 780, (t - 4.0) / 2.2); pose = mix(POSE.stand, walk(x / 50), seg(t, 4.0, 4.25)); }
+  fig(ctx, { x, y: GY, s: 250, pose, color: mixC(PAL.white, PAL.gold, seg(t, 4.6, 5.3)) });
+}
+
+/* ---------- 5. 1% каждый день ---------- */
+function s5(ctx, t) {
+  caption(ctx, '1% каждый день', W / 2, 420, t, .25, undefined, { size: 62, weight: 800 });
+  caption(ctx, 'за год меняет всё', W / 2, 495, t, .8, undefined, { size: 42, color: '#9a9a9a' });
+  const O = [150, 1330], AW = 780, AH = 640;
+  line(ctx, [[O[0], O[1] - AH - 20], O, [O[0] + AW + 20, O[1]]], { color: '#444', w: 4 });
+  const d = 365 * seg(t, .6, 4.6, E.inOut);
+  const pt = (v, x) => [O[0] + x / 365 * AW, O[1] - v / 38 * AH];
+  const curve = base => { const p = []; for (let x = 0; x <= d; x += 2) p.push(pt(Math.pow(base, x), x)); p.push(pt(Math.pow(base, d), d)); return p; };
+  const gp = curve(1.01), rp = curve(.99);
+  line(ctx, rp, { color: '#777', w: 6, glow: 8 });
+  line(ctx, gp, { color: PAL.gold, w: 7, glow: 22 });
+  text(ctx, 'ДЕНЬ ' + Math.round(d), 260, 700, { size: 28, weight: 800, color: '#8a8a8a', spacing: 3, glow: 0, align: 'left' });
+  // фигуры на концах кривых
+  const done = seg(t, 4.6, 5.0);
+  const gt = gp[gp.length - 1], rt = rp[rp.length - 1];
+  fig(ctx, { x: rt[0], y: rt[1] - 4, s: 110, pose: mix(walk(t * 7, .8), POSE.slump, done), color: '#8a8a8a', glow: .5 });
+  fig(ctx, { x: gt[0] - 6, y: gt[1] - 4, s: 110, pose: mix(walk(t * 9, 1, .4), POSE.cheer, done), color: PAL.gold });
+  caption(ctx, '+1% в день  →  ×37,8', 900, 640, t, 4.9, undefined, { size: 38, color: PAL.gold, align: 'right', weight: 800 });
+  caption(ctx, '−1% в день  →  ×0,03', 930, 1400, t, 5.2, undefined, { size: 34, color: '#8a8a8a', align: 'right' });
+}
+
+/* ---------- 6. Финал ---------- */
+function s6(ctx, t) {
+  glowDot(ctx, W / 2, 900, 420 * seg(t, .2, 1.4, E.out), PAL.gold, .12);
+  caption(ctx, 'Начни сегодня.', W / 2, 880, t, .3, undefined, { size: 76, weight: 800 });
+  caption(ctx, 'GO-WORK.KZ', W / 2, 980, t, .9, undefined, { size: 30, weight: 800, color: PAL.gold, spacing: 6 });
+}
+
+const TL = timeline([
+  { dur: 6.2, draw: s1 },
+  { dur: 6.2, draw: s2 },
+  { dur: 6.4, draw: s3 },
+  { dur: 6.4, draw: s4 },
+  { dur: 6.6, draw: s5 },
+  { dur: 2.8, draw: s6, bg: { spot: .3 } },
+]);
+window.TOTAL = TL.total;
+window.SCENES = TL.list.map(s => s.start);
+window.render = T => TL.draw(ctx, T, { watermark: T < TL.total - 2.8 ? 'GO-WORK.KZ' : '' });
+
+document.fonts.load('700 40px Manrope', 'Аа').then(() => document.fonts.load('800 40px Manrope', 'Аа')).then(() => {
+  window.READY = true;
+  const q = new URLSearchParams(location.search);
+  if (q.has('t')) render(+q.get('t'));
+  else if (q.has('play')) { document.body.classList.add('preview'); const t0 = performance.now(); const loop = () => { render(((performance.now() - t0) / 1000) % TL.total); requestAnimationFrame(loop); }; loop(); }
+  else render(0.8);
+});
+</script>
+</body>
+</html>

@@ -12,3 +12,7 @@ promo/geo/video.mp4
 promo/geo/mix.wav
 promo/geo/list.txt
 promo/geo/*.mp4
+promo/stickman/frames
+promo/stickman/stills
+promo/stickman/*.wav
+promo/stickman/*.json
