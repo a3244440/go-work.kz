@@ -779,3 +779,4 @@ html:not(.has-robot) .robo-hit svg { display: block; filter: drop-shadow(0 10px 
 .cs-arrow:hover { transform: scale(1.08); }
 .cs-arrow:active { transform: scale(.94); }
 @media (max-width: 700px) { .cs-nav { gap: 10px; } .cs-dots { gap: 9px; } .cs-dots button { width: 15px; height: 15px; } .cases .cs-progress { display: none; } }
+.cs-chip.tg { background: #229ed9; color: #fff; } .cs-chip.tg svg { opacity: 1; }
