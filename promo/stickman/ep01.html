@@ -1,8 +1,8 @@
 <!doctype html>
-<html lang="ru">
+<html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Stickman EP01 — Начни сегодня</title>
+<title>Stickman EP01 — Start Today</title>
 <style>
   @font-face { font-family: Manrope; font-weight: 700; src: url(../fonts/manrope-cyrillic-700-normal.woff2) format('woff2'); unicode-range: U+0400-04FF; }
   @font-face { font-family: Manrope; font-weight: 700; src: url(../fonts/manrope-latin-700-normal.woff2) format('woff2'); unicode-range: U+0000-03FF, U+2000-206F, U+2190-22FF; }
@@ -23,8 +23,8 @@ const ctx = document.getElementById('c').getContext('2d');
 /* ---------- 1. Мечтать / Делать ---------- */
 function s1(ctx, t) {
   const GY = 1250;
-  caption(ctx, 'МЕЧТАТЬ', 270, 560, t, .25, undefined, { size: 44, spacing: 4, alpha: 1 - .5 * seg(t, 3.5, 5) });
-  caption(ctx, 'ДЕЛАТЬ', 810, 560, t, .25, undefined, { size: 44, spacing: 4 });
+  caption(ctx, 'DREAMING', 270, 560, t, .25, undefined, { size: 44, spacing: 4, alpha: 1 - .5 * seg(t, 3.5, 5) });
+  caption(ctx, 'DOING', 810, 560, t, .25, undefined, { size: 44, spacing: 4 });
   line(ctx, [[40, GY], [1040, GY]], { color: '#3c3c3c', w: 4 });
   // мечтатель сидит и смотрит на звезду
   const dim = seg(t, 3.2, 5.5);
@@ -62,8 +62,8 @@ function s1(ctx, t) {
 /* ---------- 2. Идеальный момент ---------- */
 function s2(ctx, t) {
   const GY = 1250;
-  caption(ctx, 'Ждёшь идеального момента?', W / 2, 500, t, .25, undefined, { size: 50 });
-  caption(ctx, 'Он не наступит.', W / 2, 580, t, 3.5, undefined, { size: 50, color: PAL.gold });
+  caption(ctx, 'Waiting for the perfect moment?', W / 2, 500, t, .25, undefined, { size: 50 });
+  caption(ctx, "It won't come.", W / 2, 580, t, 3.5, undefined, { size: 50, color: PAL.gold });
   line(ctx, [[40, GY], [1040, GY]], { color: '#3c3c3c', w: 4 });
   // табличка-остановка
   line(ctx, [[720, GY], [720, GY - 400]], { color: '#6a6a6a', w: 10 });
@@ -72,10 +72,10 @@ function s2(ctx, t) {
   ctx.shadowColor = 'rgba(255,255,255,.18)'; ctx.shadowBlur = 24;
   ctx.beginPath(); ctx.roundRect(600, GY - 520, 240, 130, 14); ctx.fill(); ctx.stroke();
   ctx.restore();
-  text(ctx, 'ИДЕАЛЬНЫЙ\nМОМЕНТ', 720, GY - 455, { size: 32, weight: 800, spacing: 2, glow: .5 });
+  text(ctx, 'PERFECT\nMOMENT', 720, GY - 455, { size: 32, weight: 800, spacing: 2, glow: .5 });
   // счётчик дней
   const n = Math.floor(1 + 998 * E.in(clamp((t - .7) / 3.2)));
-  text(ctx, 'ДЕНЬ', 330, 760, { size: 24, weight: 800, color: '#7a7a7a', spacing: 4, glow: 0 });
+  text(ctx, 'DAY', 330, 760, { size: 24, weight: 800, color: '#7a7a7a', spacing: 4, glow: 0 });
   text(ctx, String(n).padStart(3, '0'), 330, 812, { size: 56, weight: 800 });
   // ждущий: стоит → поникает → садится и гаснет
   let pose = mix(POSE.stand, Object.assign({}, POSE.stand, { head: -.15 }), .5 + .5 * Math.sin(t * 1.5));
@@ -113,8 +113,8 @@ function drawBranches(ctx, list, g, o) {
 }
 function s3(ctx, t) {
   const GY = 1080;
-  caption(ctx, 'Результат растёт', W / 2, 440, t, .25, undefined, { size: 50 });
-  caption(ctx, 'там, где его не видно', W / 2, 510, t, .8, undefined, { size: 50, color: '#9a9a9a' });
+  caption(ctx, 'Results grow', W / 2, 440, t, .25, undefined, { size: 50 });
+  caption(ctx, "where you can't see them", W / 2, 510, t, .8, undefined, { size: 50, color: '#9a9a9a' });
   // земля в разрезе
   const g = ctx.createLinearGradient(0, GY, 0, 1560);
   g.addColorStop(0, '#161616'); g.addColorStop(1, 'rgba(0,0,0,0)');
@@ -128,7 +128,7 @@ function s3(ctx, t) {
   if (lv > 0) for (const b of TREE) if (b.leaf) { glowDot(ctx, b.x2, b.y2, 60 * lv, PAL.gold, .45); glowDot(ctx, b.x2, b.y2, 16 * lv, PAL.gold, 1); }
   // счётчик дней
   const day = Math.round(1 + 89 * seg(t, .8, 4.4, E.inOut));
-  text(ctx, 'ДЕНЬ ' + day, 880, 1140, { size: 30, weight: 800, color: '#8a8a8a', spacing: 3, glow: 0 });
+  text(ctx, 'DAY ' + day, 880, 1140, { size: 30, weight: 800, color: '#8a8a8a', spacing: 3, glow: 0 });
   // поливающий
   const watering = t < 4.45;
   let pose = watering ? mix(POSE.water, Object.assign({}, POSE.water, { aN: 1.25 }), .5 + .5 * Math.sin(t * 3)) : mix(POSE.water, POSE.stand, seg(t, 4.45, 4.7));
@@ -159,14 +159,14 @@ function s3(ctx, t) {
 /* ---------- 4. Страх ---------- */
 function s4(ctx, t) {
   const GY = 1150;
-  caption(ctx, 'Страх всегда кажется', W / 2, 470, t, .25, undefined, { size: 50 });
-  caption(ctx, 'больше, чем он есть', W / 2, 545, t, 3.0, undefined, { size: 50, color: PAL.gold });
+  caption(ctx, 'Fear always looks', W / 2, 470, t, .25, undefined, { size: 50 });
+  caption(ctx, 'bigger than it is', W / 2, 545, t, 3.0, undefined, { size: 50, color: PAL.gold });
   const k = seg(t, 3.0, 3.9, E.inOut);
   const gL = lerp(400, 528, k), gR = lerp(980, 572, k);
   // красное свечение в пропасти и надпись
   const cx = (gL + gR) / 2;
   glowDot(ctx, cx, GY + 330, lerp(330, 40, k), PAL.red, .28 * (1 - k * .8));
-  text(ctx, 'СТРАХ', cx, GY + lerp(300, 60, k), { size: lerp(118, 20, k), weight: 800, color: PAL.red, spacing: lerp(10, 1, k), alpha: 1 - seg(t, 3.6, 4.0) });
+  text(ctx, 'FEAR', cx, GY + lerp(300, 60, k), { size: lerp(118, 20, k), weight: 800, color: PAL.red, spacing: lerp(10, 1, k), alpha: 1 - seg(t, 3.6, 4.0) });
   // края обрыва
   for (const [a, b] of [[0, gL], [gR, W]]) {
     const g = ctx.createLinearGradient(0, GY, 0, GY + 520);
@@ -189,8 +189,8 @@ function s4(ctx, t) {
 
 /* ---------- 5. 1% каждый день ---------- */
 function s5(ctx, t) {
-  caption(ctx, '1% каждый день', W / 2, 420, t, .25, undefined, { size: 62, weight: 800 });
-  caption(ctx, 'за год меняет всё', W / 2, 495, t, .8, undefined, { size: 42, color: '#9a9a9a' });
+  caption(ctx, '1% every day', W / 2, 420, t, .25, undefined, { size: 62, weight: 800 });
+  caption(ctx, 'changes everything in a year', W / 2, 495, t, .8, undefined, { size: 42, color: '#9a9a9a' });
   const O = [150, 1330], AW = 780, AH = 640;
   line(ctx, [[O[0], O[1] - AH - 20], O, [O[0] + AW + 20, O[1]]], { color: '#444', w: 4 });
   const d = 365 * seg(t, .6, 4.6, E.inOut);
@@ -199,21 +199,20 @@ function s5(ctx, t) {
   const gp = curve(1.01), rp = curve(.99);
   line(ctx, rp, { color: '#777', w: 6, glow: 8 });
   line(ctx, gp, { color: PAL.gold, w: 7, glow: 22 });
-  text(ctx, 'ДЕНЬ ' + Math.round(d), 260, 700, { size: 28, weight: 800, color: '#8a8a8a', spacing: 3, glow: 0, align: 'left' });
+  text(ctx, 'DAY ' + Math.round(d), 260, 700, { size: 28, weight: 800, color: '#8a8a8a', spacing: 3, glow: 0, align: 'left' });
   // фигуры на концах кривых
   const done = seg(t, 4.6, 5.0);
   const gt = gp[gp.length - 1], rt = rp[rp.length - 1];
   fig(ctx, { x: rt[0], y: rt[1] - 4, s: 110, pose: mix(walk(t * 7, .8), POSE.slump, done), color: '#8a8a8a', glow: .5 });
   fig(ctx, { x: gt[0] - 6, y: gt[1] - 4, s: 110, pose: mix(walk(t * 9, 1, .4), POSE.cheer, done), color: PAL.gold });
-  caption(ctx, '+1% в день  →  ×37,8', 900, 640, t, 4.9, undefined, { size: 38, color: PAL.gold, align: 'right', weight: 800 });
-  caption(ctx, '−1% в день  →  ×0,03', 930, 1400, t, 5.2, undefined, { size: 34, color: '#8a8a8a', align: 'right' });
+  caption(ctx, '+1% a day  →  ×37.8', 900, 640, t, 4.9, undefined, { size: 38, color: PAL.gold, align: 'right', weight: 800 });
+  caption(ctx, '−1% a day  →  ×0.03', 930, 1400, t, 5.2, undefined, { size: 34, color: '#8a8a8a', align: 'right' });
 }
 
 /* ---------- 6. Финал ---------- */
 function s6(ctx, t) {
   glowDot(ctx, W / 2, 900, 420 * seg(t, .2, 1.4, E.out), PAL.gold, .12);
-  caption(ctx, 'Начни сегодня.', W / 2, 880, t, .3, undefined, { size: 76, weight: 800 });
-  caption(ctx, 'GO-WORK.KZ', W / 2, 980, t, .9, undefined, { size: 30, weight: 800, color: PAL.gold, spacing: 6 });
+  caption(ctx, 'Start today.', W / 2, 900, t, .3, undefined, { size: 76, weight: 800 });
 }
 
 const TL = timeline([
@@ -226,9 +225,9 @@ const TL = timeline([
 ]);
 window.TOTAL = TL.total;
 window.SCENES = TL.list.map(s => s.start);
-window.render = T => TL.draw(ctx, T, { watermark: T < TL.total - 2.8 ? 'GO-WORK.KZ' : '' });
+window.render = T => TL.draw(ctx, T);
 
-document.fonts.load('700 40px Manrope', 'Аа').then(() => document.fonts.load('800 40px Manrope', 'Аа')).then(() => {
+document.fonts.load('700 40px Manrope', 'Aa').then(() => document.fonts.load('800 40px Manrope', 'Aa')).then(() => {
   window.READY = true;
   const q = new URLSearchParams(location.search);
   if (q.has('t')) render(+q.get('t'));
