@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Stickman EP03 — Your Time</title>
+<style>
+  @font-face { font-family: Manrope; font-weight: 700; src: url(../fonts/manrope-latin-700-normal.woff2) format('woff2'); }
+  @font-face { font-family: Manrope; font-weight: 800; src: url(../fonts/manrope-latin-800-normal.woff2) format('woff2'); }
+  html, body { margin: 0; background: #000; }
+  canvas { display: block; width: 1080px; height: 1920px; }
+  body.preview canvas { width: auto; height: 100vh; margin: 0 auto; }
+</style>
+</head>
+<body>
+<canvas id="c" width="1080" height="1920"></canvas>
+<script src="engine.js"></script>
+<script>
+const { W, H, clamp, lerp, E, seg, hash, PAL, POSE, mix, walk, fig, text, caption, line, block, star, glowDot, css, mixC, shade, timeline } = SM;
+const ctx = document.getElementById('c').getContext('2d');
+
+/* ---------- 1. Chapter 1 vs Chapter 20 ---------- */
+function s1(ctx, t) {
+  const GY = 1300, N = 8, SW = 58, SH = 58, X0 = 520;
+  caption(ctx, "Don't compare your chapter 1", W / 2, 470, t, .25, undefined, { size: 48 });
+  caption(ctx, "to someone's chapter 20.", W / 2, 540, t, 1.2, undefined, { size: 48, color: PAL.gold });
+  line(ctx, [[40, GY], [1040, GY]], { color: '#3c3c3c', w: 4 });
+  for (let i = 0; i < N; i++) block(ctx, X0 + i * SW + 2, GY - (i + 1) * SH, SW - 4, (i + 1) * SH, { color: '#8c8c8c', glow: 14 });
+  const P = [[X0 - 40, GY]];
+  for (let k = 1; k <= N; k++) P.push([X0 + (k - 1) * SW + SW / 2, GY - k * SH]);
+  text(ctx, 'CHAPTER 1', 250, GY + 70, { size: 24, weight: 800, color: '#6a6a6a', spacing: 3, glow: 0 });
+  text(ctx, 'CHAPTER 20', X0 + N * SW / 2, GY + 70, { size: 24, weight: 800, color: '#6a6a6a', spacing: 3, glow: 0 });
+  // призрак: золотой тоже когда-то начинал с первой ступени
+  const gp = seg(t, 2.6, 4.3, E.lin) * N;
+  if (t > 2.4 && t < 4.9) {
+    const trail = [0, .35, .7];
+    trail.forEach((d, n) => {
+      const q = clamp(gp - d, 0, N), k = Math.floor(q), u = q - k;
+      const a = P[Math.min(k, N)], b = P[Math.min(k + 1, N)];
+      const x = lerp(a[0], b[0], u), y = lerp(a[1], b[1], u) - Math.sin(Math.PI * u) * 30;
+      const al = (.45 - n * .14) * seg(t, 2.4, 2.7) * (1 - seg(t, 4.4, 4.9));
+      fig(ctx, { x, y, s: 200, pose: mix(POSE.crouch, walk(1.2), .5 + .5 * Math.sin(Math.PI * u)), color: PAL.gold, alpha: al, glow: .5 });
+    });
+  }
+  // тот, кто наверху
+  fig(ctx, { x: P[N][0], y: P[N][1], s: 200, pose: mix(POSE.stand, POSE.cheer, .35 + .1 * Math.sin(t * 2)), color: PAL.gold });
+  // тот, кто внизу: смотрит вверх → поникает → снова поднимает голову и делает шаг
+  let pose = mix(POSE.stand, POSE.lookUp, seg(t, .4, .9));
+  pose = mix(pose, POSE.slump, seg(t, 1.4, 2.1) * (1 - seg(t, 4.3, 4.8)));
+  let x = 250;
+  if (t > 4.8) { x = lerp(250, 360, seg(t, 4.8, 5.8, E.lin)); pose = mix(pose, walk(x / 45), seg(t, 4.8, 5.0)); }
+  fig(ctx, { x, y: GY, s: 250, pose, color: mixC(PAL.white, '#7a7a7a', seg(t, 1.4, 2.1) * (1 - seg(t, 4.3, 4.8))) });
+}
+
+/* ---------- 2. Тяжесть делает сильнее ---------- */
+const SQUAT = { lean: .3, head: .35, aN: .9, fN: 2.2, aF: .8, fF: 2.3, tN: 1.15, kN: 1.95, tF: .95, kF: 1.85 };
+const RACK = { lean: .02, head: -.05, aN: .9, fN: 2.2, aF: .8, fF: 2.3, tN: .18, kN: .05, tF: -.18, kF: .05 };
+const PRESS = { lean: -.04, head: -.25, aN: 3.05, fN: 0, aF: 3.1, fF: 0, tN: .2, kN: 0, tF: -.2, kF: 0 };
+function s2(ctx, t) {
+  const GY = 1300;
+  caption(ctx, 'The weight that breaks you today', W / 2, 470, t, .25, undefined, { size: 46 });
+  caption(ctx, 'builds you for tomorrow.', W / 2, 540, t, 2.9, undefined, { size: 50, weight: 800, color: PAL.gold });
+  line(ctx, [[40, GY], [1040, GY]], { color: '#3c3c3c', w: 4 });
+  const shake = t < 2.4 ? Math.sin(t * 38) * .02 * seg(t, .5, 1.0) : 0;
+  let pose = mix(POSE.stand, SQUAT, seg(t, .1, .9, E.out));
+  pose = Object.assign({}, pose, { lean: pose.lean + shake });
+  pose = mix(pose, RACK, seg(t, 2.3, 3.6, E.inOut));
+  pose = mix(pose, PRESS, seg(t, 3.8, 4.4, E.back));
+  const gold = seg(t, 4.0, 4.7);
+  const col = mixC(PAL.white, PAL.gold, gold);
+  const press = seg(t, 3.8, 4.4);
+  const J0 = fig(ctx, { x: 540, y: GY, s: 280, pose, alpha: 0 });
+  // штанга: на плечах за шеей → в руках над головой
+  const bx = lerp(J0.sh[0] - 8, (J0.handN[0] + J0.handF[0]) / 2, press);
+  const by = lerp(J0.sh[1] - 6, Math.min(J0.handN[1], J0.handF[1]) - 6, press);
+  const bar = () => {
+    line(ctx, [[bx - 260, by], [bx + 260, by]], { color: mixC('#bdbdbd', PAL.gold, gold), w: 10, glow: 12 });
+    for (const sx of [-1, 1]) for (const k of [0, 1]) {
+      const px = bx + sx * (205 + k * 34), ph = 150 - k * 40;
+      block(ctx, px - 14, by - ph / 2, 28, ph, { color: mixC('#9a9a9a', PAL.gold, gold), glow: 18 + 20 * gold });
+    }
+  };
+  if (press < .5) bar();
+  const J = fig(ctx, { x: 540, y: GY, s: 280, pose, color: col });
+  if (press >= .5) bar();
+  text(ctx, 'PRESSURE', bx, by - 110, { size: 30, weight: 800, color: mixC('#8a8a8a', PAL.gold, gold), spacing: 4, glow: .3 + gold });
+  if (gold > 0) glowDot(ctx, J.headC[0], J.headC[1] + 120, 320, PAL.gold, .14 * gold);
+}
+
+/* ---------- 3. Шум ---------- */
+const WORDS = [["YOU CAN'T", .5, -1, 760], ['TOO LATE', 1.1, 1, 820], ['GIVE UP', 1.6, -1, 900], ['WHO ARE YOU?', 2.1, 1, 720], ['IMPOSSIBLE', 2.6, -1, 820], ['STAY SAFE', 3.1, 1, 880], ['NOT YOU', 3.6, -1, 740]];
+function s3(ctx, t) {
+  const GY = 1300, FX = 930, R = 175;
+  caption(ctx, 'Ignore the noise.', W / 2, 470, t, .25, undefined, { size: 54 });
+  caption(ctx, 'Keep walking.', W / 2, 545, t, 2.9, undefined, { size: 54, weight: 800, color: PAL.gold });
+  line(ctx, [[40, GY], [1040, GY]], { color: '#3c3c3c', w: 4 });
+  // цель — флаг
+  line(ctx, [[FX, GY], [FX, GY - 300]], { color: '#bbbbbb', w: 7, glow: 10 });
+  ctx.save(); ctx.fillStyle = css(PAL.gold); ctx.shadowColor = css(PAL.gold); ctx.shadowBlur = 30 + 10 * Math.sin(t * 3);
+  const wv = Math.sin(t * 4) * 8;
+  ctx.beginPath(); ctx.moveTo(FX, GY - 300); ctx.quadraticCurveTo(FX + 60, GY - 290 + wv, FX + 120, GY - 270); ctx.quadraticCurveTo(FX + 60, GY - 245 - wv, FX, GY - 230); ctx.fill();
+  ctx.restore();
+  const xAt = tt => lerp(140, 800, seg(tt, .3, 4.9, E.lin));
+  const x = xAt(t);
+  const C = tt => [xAt(tt), GY - 150];
+  // слова летят и отскакивают от золотого «щита»
+  let flash = 0;
+  for (const [w, t0, side, sy] of WORDS) {
+    const th = t0 + .7;
+    if (t < t0) continue;
+    const S = [side < 0 ? -140 : W + 140, sy];
+    const c = C(th), dx = S[0] - c[0], dy = S[1] - c[1], dl = Math.hypot(dx, dy);
+    const hit = [c[0] + dx / dl * R, c[1] + dy / dl * R];
+    let p, a = 1;
+    if (t < th) { const u = E.in(clamp((t - t0) / .7)); p = [lerp(S[0], hit[0], u), lerp(S[1], hit[1], u)]; }
+    else {
+      const u = (t - th) / .7, ang = Math.atan2(dy, dx) + (hash(t0) - .5) * 1.2;
+      p = [hit[0] + Math.cos(ang) * 260 * E.out(clamp(u)), hit[1] + Math.sin(ang) * 260 * E.out(clamp(u)) - 60 * u];
+      a = 1 - clamp(u);
+      if (t - th < .3) { flash = Math.max(flash, 1 - (t - th) / .3); glowDot(ctx, hit[0], hit[1], 90, PAL.gold, .5 * (1 - (t - th) / .3)); }
+    }
+    if (a > 0) text(ctx, w, p[0], p[1], { size: 36, weight: 800, color: '#8a8a8a', spacing: 2, glow: .2, alpha: a });
+  }
+  // щит
+  ctx.save();
+  ctx.strokeStyle = css(PAL.gold, .08 + .5 * flash); ctx.lineWidth = 3;
+  ctx.shadowColor = css(PAL.gold); ctx.shadowBlur = 20 * flash;
+  ctx.beginPath(); ctx.arc(x, GY - 150, R, 0, Math.PI * 2); ctx.stroke();
+  ctx.restore();
+  const arrived = seg(t, 4.9, 5.3, E.back);
+  let pose = Object.assign(walk(x / 48), { head: -.05 });
+  pose = mix(POSE.stand, pose, seg(t, .3, .5));
+  pose = mix(pose, POSE.cheer, arrived);
+  fig(ctx, { x, y: GY, s: 250, pose, color: mixC(PAL.white, PAL.gold, seg(t, 4.7, 5.3)) });
+}
+
+/* ---------- 4. Финал ---------- */
+function s4(ctx, t) {
+  glowDot(ctx, W / 2, 900, 420 * seg(t, .2, 1.4, E.out), PAL.gold, .12);
+  caption(ctx, 'Your time will come.', W / 2, 900, t, .3, undefined, { size: 72, weight: 800 });
+}
+
+const TL = timeline([
+  { dur: 5.9, draw: s1 },
+  { dur: 5.6, draw: s2 },
+  { dur: 5.9, draw: s3 },
+  { dur: 2.6, draw: s4, bg: { spot: .3 } },
+]);
+window.TOTAL = TL.total;
+window.SCENES = TL.list.map(s => s.start);
+window.render = T => TL.draw(ctx, T);
+
+document.fonts.load('700 40px Manrope', 'Aa').then(() => document.fonts.load('800 40px Manrope', 'Aa')).then(() => {
+  window.READY = true;
+  const q = new URLSearchParams(location.search);
+  if (q.has('t')) render(+q.get('t'));
+  else if (q.has('play')) { document.body.classList.add('preview'); const t0 = performance.now(); const loop = () => { render(((performance.now() - t0) / 1000) % TL.total); requestAnimationFrame(loop); }; loop(); }
+  else render(0.8);
+});
+</script>
+</body>
+</html>

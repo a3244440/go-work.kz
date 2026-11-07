@@ -13,3 +13,4 @@ ffmpeg -y -i ep01.mp4 -i ep01.wav -map 0:v -map 1:a -c:v copy -c:a aac -b:a 256k
 Эпизоды:
 - `ep01` «Start Today»: Dreaming/Doing · The perfect moment · Roots · Fear · 1% every day.
 - `ep02` «Keep Going»: Procrastination · Run your own race · Comfort zone · Rest, not quit · The next step.
+- `ep03` «Your Time» (20 с): Chapter 1 vs 20 · Pressure · Ignore the noise.
