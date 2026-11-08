@@ -780,3 +780,21 @@ html:not(.has-robot) .robo-hit svg { display: block; filter: drop-shadow(0 10px 
 .cs-arrow:active { transform: scale(.94); }
 @media (max-width: 700px) { .cs-nav { gap: 10px; } .cs-dots { gap: 9px; } .cs-dots button { width: 15px; height: 15px; } .cases .cs-progress { display: none; } }
 .cs-chip.tg { background: #229ed9; color: #fff; } .cs-chip.tg svg { opacity: 1; }
+
+/* ===== Мобильное меню: сплошной экран поверх страницы =====
+   Размытие шапки (backdrop-filter) делало её «рамкой» для меню, и меню не растягивалось
+   на весь экран: пункты наезжали на страницу. Пока меню открыто, размытие выключено,
+   фон сплошной, страница не прокручивается, робот и кнопка WhatsApp спрятаны. */
+@media (max-width: 1080px) {
+  html.menu-open, html.menu-open body { overflow: hidden; }
+  html.menu-open .nav, html.menu-open .home .nav:not(.scrolled) { background: var(--bg); backdrop-filter: none; -webkit-backdrop-filter: none; color: var(--ink); }
+  html.menu-open .nav .logo, html.menu-open .home .nav:not(.scrolled) .logo { color: var(--ink); }
+  html.menu-open .home .nav:not(.scrolled) .logo-mark { background: var(--ink); color: var(--lime); }
+  html.menu-open .home .nav:not(.scrolled) .btn-ink { background: var(--ink); color: #fff; }
+  html.menu-open .home .nav:not(.scrolled) .burger { background: var(--ink); }
+  html.menu-open .home .nav:not(.scrolled) .burger span { background: #fff; }
+  .nav-links { height: 100vh; height: 100dvh; overflow-y: auto; overscroll-behavior: contain; justify-content: flex-start; padding-top: 110px; }
+  .nav-links.open { color: var(--ink); }
+  .nav-links a { border-bottom: 1px solid var(--line); padding-block: 14px; }
+  html.menu-open .companion, html.menu-open .robo-hit, html.menu-open .robo-tip, html.menu-open .robo-panel, html.menu-open .wa-float { visibility: hidden; }
+}

@@ -17,7 +17,13 @@ burger.addEventListener('click', () => {
   const open = burger.getAttribute('aria-expanded') !== 'true';
   burger.setAttribute('aria-expanded', open);
   links.classList.toggle('open', open);
+  document.documentElement.classList.toggle('menu-open', open); // меню на весь экран: страница под ним не прокручивается
 });
+links.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => {
+  burger.setAttribute('aria-expanded', 'false');
+  links.classList.remove('open');
+  document.documentElement.classList.remove('menu-open');
+}));
 
 const groups = new Map();
 document.querySelectorAll('.reveal').forEach((el) => {

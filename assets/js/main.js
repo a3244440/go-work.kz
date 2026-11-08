@@ -41,11 +41,13 @@ burger.addEventListener('click', () => {
   const open = burger.getAttribute('aria-expanded') !== 'true';
   burger.setAttribute('aria-expanded', open);
   navLinks.classList.toggle('open', open);
+  document.documentElement.classList.toggle('menu-open', open); // меню на весь экран: страница под ним не прокручивается
 });
 navLinks.querySelectorAll('a').forEach((a) =>
   a.addEventListener('click', () => {
     burger.setAttribute('aria-expanded', 'false');
     navLinks.classList.remove('open');
+    document.documentElement.classList.remove('menu-open');
   })
 );
 
