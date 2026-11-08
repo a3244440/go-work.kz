@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Stickman EP05 — Trust the Process</title>
+<style>
+  @font-face { font-family: Manrope; font-weight: 700; src: url(../fonts/manrope-latin-700-normal.woff2) format('woff2'); }
+  @font-face { font-family: Manrope; font-weight: 800; src: url(../fonts/manrope-latin-800-normal.woff2) format('woff2'); }
+  html, body { margin: 0; background: #000; }
+  canvas { display: block; width: 1080px; height: 1920px; }
+  body.preview canvas { width: auto; height: 100vh; margin: 0 auto; }
+</style>
+</head>
+<body>
+<canvas id="c" width="1080" height="1920"></canvas>
+<script src="engine.js"></script>
+<script>
+const { W, H, clamp, lerp, E, seg, hash, PAL, POSE, mix, walk, fig, text, caption, line, block, star, glowDot, css, mixC, shade, timeline } = SM;
+const ctx = document.getElementById('c').getContext('2d');
+const WIND = { lean: -.1, head: -.1, aN: 3.0, fN: .2, aF: 2.9, fF: .2, tN: .25, kN: .05, tF: -.25, kF: .05 };
+const STRIKE = { lean: .3, head: .2, aN: 1.55, fN: 0, aF: 1.45, fF: 0, tN: .35, kN: .15, tF: -.3, kF: .1 };
+const swing = u => (u < .6 ? mix(STRIKE, WIND, E.out(u / .6)) : mix(WIND, STRIKE, E.in((u - .6) / .4)));
+
+/* ---------- 1. Камнетёс: 101-й удар ---------- */
+const ROCK = [[-190, 0], [-205, -120], [-160, -250], [-60, -330], [70, -320], [170, -240], [205, -110], [190, 0]];
+const CRACK = [[10, -340], [-15, -270], [20, -200], [-10, -130], [25, -60], [0, 10]];
+function rockPath(ctx, cx, GY) { ctx.beginPath(); ROCK.forEach(([x, y], i) => (i ? ctx.lineTo : ctx.moveTo).call(ctx, cx + x, GY + y)); ctx.closePath(); }
+function drawRock(ctx, cx, GY, side, dx, rot) {
+  ctx.save();
+  ctx.translate(cx + dx, GY); ctx.rotate(rot); ctx.translate(-cx, -GY);
+  if (side) { // половинка по линии трещины
+    ctx.beginPath(); ctx.moveTo(cx + side * 400, GY - 400);
+    CRACK.forEach(([x, y]) => ctx.lineTo(cx + x, GY + y)); ctx.lineTo(cx + side * 400, GY + 20); ctx.closePath(); ctx.clip();
+  }
+  rockPath(ctx, cx, GY);
+  const g = ctx.createLinearGradient(cx - 200, GY - 330, cx + 200, GY);
+  g.addColorStop(0, '#b4b4b4'); g.addColorStop(1, '#2c2c2c');
+  ctx.fillStyle = g; ctx.shadowColor = 'rgba(255,255,255,.18)'; ctx.shadowBlur = 30; ctx.fill();
+  ctx.restore();
+}
+function hammer(ctx, J, col) {
+  const [ex, ey] = J.elN, [hx, hy] = J.handN, d = Math.hypot(hx - ex, hy - ey) || 1, ux = (hx - ex) / d, uy = (hy - ey) / d;
+  const tx = hx + ux * 100, ty = hy + uy * 100;
+  line(ctx, [[hx - ux * 12, hy - uy * 12], [tx, ty]], { color: '#8a6a3a', w: 9 });
+  ctx.save(); ctx.translate(tx, ty); ctx.rotate(Math.atan2(uy, ux));
+  ctx.fillStyle = css(col); ctx.shadowColor = css(col, .5); ctx.shadowBlur = 16;
+  ctx.beginPath(); ctx.roundRect(-14, -30, 28, 60, 5); ctx.fill();
+  ctx.restore();
+  return [tx, ty];
+}
+function s1(ctx, t) {
+  const GY = 1300, CX = 680;
+  caption(ctx, "It wasn't the last hit", W / 2, 430, t, .25, undefined, { size: 50 });
+  caption(ctx, 'that broke the stone.', W / 2, 495, t, .7, undefined, { size: 50 });
+  caption(ctx, 'It was all of them.', W / 2, 600, t, 5.0, undefined, { size: 58, weight: 800, color: PAL.gold });
+  line(ctx, [[40, GY], [1040, GY]], { color: '#3c3c3c', w: 4 });
+  const split = seg(t, 4.75, 5.4, E.out);
+  if (t < 4.72) drawRock(ctx, CX, GY, 0, 0, 0);
+  else { drawRock(ctx, CX, GY, -1, -70 * split, -.12 * split); drawRock(ctx, CX, GY, 1, 70 * split, .12 * split); }
+  // трещина вспыхивает золотом
+  const cr = seg(t, 4.62, 4.75);
+  if (cr > 0 && split < 1) {
+    const n = Math.ceil(CRACK.length * cr);
+    line(ctx, CRACK.slice(0, Math.max(2, n)).map(([x, y]) => [CX + x, GY + y]), { color: PAL.gold, w: 6, glow: 30, alpha: 1 - split });
+  }
+  if (t > 4.7) glowDot(ctx, CX, GY - 170, 420, PAL.gold, .25 * (1 - seg(t, 4.7, 6.2)));
+  // счётчик ударов
+  const n = t < 4.0 ? Math.max(1, Math.round(1 + 99 * E.in(clamp((t - .4) / 3.6)))) : (t < 4.6 ? 100 : 101);
+  text(ctx, 'HIT', W / 2, 700, { size: 24, weight: 800, color: '#7a7a7a', spacing: 4, glow: 0 });
+  text(ctx, String(n), W / 2, 765, { size: 70, weight: 800, color: n > 100 ? PAL.gold : '#cfcfcf', glow: n > 100 ? 1.2 : .3 });
+  // удары: ритм 0.42 с, последний — отдельный, мощный
+  let pose, impact = 0;
+  if (t < .3) pose = POSE.stand;
+  else if (t < 4.05) { const u = ((t - .3) % .42) / .42; pose = swing(u); if (u > .97 || u < .06) impact = 1; }
+  else if (t < 4.62) { const u = seg(t, 4.05, 4.62, E.lin); pose = u < .7 ? mix(STRIKE, WIND, E.out(u / .7)) : mix(WIND, STRIKE, E.in((u - .7) / .3)); }
+  else pose = mix(STRIKE, POSE.cheer, seg(t, 5.4, 5.9, E.back));
+  const gold = seg(t, 4.7, 5.3);
+  const J = fig(ctx, { x: 360, y: GY, s: 250, pose, color: mixC(PAL.white, PAL.gold, gold) });
+  if (t < 5.4) { const hp = hammer(ctx, J, mixC('#bdbdbd', PAL.gold, gold)); if (impact) glowDot(ctx, hp[0] + 20, hp[1], 70, '#ffffff', .35); }
+}
+
+/* ---------- 2. Айсберг ---------- */
+const BERG = [[-110, 0], [-260, 90], [-380, 260], [-330, 470], [-160, 620], [90, 650], [300, 520], [390, 300], [270, 110], [120, 0]];
+const LABELS = [['FAILURES', -60, 120], ['SLEEPLESS NIGHTS', 0, 210], ['DISCIPLINE', -120, 300], ['REJECTION', 140, 330], ['SACRIFICE', -20, 410], ['PATIENCE', 30, 510]];
+function s2(ctx, t) {
+  const WL = 1000, CX = 520;
+  caption(ctx, 'What people see.', W / 2, 470, t, .25, undefined, { size: 54 });
+  caption(ctx, 'What it really took.', W / 2, 545, t, 2.6, undefined, { size: 54, weight: 800, color: PAL.gold });
+  // вода
+  const g = ctx.createLinearGradient(0, WL, 0, H);
+  g.addColorStop(0, '#121518'); g.addColorStop(1, '#000');
+  ctx.fillStyle = g; ctx.fillRect(0, WL, W, H - WL);
+  // подводная часть
+  const rv = seg(t, 2.3, 3.2);
+  if (rv > 0) {
+    ctx.save(); ctx.globalAlpha = rv;
+    ctx.beginPath(); BERG.forEach(([x, y], i) => (i ? ctx.lineTo : ctx.moveTo).call(ctx, CX + x, WL + y)); ctx.closePath();
+    const bg = ctx.createLinearGradient(0, WL, 0, WL + 650);
+    bg.addColorStop(0, '#9aa0a6'); bg.addColorStop(1, '#2a2e33');
+    ctx.fillStyle = bg; ctx.shadowColor = 'rgba(180,200,220,.25)'; ctx.shadowBlur = 40; ctx.fill();
+    ctx.restore();
+    LABELS.forEach(([l, dx, dy], i) => caption(ctx, l, CX + dx, WL + dy, t, 3.0 + i * .33, undefined, { size: 30, weight: 800, color: '#101214', glow: 0, spacing: 2 }));
+  }
+  // верхушка
+  ctx.save();
+  ctx.beginPath(); ctx.moveTo(CX - 110, WL); ctx.lineTo(CX - 40, WL - 120); ctx.lineTo(CX + 20, WL - 150); ctx.lineTo(CX + 120, WL); ctx.closePath();
+  const tg = ctx.createLinearGradient(0, WL - 150, 0, WL);
+  tg.addColorStop(0, '#f2f2f2'); tg.addColorStop(1, '#8a8a8a');
+  ctx.fillStyle = tg; ctx.shadowColor = 'rgba(255,255,255,.3)'; ctx.shadowBlur = 30; ctx.fill();
+  ctx.restore();
+  line(ctx, [[0, WL], [W, WL]], { color: '#5a6066', w: 3 });
+  fig(ctx, { x: CX + 10, y: WL - 146, s: 150, pose: mix(POSE.stand, POSE.cheer, seg(t, .4, .8, E.back)), color: PAL.gold });
+  caption(ctx, 'SUCCESS', CX + 10, WL - 360, t, .6, undefined, { size: 30, weight: 800, color: PAL.gold, spacing: 5 });
+}
+
+/* ---------- 3. Отпусти прошлое ---------- */
+function s3(ctx, t) {
+  caption(ctx, 'Let go of what', W / 2, 470, t, .25, undefined, { size: 54 });
+  caption(ctx, 'weighs you down.', W / 2, 545, t, 3.4, undefined, { size: 54, weight: 800, color: PAL.gold });
+  const gy = x => 1500 - (x - 40) * .45, SL = Math.atan(.45);
+  line(ctx, [[40, gy(40)], [1040, gy(1040)]], { color: '#4a4a4a', w: 4 });
+  let x, dir = 1, pose;
+  if (t < 3.0) { x = lerp(340, 440, seg(t, 0, 3.0, E.lin)); pose = Object.assign(walk(x / 14, .45), { lean: .6, head: -.15, aN: .5, fN: .7, aF: -.95, fF: .1 }); }
+  else if (t < 3.9) { x = 440; dir = t < 3.25 ? 1 : -1; pose = mix(Object.assign({}, POSE.stand, { lean: .6, aF: -.95 }), POSE.lookDown, seg(t, 3.0, 3.3)); }
+  else { x = lerp(440, 880, seg(t, 4.0, 6.4, E.inOut)); pose = mix(POSE.stand, walk(x / 45, 1, .35), seg(t, 3.9, 4.15)); }
+  // мешок «прошлое»
+  const slide = seg(t, 3.45, 4.6, E.in);
+  const bx = lerp(x - 190, -260, slide), brot = -t * 0 - slide * 5;
+  const by = gy(bx);
+  ctx.save();
+  ctx.translate(bx, by - 70); ctx.rotate(brot + (slide ? 0 : -SL * .5));
+  const g = ctx.createRadialGradient(-30, -30, 10, 0, 0, 110);
+  g.addColorStop(0, '#8a8a8a'); g.addColorStop(1, '#262626');
+  ctx.fillStyle = g; ctx.shadowColor = 'rgba(255,255,255,.15)'; ctx.shadowBlur = 24;
+  ctx.beginPath(); ctx.ellipse(0, 0, 120, 78, 0, 0, Math.PI * 2); ctx.fill();
+  ctx.restore();
+  text(ctx, 'THE PAST', bx, by - 70, { size: 28, weight: 800, color: '#d0d0d0', spacing: 2, glow: .2, alpha: 1 - slide });
+  const J = fig(ctx, { x, y: gy(x), s: 250, dir, pose, color: mixC(PAL.white, PAL.gold, seg(t, 4.3, 5.0)) });
+  // верёвка
+  const rope = 1 - seg(t, 3.3, 3.5);
+  if (rope > 0 && slide < .2) line(ctx, [J.handF, [bx + 100, by - 100]], { color: '#9a9a9a', w: 4, alpha: rope });
+}
+
+/* ---------- 4. Ты вчерашний ---------- */
+function s4(ctx, t) {
+  const GY = 1250, SPD = 520;
+  caption(ctx, 'Your only competition', W / 2, 470, t, .25, undefined, { size: 54 });
+  caption(ctx, 'is who you were yesterday.', W / 2, 545, t, 2.9, undefined, { size: 50, weight: 800, color: PAL.gold });
+  line(ctx, [[0, GY], [W, GY]], { color: '#444', w: 4 });
+  const off = t * SPD;
+  for (let x = -((off % 120) + 120) % 120; x < W; x += 120) line(ctx, [[x, GY + 26], [x + 44, GY + 26]], { color: '#2a2a2a', w: 4 });
+  const gx = lerp(450, 370, seg(t, 1.0, 4.0, E.out)), tx = lerp(450, 650, seg(t, 1.0, 4.0, E.out)), la = seg(t, 1.6, 2.0);
+  fig(ctx, { x: gx, y: GY, s: 240, pose: walk(t * 11 + 1.3, 1, 1), color: '#9a9a9a', alpha: .35, glow: .3 });
+  text(ctx, 'YESTERDAY', gx + 20, GY - 330, { size: 22, weight: 800, color: '#6a6a6a', spacing: 3, glow: 0, alpha: la });
+  const gold = seg(t, 3.2, 3.9);
+  fig(ctx, { x: tx, y: GY, s: 240, pose: walk(t * 12, 1, 1), color: mixC(PAL.white, PAL.gold, gold) });
+  text(ctx, 'TODAY', tx + 20, GY - 330, { size: 22, weight: 800, color: mixC('#bbbbbb', PAL.gold, gold), spacing: 3, glow: .2, alpha: la });
+}
+
+/* ---------- 5. Финал ---------- */
+function s5(ctx, t) {
+  glowDot(ctx, W / 2, 900, 420 * seg(t, .2, 1.4, E.out), PAL.gold, .12);
+  caption(ctx, 'Trust the process.', W / 2, 900, t, .3, undefined, { size: 76, weight: 800 });
+}
+
+const TL = timeline([
+  { dur: 6.6, draw: s1 },
+  { dur: 6.2, draw: s2 },
+  { dur: 6.4, draw: s3 },
+  { dur: 5.6, draw: s4 },
+  { dur: 2.6, draw: s5, bg: { spot: .3 } },
+]);
+window.TOTAL = TL.total;
+window.SCENES = TL.list.map(s => s.start);
+window.render = T => TL.draw(ctx, T);
+
+document.fonts.load('700 40px Manrope', 'Aa').then(() => document.fonts.load('800 40px Manrope', 'Aa')).then(() => {
+  window.READY = true;
+  const q = new URLSearchParams(location.search);
+  if (q.has('t')) render(+q.get('t'));
+  else if (q.has('play')) { document.body.classList.add('preview'); const t0 = performance.now(); const loop = () => { render(((performance.now() - t0) / 1000) % TL.total); requestAnimationFrame(loop); }; loop(); }
+  else render(0.8);
+});
+</script>
+</body>
+</html>
