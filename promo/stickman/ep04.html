@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Stickman EP04 — Rise Again</title>
+<style>
+  @font-face { font-family: Manrope; font-weight: 700; src: url(../fonts/manrope-latin-700-normal.woff2) format('woff2'); }
+  @font-face { font-family: Manrope; font-weight: 800; src: url(../fonts/manrope-latin-800-normal.woff2) format('woff2'); }
+  html, body { margin: 0; background: #000; }
+  canvas { display: block; width: 1080px; height: 1920px; }
+  body.preview canvas { width: auto; height: 100vh; margin: 0 auto; }
+</style>
+</head>
+<body>
+<canvas id="c" width="1080" height="1920"></canvas>
+<script src="engine.js"></script>
+<script>
+const { W, H, clamp, lerp, E, seg, hash, PAL, POSE, mix, walk, fig, text, caption, line, block, star, glowDot, css, mixC, shade, timeline } = SM;
+const ctx = document.getElementById('c').getContext('2d');
+const FALLEN = { lean: 0, head: -.3, aN: 2.7, fN: .1, aF: 2.5, fF: .1, tN: .12, kN: .3, tF: -.1, kF: .2 };
+
+/* ---------- 1. Fall seven times, stand up eight ---------- */
+function s1(ctx, t) {
+  const GY = 1250, CYC = .62, C0 = .6;
+  caption(ctx, 'Fall seven times,', W / 2, 470, t, .25, undefined, { size: 54 });
+  caption(ctx, 'stand up eight.', W / 2, 545, t, 4.7, undefined, { size: 54, weight: 800, color: PAL.gold });
+  line(ctx, [[40, GY], [1040, GY]], { color: '#3c3c3c', w: 4 });
+  let x = 150, rot = 1.5, pose = FALLEN, falls = 0, rises = 0;
+  // первый подъём
+  const r0 = seg(t, .2, .55);
+  if (t >= .2) { rot = 1.5 * (1 - r0); pose = mix(mix(FALLEN, POSE.crouch, Math.sin(Math.PI * r0)), POSE.stand, r0 * r0); if (r0 >= 1) rises = 1; }
+  for (let k = 0; k < 7; k++) {
+    const c = t - (C0 + k * CYC);
+    if (c < 0) break;
+    const xs = 150 + k * 60;
+    if (c < .17) { x = xs + 60 * c / .17; pose = walk(x / 45); rot = 0; }
+    else if (c < .35) { x = xs + 60; const u = E.in((c - .17) / .18); rot = 1.5 * u; pose = mix(walk(x / 45), FALLEN, u); }
+    else if (c < .42) { x = xs + 60; rot = 1.5; pose = FALLEN; falls = k + 1; }
+    else { x = xs + 60; falls = k + 1; const u = clamp((c - .42) / .2); rot = 1.5 * (1 - E.out(u)); pose = mix(mix(FALLEN, POSE.crouch, Math.sin(Math.PI * u)), POSE.stand, u * u); if (u >= 1) rises = k + 2; }
+  }
+  const end = C0 + 7 * CYC;
+  if (t > end) { x = lerp(570, 820, seg(t, end + .1, end + 1.2, E.lin)); pose = mix(POSE.stand, walk(x / 45), seg(t, end + .1, end + .3) * (1 - seg(t, end + 1.1, end + 1.3))); pose = mix(pose, POSE.cheer, seg(t, end + 1.2, end + 1.5, E.back)); }
+  fig(ctx, { x, y: GY, s: 250, pose, rot, color: mixC(PAL.white, PAL.gold, seg(t, end, end + .6)) });
+  // счётчики
+  text(ctx, 'FALLS', 400, 700, { size: 24, weight: 800, color: '#7a7a7a', spacing: 4, glow: 0 });
+  text(ctx, String(falls), 400, 760, { size: 64, weight: 800, color: '#9a9a9a', glow: .3 });
+  text(ctx, 'RISES', 680, 700, { size: 24, weight: 800, color: '#7a7a7a', spacing: 4, glow: 0 });
+  text(ctx, String(rises), 680, 760, { size: 64, weight: 800, color: PAL.gold });
+}
+
+/* ---------- 2. Life outside the screen ---------- */
+const PHONE = { lean: .1, head: .65, aN: .55, fN: 1.45, aF: .45, fF: 1.55, tN: .04, kN: .02, tF: -.04, kF: .02 };
+function s2(ctx, t) {
+  const GY = 1250, FX = 420;
+  caption(ctx, 'Life is happening', W / 2, 470, t, .25, undefined, { size: 54 });
+  caption(ctx, 'outside your screen.', W / 2, 545, t, 3.9, undefined, { size: 54, weight: 800, color: PAL.gold });
+  // солнце летает по дуге — проходят дни и годы
+  const c = 5.5 * seg(t, .5, 4.3, E.inOut), f = c - Math.floor(c);
+  const a = Math.PI + Math.PI * f, sx = 540 + 500 * Math.cos(a), sy = GY + 500 * Math.sin(a);
+  const up = Math.sin(Math.PI * f), gold = seg(t, 4.0, 4.6);
+  glowDot(ctx, W / 2, GY - 200, 700, mixC('#ffffff', PAL.gold, gold), .07 * up);
+  const sc = mixC('#e8e8e8', PAL.gold, gold);
+  glowDot(ctx, sx, sy, 120, sc, .35 * up);
+  ctx.save(); ctx.globalAlpha = clamp(up * 3); ctx.fillStyle = css(sc); ctx.shadowColor = css(sc); ctx.shadowBlur = 30;
+  ctx.beginPath(); ctx.arc(sx, sy, 26, 0, Math.PI * 2); ctx.fill(); ctx.restore();
+  // земля поверх заката
+  ctx.fillStyle = '#000'; ctx.fillRect(0, GY, W, 500);
+  line(ctx, [[40, GY], [1040, GY]], { color: '#3c3c3c', w: 4 });
+  text(ctx, 'YEAR ' + (2026 + Math.floor(c)), W / 2, 660, { size: 28, weight: 800, color: '#7a7a7a', spacing: 4, glow: 0 });
+  // герой: в телефоне, сереет → роняет телефон и смотрит вверх
+  const look = seg(t, 3.9, 4.4);
+  let pose = mix(Object.assign({}, PHONE, { head: .65 + .04 * Math.sin(t * 2) }), POSE.lookUp, look);
+  pose = mix(pose, Object.assign({}, POSE.cheer, { head: -.45 }), seg(t, 4.8, 5.4) * .6);
+  const col = mixC(mixC(PAL.white, '#5f5f5f', seg(t, .8, 3.8)), PAL.gold, seg(t, 4.3, 5.0));
+  const J = fig(ctx, { x: FX, y: GY, s: 250, pose, color: col });
+  const drop = seg(t, 3.9, 4.25, E.in);
+  const [hx, hy] = J.handN;
+  const px = t < 3.9 ? hx : lerp(hx, FX + 70, drop), py = t < 3.9 ? hy : lerp(hy, GY - 6, drop);
+  ctx.save();
+  if (drop < 1) glowDot(ctx, px + 6, py - 6, 80, '#7fb6ff', .35 * (1 - drop));
+  ctx.translate(px, py); ctx.rotate(drop * 1.57);
+  ctx.fillStyle = drop < 1 ? '#cfe2ff' : '#3a3a3a'; ctx.shadowColor = '#7fb6ff'; ctx.shadowBlur = 20 * (1 - drop);
+  ctx.beginPath(); ctx.roundRect(-2, -28, 18, 32, 4); ctx.fill();
+  ctx.restore();
+}
+
+/* ---------- 3. Sharpen the axe ---------- */
+function tree(ctx, x, GY, notch, rot, col) {
+  ctx.save();
+  ctx.translate(x, GY); ctx.rotate(rot); ctx.scale(.88, .88);
+  // крона
+  for (const [dx, dy, r] of [[-20, -455, 70], [55, -445, 70], [-75, -525, 90], [65, -545, 95], [0, -625, 100]]) {
+    const g = ctx.createRadialGradient(dx - r * .35, dy - r * .4, r * .1, dx, dy, r);
+    g.addColorStop(0, css(mixC(col, [255, 255, 255], .25))); g.addColorStop(1, css(shade(col, .6)));
+    ctx.fillStyle = g; ctx.shadowColor = css(col, .25); ctx.shadowBlur = 24;
+    ctx.beginPath(); ctx.arc(dx, dy, r, 0, Math.PI * 2); ctx.fill();
+  }
+  const g = ctx.createLinearGradient(-30, 0, 30, 0);
+  g.addColorStop(0, css(col)); g.addColorStop(1, css(shade(col, .55)));
+  ctx.fillStyle = g; ctx.shadowColor = css(col, .3); ctx.shadowBlur = 20;
+  ctx.beginPath(); ctx.roundRect(-30, -470, 60, 470, 10); ctx.fill();
+  if (notch > 0) { ctx.shadowBlur = 0; ctx.fillStyle = '#050505'; ctx.beginPath(); ctx.moveTo(-31, -110); ctx.lineTo(-31 + notch, -85); ctx.lineTo(-31, -60); ctx.fill(); }
+  ctx.restore();
+}
+function axe(ctx, J, col, a = 1) {
+  if (a <= 0) return;
+  const [ex, ey] = J.elN, [hx, hy] = J.handN, d = Math.hypot(hx - ex, hy - ey) || 1, ux = (hx - ex) / d, uy = (hy - ey) / d;
+  const tx = hx + ux * 95, ty = hy + uy * 95;
+  ctx.save(); ctx.globalAlpha = a;
+  line(ctx, [[hx - ux * 15, hy - uy * 15], [tx, ty]], { color: '#8a6a3a', w: 9 });
+  ctx.translate(tx, ty); ctx.rotate(Math.atan2(uy, ux));
+  ctx.fillStyle = css(col); ctx.shadowColor = css(col, .6); ctx.shadowBlur = 16;
+  ctx.beginPath(); ctx.moveTo(-14, -6); ctx.lineTo(12, -6); ctx.lineTo(22, 26); ctx.lineTo(-8, 26); ctx.closePath(); ctx.fill();
+  ctx.restore();
+}
+const WIND = { lean: -.1, head: -.1, aN: 3.0, fN: .2, aF: 2.9, fF: .2, tN: .25, kN: .05, tF: -.25, kF: .05 };
+const STRIKE = { lean: .25, head: .15, aN: 1.45, fN: 0, aF: 1.35, fF: 0, tN: .3, kN: .1, tF: -.25, kF: .1 };
+const SHARPEN = { lean: .25, head: .4, aN: 1.25, fN: .3, aF: 1.15, fF: .35, tN: 1.5, kN: 1.5, tF: 1.4, kF: 1.45, hip: .25 };
+function chop(u) { return u < .55 ? mix(STRIKE, WIND, E.out(u / .55)) : mix(WIND, STRIKE, E.in((u - .55) / .45)); }
+function s3(ctx, t) {
+  const GY = 1300;
+  caption(ctx, 'Too busy to sharpen the axe?', W / 2, 470, t, .25, undefined, { size: 48 });
+  caption(ctx, 'Sharpen it. Then cut.', W / 2, 545, t, 3.6, undefined, { size: 54, weight: 800, color: PAL.gold });
+  line(ctx, [[40, GY], [1040, GY]], { color: '#3c3c3c', w: 4 });
+  // левый рубит тупым топором без остановки
+  const lt = Math.max(0, t - .3), lu = (lt % .7) / .7;
+  tree(ctx, 360, GY, Math.min(14, lt * 2.4), 0, '#6f6f6f');
+  const LJ = fig(ctx, { x: 215, y: GY, s: 240, pose: t < .3 ? POSE.stand : chop(lu), color: mixC(PAL.white, '#6a6a6a', seg(t, 1, 5)) });
+  axe(ctx, LJ, '#6a6a6a');
+  // правый сначала точит
+  const hits = [4.25, 4.6, 4.95];
+  let notch = 0; hits.forEach(h => { notch += 13 * seg(t, h - .05, h); });
+  const fall = seg(t, 5.05, 5.9, E.in);
+  // точильный круг
+  const WX = 640, WY = GY - 90;
+  const wa = seg(t, 3.0, 3.4);
+  ctx.save(); ctx.globalAlpha = 1 - .6 * wa;
+  line(ctx, [[WX - 40, GY], [WX, WY]], { color: '#555', w: 8 }); line(ctx, [[WX + 40, GY], [WX, WY]], { color: '#555', w: 8 });
+  ctx.strokeStyle = '#9a9a9a'; ctx.lineWidth = 8; ctx.shadowColor = 'rgba(255,255,255,.3)'; ctx.shadowBlur = 14;
+  ctx.beginPath(); ctx.arc(WX, WY, 52, 0, Math.PI * 2); ctx.stroke();
+  const spin = t * 14;
+  for (let i = 0; i < 3; i++) line(ctx, [[WX, WY], [WX + Math.cos(spin + i * 2.09) * 48, WY + Math.sin(spin + i * 2.09) * 48]], { color: '#777', w: 4 });
+  ctx.restore();
+  block(ctx, 505, GY - 62, 70, 62, { color: '#5a5a5a', glow: 8 });
+  let x = 540, pose;
+  if (t < 3.0) pose = Object.assign({}, SHARPEN, { aN: 1.25 + .08 * Math.sin(t * 9), aF: 1.15 + .08 * Math.sin(t * 9) });
+  else if (t < 3.4) pose = mix(SHARPEN, POSE.stand, seg(t, 3.0, 3.4));
+  else if (t < 4.0) { x = lerp(540, 745, seg(t, 3.4, 4.0, E.lin)); pose = mix(POSE.stand, walk(x / 45), seg(t, 3.4, 3.55) * (1 - seg(t, 3.85, 4.0))); }
+  else if (t < 5.0) { x = 745; const u = clamp((t - 3.95) / .35) < 1 ? (t - 3.95) / .35 : ((t - 3.95) % .35) / .35; pose = chop(clamp(u)); }
+  else { x = 745; pose = mix(STRIKE, POSE.cheer, seg(t, 5.6, 6.0, E.back)); }
+  tree(ctx, 885, GY, notch, fall * 1.45, '#8c8c8c');
+  if (fall > .98) glowDot(ctx, 1000, GY, 220, '#ffffff', .1);
+  const gold = seg(t, 5.5, 6.0);
+  const RJ = fig(ctx, { x, y: GY, s: 240, pose, color: mixC(PAL.white, PAL.gold, gold) });
+  axe(ctx, RJ, mixC('#bdbdbd', PAL.gold, Math.max(gold, t < 3.0 ? .2 + .3 * seg(t, .3, 3.0) : .5)), 1 - seg(t, 5.55, 5.75));
+  // искры у круга
+  if (t > .3 && t < 3.0) for (let i = 0; i < 26; i++) {
+    const t0 = .3 + i * .1, u = (t - t0) / .45;
+    if (u < 0 || u > 1) continue;
+    const vx = 120 + 220 * hash(i), vy = -260 - 200 * hash(i + 9);
+    glowDot(ctx, WX - 45 + vx * u * .45, WY + 10 + (vy * u + 700 * u * u) * .45, 9, PAL.gold, 1 - u);
+  }
+}
+
+/* ---------- 4. Be the light ---------- */
+function s4(ctx, t) {
+  const GY = 1300;
+  caption(ctx, 'No one is coming', W / 2, 430, t, .25, undefined, { size: 50 });
+  caption(ctx, 'to light your path.', W / 2, 495, t, .7, undefined, { size: 50 });
+  caption(ctx, 'Be the light.', W / 2, 600, t, 3.4, undefined, { size: 62, weight: 800, color: PAL.gold });
+  const x = lerp(110, 860, seg(t, .2, 6.0, E.lin));
+  const J0 = fig(ctx, { x, y: GY, s: 250, pose: walk(x / 45), alpha: 0 });
+  const LX = J0.handN[0] + 6, LY = J0.handN[1] + 38;
+  glowDot(ctx, LX, GY - 120, 380, PAL.gold, .16);
+  // каменная тропа: светится рядом с фонарём и остаётся тлеть позади
+  for (let sx = 30; sx < W; sx += 70) {
+    const d = Math.abs(sx - LX), near = clamp(1 - d / 320), behind = sx < LX ? .28 : 0;
+    const a = Math.max(near, behind);
+    if (a <= .01) continue;
+    block(ctx, sx, GY - 6, 56, 12, { color: mixC('#6a6a6a', PAL.gold, near), alpha: a, glow: 14 * near });
+  }
+  // за ним идут другие
+  for (const [k, lag, s] of [[0, 230, 210], [1, 420, 190]]) {
+    const a = seg(t, 3.0 + k * .5, 3.6 + k * .5) * .7;
+    if (a > 0) fig(ctx, { x: x - lag, y: GY, s, pose: walk((x - lag) / 42 + k), color: '#9a9a9a', alpha: a, glow: .4 });
+  }
+  // фонарь в руке
+  const pose = Object.assign(walk(x / 45), { aN: .55, fN: .2 });
+  const J = fig(ctx, { x, y: GY, s: 250, pose, color: mixC(PAL.white, PAL.gold, seg(t, 3.4, 4.2)) });
+  const [hx, hy] = J.handN;
+  line(ctx, [[hx, hy], [hx + 4, hy + 24]], { color: '#bbbbbb', w: 3 });
+  glowDot(ctx, hx + 4, hy + 46, 90, PAL.gold, .55);
+  block(ctx, hx - 12, hy + 24, 32, 44, { color: PAL.gold, glow: 40 });
+}
+
+/* ---------- 5. Финал ---------- */
+function s5(ctx, t) {
+  glowDot(ctx, W / 2, 900, 420 * seg(t, .2, 1.4, E.out), PAL.gold, .12);
+  caption(ctx, 'Rise again.', W / 2, 900, t, .3, undefined, { size: 80, weight: 800 });
+}
+
+const TL = timeline([
+  { dur: 6.4, draw: s1 },
+  { dur: 6.2, draw: s2 },
+  { dur: 6.6, draw: s3 },
+  { dur: 6.2, draw: s4, bg: { spot: .15 } },
+  { dur: 2.6, draw: s5, bg: { spot: .3 } },
+]);
+window.TOTAL = TL.total;
+window.SCENES = TL.list.map(s => s.start);
+window.render = T => TL.draw(ctx, T);
+
+document.fonts.load('700 40px Manrope', 'Aa').then(() => document.fonts.load('800 40px Manrope', 'Aa')).then(() => {
+  window.READY = true;
+  const q = new URLSearchParams(location.search);
+  if (q.has('t')) render(+q.get('t'));
+  else if (q.has('play')) { document.body.classList.add('preview'); const t0 = performance.now(); const loop = () => { render(((performance.now() - t0) / 1000) % TL.total); requestAnimationFrame(loop); }; loop(); }
+  else render(0.8);
+});
+</script>
+</body>
+</html>
