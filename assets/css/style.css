@@ -798,3 +798,11 @@ html:not(.has-robot) .robo-hit svg { display: block; filter: drop-shadow(0 10px 
   .nav-links a { border-bottom: 1px solid var(--line); padding-block: 14px; }
   html.menu-open .companion, html.menu-open .robo-hit, html.menu-open .robo-tip, html.menu-open .robo-panel, html.menu-open .wa-float { visibility: hidden; }
 }
+.w-gb { display: grid; place-items: center; background: linear-gradient(160deg, #fff 0%, #fdeeee 100%); padding: 18px; }
+.gb-ui { width: 100%; max-width: 340px; display: grid; gap: 8px; color: #1b1b1b; padding-top: 34px; }
+.w-gb .gb-h { font-size: clamp(1.05rem, .9rem + .55vw, 1.3rem); }
+.gb-bar { display: flex; gap: 12px; align-items: center; font-size: .72rem; color: #777; justify-content: flex-end; }
+.gb-bar i { font-style: normal; padding: 4px 10px; border-radius: 999px; background: #1b1b1b; color: #fff; }
+.gb-h { font-size: clamp(1.2rem, 1rem + .7vw, 1.5rem); line-height: 1.12; font-weight: 700; letter-spacing: -.03em; }
+.gb-row { display: flex; gap: 8px; } .gb-row span { font-size: .75rem; padding: 6px 10px; border-radius: 10px; background: #fff; box-shadow: inset 0 0 0 1px #f0c9cb; }
+.gb-btn { justify-self: start; font-size: .8rem; font-weight: 700; padding: 9px 16px; border-radius: 999px; background: #e30613; color: #fff; }
