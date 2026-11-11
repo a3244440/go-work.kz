@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>GO-WORK.KZ: сайт под ключ за 100 000 ₸</title>
+<style>
+@font-face{font-family:"Unb";font-weight:600;src:url(fonts/unbounded-cyrillic-600-normal.woff2);unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116}
+@font-face{font-family:"Unb";font-weight:600;src:url(fonts/unbounded-latin-600-normal.woff2);unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+20B8,U+2122,U+2190-2199,U+2212,U+2215,U+2713,U+2715}
+@font-face{font-family:"Unb";font-weight:700;src:url(fonts/unbounded-cyrillic-700-normal.woff2);unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116}
+@font-face{font-family:"Unb";font-weight:700;src:url(fonts/unbounded-latin-700-normal.woff2);unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+20B8,U+2122,U+2190-2199,U+2212,U+2215,U+2713,U+2715}
+@font-face{font-family:"Man";font-weight:500;src:url(fonts/manrope-cyrillic-500-normal.woff2);unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116}
+@font-face{font-family:"Man";font-weight:500;src:url(fonts/manrope-latin-500-normal.woff2);unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+20B8,U+2122,U+2190-2199,U+2212,U+2215,U+2713,U+2715}
+@font-face{font-family:"Man";font-weight:700;src:url(fonts/manrope-cyrillic-700-normal.woff2);unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116}
+@font-face{font-family:"Man";font-weight:700;src:url(fonts/manrope-latin-700-normal.woff2);unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+20B8,U+2122,U+2190-2199,U+2212,U+2215,U+2713,U+2715}
+@font-face{font-family:"Cor";font-style:italic;font-weight:600;src:url(fonts/cormorant-garamond-cyrillic-600-italic.woff2);unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116}
+@font-face{font-family:"Cor";font-style:italic;font-weight:600;src:url(fonts/cormorant-garamond-latin-600-italic.woff2);unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+20B8,U+2122,U+2190-2199,U+2212,U+2215,U+2713,U+2715}
+:root{--bg:#f1f1f1;--ink:#0d0d0d;--ink2:#4a4a4a;--mut:#8a8a8a;--lime:#d4ff3a;--or:#ff5a1f;--line:rgba(13,13,13,.1)}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1920px;overflow:hidden;background:var(--bg);font-family:"Man",sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}
+.sc{position:absolute;inset:0;overflow:hidden;visibility:hidden}
+.a{position:absolute}
+.h{font-family:"Unb";font-weight:700;letter-spacing:-.04em;line-height:1.02}
+.em{font-family:"Cor";font-style:italic;font-weight:600;color:var(--or);letter-spacing:-.01em}
+.w{display:inline-block;will-change:transform}
+.mark{font-size:30px;color:var(--mut)}
+/* фон: мягкие пятна */
+.blob{position:absolute;border-radius:50%;filter:blur(90px);opacity:.55}
+/* S1 */
+#tag{left:540px;top:1180px;width:560px;height:560px;margin:-280px 0 0 -280px;border-radius:50%;background:var(--lime);display:grid;place-content:center;justify-items:center;box-shadow:0 60px 120px -50px rgba(90,120,0,.55)}
+#tag::before{content:"";position:absolute;inset:22px;border-radius:50%;border:4px dashed rgba(13,13,13,.35)}
+#tag small{font:700 34px "Man";letter-spacing:.1em;text-transform:uppercase}
+#tag b{font:700 84px/1 "Unb";letter-spacing:-.05em}
+#tag span{font:700 64px/1 "Unb";margin-top:-4px}
+#tag i{font-style:normal;font-size:32px;opacity:.7;margin-top:10px}
+/* S2 */
+.chk{left:80px;right:80px;display:flex;align-items:center;gap:34px;padding:34px 40px;border-radius:36px;background:#fff;box-shadow:0 30px 60px -40px rgba(0,0,0,.35)}
+.chk i{flex:none;width:76px;height:76px;border-radius:50%;background:var(--lime);display:grid;place-items:center;font:800 40px "Man";font-style:normal}
+.chk b{font:700 50px/1.1 "Man";letter-spacing:-.02em}
+.chk small{display:block;font:500 30px "Man";color:var(--mut);margin-top:6px}
+#nosub{left:80px;right:80px;top:1560px;padding:40px 46px;border-radius:40px;background:var(--ink);color:#fff;display:flex;align-items:center;gap:30px}
+#nosub b{font:700 96px/1 "Unb";color:var(--lime);letter-spacing:-.05em}
+#nosub span{font:500 38px/1.25 "Man"}
+/* S3 */
+.col{left:70px;right:70px;border-radius:44px;padding:44px 48px}
+.col h4{font:700 40px "Man";letter-spacing:.06em;text-transform:uppercase;margin-bottom:22px}
+.col p{display:flex;align-items:center;gap:22px;font:600 44px/1.2 "Man";padding:18px 0;border-top:2px solid var(--line)}
+.col p i{font-style:normal;flex:none;width:58px;height:58px;border-radius:50%;display:grid;place-items:center;font:800 32px "Man"}
+#cA{background:#e4e4e4;color:#7a7a7a} #cA i{background:#fff;color:#e5484d}
+#cB{background:var(--ink);color:#fff} #cB p{border-color:rgba(255,255,255,.14)} #cB i{background:var(--lime);color:var(--ink)} #cB h4{color:var(--lime)}
+.strike{position:absolute;left:0;top:50%;height:6px;background:#e5484d;border-radius:3px;transform-origin:left center}
+/* S4 */
+.pk{left:70px;right:70px;height:360px;border-radius:44px;padding:40px 46px;background:#fff;box-shadow:0 40px 80px -50px rgba(0,0,0,.45)}
+.pk .n{font:700 30px "Man";letter-spacing:.12em;text-transform:uppercase;color:var(--mut)}
+.pk .p{font:700 112px/1.05 "Unb";letter-spacing:-.05em;margin-top:8px;white-space:nowrap}
+.pk .p span{color:var(--or)}
+.pk .d{font:600 38px/1.25 "Man";color:var(--ink2);margin-top:12px}
+.pk.best{background:var(--ink);color:#fff} .pk.best .p span{color:var(--lime)} .pk.best .d{color:#cfcfcf}
+.badge{position:absolute;right:40px;top:36px;padding:12px 24px;border-radius:999px;background:var(--lime);color:var(--ink);font:700 30px "Man"}
+/* S5 */
+#s5{background:#0b0b0b;color:#fff}
+.logo{display:flex;align-items:center;gap:30px;white-space:nowrap}
+.logo b{width:150px;height:150px;border-radius:40px;background:#fff;color:var(--ink);display:grid;place-items:center;font:700 96px "Unb"}
+.logo span{font:700 92px "Unb";letter-spacing:-.04em}
+.logo span em{font-style:normal;color:var(--or)}
+.wa{display:flex;white-space:nowrap;align-items:center;gap:22px;padding:40px 56px;border-radius:999px;background:#25d366;color:#05210f;font:700 52px "Man"}
+.wa svg{width:62px;height:62px}
+/* переход: лаймовый круг */
+#wipe{position:absolute;left:540px;top:960px;border-radius:50%;background:var(--lime);z-index:20}
+</style>
+</head>
+<body>
+<div class="sc" id="s1">
+  <div class="blob" style="left:-200px;top:-150px;width:700px;height:700px;background:#ffd6c4"></div>
+  <div class="blob" style="right:-250px;top:700px;width:760px;height:760px;background:#eaffb0"></div>
+  <p class="a mark" id="m1" style="left:80px;top:250px">go-work.kz · цена</p>
+  <div class="a h" id="h1" style="left:80px;top:330px;font-size:132px"><span class="w">Сайт</span> <span class="w">под</span><br><span class="w">ключ</span> <span class="w">за</span></div>
+  <div class="a h" id="price1" style="left:80px;top:640px;font-size:150px;line-height:1;color:var(--or);white-space:nowrap"><span id="pv">0</span>&nbsp;₸</div>
+  <div class="a" id="tag"><small>всё включено</small><b>100 000</b><span>₸</span><i>разово</i></div>
+</div>
+
+<div class="sc" id="s2">
+  <p class="a mark" style="left:80px;top:220px">Что входит</p>
+  <div class="a h" id="h2" style="left:80px;top:280px;font-size:112px"><span class="w">Всё</span> <span class="w em" style="font-size:1.25em">включено</span></div>
+  <div class="a chk" style="top:520px"><i>✓</i><div><b>Индивидуальный дизайн</b><small>без шаблонов и конструкторов</small></div></div>
+  <div class="a chk" style="top:720px"><i>✓</i><div><b>Продающие тексты</b><small>заголовки, выгоды, ответы на вопросы</small></div></div>
+  <div class="a chk" style="top:920px"><i>✓</i><div><b>Мобильная версия</b><small>удобно с телефона</small></div></div>
+  <div class="a chk" style="top:1120px"><i>✓</i><div><b>SEO с первого дня</b><small>Google, Яндекс и ответы ИИ</small></div></div>
+  <div class="a chk" style="top:1320px"><i>✓</i><div><b>Заявки в WhatsApp</b><small>клиент пишет в один клик</small></div></div>
+  <div class="a" id="nosub"><b>0 ₸</b><span>подписки и скрытых платежей.<br>Платите один раз.</span></div>
+</div>
+
+<div class="sc" id="s3">
+  <div class="a h" id="h3" style="left:70px;top:200px;font-size:96px"><span class="w">Конструктор</span><br><span class="w">или</span> <span class="w em" style="font-size:1.25em">под&nbsp;ключ</span></div>
+  <div class="a col" id="cA" style="top:520px"><h4>Конструктор</h4>
+    <p><i>✕</i><span style="position:relative">Шаблон, как у всех<u class="strike"></u></span></p>
+    <p><i>✕</i><span style="position:relative">Пустые блоки<u class="strike"></u></span></p>
+    <p><i>✕</i><span style="position:relative">Подписка каждый месяц<u class="strike"></u></span></p></div>
+  <div class="a col" id="cB" style="top:1120px"><h4>GO-WORK.KZ</h4>
+    <p><i>✓</i>Свой дизайн</p><p><i>✓</i>Готовые тексты</p><p><i>✓</i>Оплата один раз</p></div>
+</div>
+
+<div class="sc" id="s4">
+  <div class="a h" id="h4" style="left:70px;top:170px;font-size:88px"><span class="w">Сайт</span> <span class="w">один</span> <span class="w">и</span> <span class="w">тот&nbsp;же.</span><br><span class="w">Разница</span> <span class="w">в</span> <span class="w em" style="font-size:1.3em">правках</span></div>
+  <div class="a pk" id="p1" style="top:560px"><p class="n">Старт</p><p class="p"><b class="cnt" data-to="100000">0</b> <span>₸</span></p><p class="d">Неделя правок бесплатно</p></div>
+  <div class="a pk best" id="p2" style="top:960px"><span class="badge">Рекомендую</span><p class="n">Год</p><p class="p"><b class="cnt" data-to="200000">0</b> <span>₸</span></p><p class="d">Любые правки 12 месяцев</p></div>
+  <div class="a pk" id="p3" style="top:1360px"><p class="n">Навсегда</p><p class="p"><b class="cnt" data-to="400000">0</b> <span>₸</span></p><p class="d">Правки навсегда + 2 услуги в подарок</p></div>
+</div>
+
+<div class="sc" id="s5">
+  <div class="blob" style="left:140px;top:500px;width:800px;height:800px;background:#3a4a00;opacity:.6"></div>
+  <div class="a logo" id="lg" style="left:540px;top:640px;transform:translateX(-50%)"><b>G</b><span>GO-WORK<em>.KZ</em></span></div>
+  <div class="a h" id="h5" style="left:0;right:0;top:900px;text-align:center;font-size:84px">Сайт под ключ<br><span style="color:var(--lime)">100 000 ₸</span></div>
+  <div class="a wa" id="wa" style="left:540px;top:1290px;transform:translateX(-50%)"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.84 9.84 0 0 0 12.04 2Zm5.8 14.13c-.24.69-1.42 1.32-1.96 1.36-.5.05-.97.24-3.28-.68-2.78-1.1-4.54-3.95-4.68-4.13-.13-.19-1.12-1.49-1.12-2.84 0-1.35.71-2.02.96-2.29.25-.28.55-.35.73-.35l.53.01c.17.01.4-.06.62.48.24.55.8 1.92.87 2.06.07.14.12.3.02.48-.1.19-.14.3-.28.47-.14.17-.3.37-.42.5-.14.14-.29.29-.12.57.17.28.74 1.22 1.59 1.98 1.09.97 2.01 1.27 2.29 1.41.28.14.45.12.61-.07.17-.19.71-.83.9-1.11.19-.28.37-.23.63-.14.26.1 1.64.77 1.92.91.28.14.47.21.54.33.07.11.07.66-.17 1.35Z"/></svg>Написать в WhatsApp</div>
+  <p class="a" id="ph" style="left:0;right:0;top:1500px;text-align:center;font:500 44px 'Man';color:#bdbdbd">+7 778 324 44 40 · go-work.kz</p>
+</div>
+<div id="wipe"></div>
+
+<script>
+const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const cl = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
+const pr = (t, a, b) => cl((t - a) / (b - a));
+const E = {
+  out: (x) => 1 - Math.pow(1 - x, 3), expo: (x) => x === 1 ? 1 : 1 - Math.pow(2, -10 * x),
+  back: (x, s = 1.7) => 1 + (s + 1) * Math.pow(x - 1, 3) + s * Math.pow(x - 1, 2), io: (x) => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2,
+};
+const tg = (n) => Math.round(n).toLocaleString('ru-RU').replace(/ /g, ' ');
+// Сцены: [начало, конец]
+const S = { s1: [0, 4.9], s2: [4.6, 11.7], s3: [11.4, 17.7], s4: [17.4, 25.7], s5: [25.4, 30] };
+const WIPES = [4.75, 11.55, 17.55, 25.55];
+const T = (el, o) => { el.style.transform = o; };
+function words(el, t, t0, step = .09) {
+  $$('.w', el).forEach((w, i) => { const k = E.expo(pr(t, t0 + i * step, t0 + i * step + .7)); w.style.transform = `translateY(${(1 - k) * 110}%) rotate(${(1 - k) * 8}deg)`; w.style.opacity = k; });
+}
+function render(t) {
+  for (const id in S) $('#' + id).style.visibility = t >= S[id][0] && t < S[id][1] ? 'visible' : 'hidden';
+  // переход: лаймовый круг расширяется и схлопывается
+  let wr = 0; for (const w of WIPES) { const k = pr(t, w - .3, w + .3); if (k > 0 && k < 1) wr = Math.sin(k * Math.PI); }
+  const D = wr * 2600; const wp = $('#wipe'); wp.style.width = wp.style.height = D + 'px'; wp.style.margin = (-D / 2) + 'px 0 0 ' + (-D / 2) + 'px';
+
+  // S1
+  words($('#h1'), t, .2);
+  $('#m1').style.opacity = pr(t, .1, .6);
+  const kp = E.out(pr(t, .9, 2.2));
+  $('#price1').style.opacity = pr(t, .8, 1.1); $('#pv').textContent = tg(100000 * kp);
+  T($('#price1'), `translateY(${(1 - E.expo(pr(t, .8, 1.6))) * 80}px)`);
+  const kt = E.back(pr(t, 1.9, 2.8), 1.6);
+  T($('#tag'), `scale(${Math.max(0, kt)}) rotate(${-8 + (1 - pr(t, 1.9, 2.8)) * -180 + Math.sin(t * 1.4) * 3}deg)`);
+
+  // S2
+  words($('#h2'), t, 4.85);
+  $$('#s2 .chk').forEach((c, i) => { const a = 5.6 + i * .65, k = E.back(pr(t, a, a + .55), 1.4); c.style.opacity = pr(t, a, a + .2); T(c, `translateX(${(1 - k) * (i % 2 ? 260 : -260)}px) scale(${.9 + .1 * k})`); const ic = $('i', c); T(ic, `scale(${E.back(pr(t, a + .25, a + .7), 3)})`); });
+  const kn = E.expo(pr(t, 9.6, 10.4)); $('#nosub').style.opacity = kn; T($('#nosub'), `translateY(${(1 - kn) * 200}px)`);
+
+  // S3
+  words($('#h3'), t, 11.65, .12);
+  const ka = E.expo(pr(t, 12.2, 13)); $('#cA').style.opacity = ka; T($('#cA'), `translateY(${(1 - ka) * 120}px) rotate(${(1 - ka) * -3}deg)`);
+  $$('#cA .strike').forEach((s, i) => { const a = 13.3 + i * .45; s.style.width = '100%'; T(s, `translateY(-50%) scaleX(${E.out(pr(t, a, a + .35))})`); });
+  $('#cA').style.filter = `grayscale(1)`; $('#cA').style.opacity = ka * (1 - .45 * pr(t, 14.8, 15.4));
+  const kb = E.back(pr(t, 14.8, 15.6), 1.3); $('#cB').style.opacity = pr(t, 14.8, 15); T($('#cB'), `translateY(${(1 - kb) * 300}px) scale(${.92 + .08 * kb})`);
+  $$('#cB p').forEach((p, i) => { const a = 15.4 + i * .3, k = E.expo(pr(t, a, a + .5)); p.style.opacity = k; T(p, `translateX(${(1 - k) * 80}px)`); });
+
+  // S4
+  words($('#h4'), t, 17.65, .08);
+  [['#p1', 19.3], ['#p2', 20.9], ['#p3', 22.4]].forEach(([id, a]) => {
+    const el = $(id), k = E.back(pr(t, a, a + .7), 1.3);
+    el.style.opacity = pr(t, a, a + .2); T(el, `perspective(1600px) rotateX(${(1 - k) * 70}deg) translateY(${(1 - k) * 160}px)`);
+    const c = $('.cnt', el); c.textContent = tg(+c.dataset.to * E.out(pr(t, a + .1, a + 1.1)));
+  });
+  T($('#p2'), $('#p2').style.transform + ` scale(${1 + .03 * Math.sin(pr(t, 21.6, 24.6) * Math.PI)})`);
+
+  // S5
+  const kl = E.back(pr(t, 25.7, 26.5), 1.5); T($('#lg'), `translateX(-50%) scale(${Math.max(0, kl)})`);
+  const kh = E.expo(pr(t, 26.2, 27)); $('#h5').style.opacity = kh; T($('#h5'), `translateY(${(1 - kh) * 80}px)`);
+  const kw = E.back(pr(t, 26.8, 27.5), 2); T($('#wa'), `translateX(-50%) scale(${Math.max(0, kw) * (1 + .03 * Math.sin(t * 6) * pr(t, 27.5, 28))})`);
+  $('#ph').style.opacity = pr(t, 27.3, 27.8);
+}
+window.render = render;
+document.fonts.ready.then(() => { render(0); window.READY = true; });
+</script>
+</body>
+</html>
