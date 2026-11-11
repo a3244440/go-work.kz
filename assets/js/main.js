@@ -224,3 +224,15 @@ chatQuick.addEventListener('click', (e) => {
   const b = e.target.closest('button');
   if (b) send(b.textContent);
 });
+
+/* ---------- Цена: вкладки «Что входит» ---------- */
+document.querySelectorAll('.pr-tabs').forEach((tabs) => {
+  const btns = [...tabs.querySelectorAll('button')];
+  btns.forEach((b, i) => b.addEventListener('click', () => {
+    btns.forEach((x, j) => {
+      x.classList.toggle('on', i === j); x.setAttribute('aria-selected', i === j);
+      const p = document.getElementById(x.getAttribute('aria-controls'));
+      p.hidden = i !== j; p.classList.toggle('on', i === j);
+    });
+  }));
+});
