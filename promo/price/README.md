@@ -5,9 +5,10 @@
 ```bash
 cd promo/price
 node render.mjs            # кадры в frames/
+ffmpeg -i voice/maxim.mp3 -af highpass=f=80 -ar 48000 -ac 1 voice.wav
 python3 mix.py             # price.wav: VFX-звуки; если рядом лежит voice.wav — голос сверху, эффекты под ним тише
 ffmpeg -framerate 60 -i frames/f%04d.jpg -i price.wav -c:v libx264 -crf 20 -pix_fmt yuv420p -c:a aac -b:a 192k -af loudnorm=I=-18:TP=-1.5 -shortest price.mp4
 ```
 
-Озвучка (голос ElevenLabs «Maxim - Premium Baritone»):
+Озвучка (голос ElevenLabs «Maxim - Calm & Neutral», файл voice/maxim.mp3; анимация растянута под речь по warp.json):
 «Сайт под ключ — за сто тысяч тенге. Всё включено: индивидуальный дизайн, продающие тексты, мобильная версия, эс-и-о с первого дня и заявки прямо в ватсап. Без подписок и скрытых платежей. Конструктор — это шаблон, пустые блоки и подписка каждый месяц. У нас — свой дизайн, готовые тексты и оплата один раз. Сайт один и тот же. Разница — в правках. Старт — сто тысяч. Год — двести тысяч. Навсегда — четыреста тысяч, и две услуги в подарок. Пишите в ватсап. Го-ворк точка кей-зет.»

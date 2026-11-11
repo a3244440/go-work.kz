@@ -2,7 +2,8 @@
 Голос (если есть voice.wav рядом) кладётся сверху, эффекты под ним тише."""
 import os, subprocess, sys, wave
 import numpy as np
-SR = 48000; DUR = 29.6; N = int(SR * DUR)
+import json
+SR = 48000; DUR = 36.2; N = int(SR * DUR)
 D = os.path.dirname(os.path.abspath(__file__)); SFX = os.path.join(D, '..', 'services', 'sfx-el')
 
 def load(path):
@@ -12,8 +13,10 @@ def load(path):
     return a / (np.abs(a).max() + 1e-9)
 
 S = {k: load(os.path.join(SFX, k + '.mp3')) for k in ['whoosh2', 'liquid2', 'pop1', 'pop2', 'boom1', 'shim2', 'trash2']}
+K = np.array(json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'warp.json'))))
 bus = np.zeros(N)
 def ev(t, k, g, peak=False):
+    t = float(np.interp(t, K[:, 0], K[:, 1]))
     s = S[k]
     if peak: t -= np.argmax(np.abs(s)) / SR
     i = int(max(0, t) * SR); n = min(len(s), N - i); bus[i:i + n] += s[:n] * g
@@ -34,7 +37,7 @@ ev(26.85, 'pop2', .45)
 bus /= np.abs(bus).max() + 1e-9
 vp = os.path.join(D, 'voice.wav')
 if os.path.exists(vp):
-    v = load(vp)[:N]; voice = np.zeros(N); voice[int(.15 * SR):int(.15 * SR) + len(v)] = v[:N - int(.15 * SR)]
+    v = load(vp)[:N]; voice = np.zeros(N); voice[:len(v)] = v
     env = np.convolve(np.abs(voice), np.ones(2400) / 2400, 'same'); duck = 1 - .5 * np.clip(env / (env.max() + 1e-9) * 3, 0, 1)
     y = bus * .13 * duck + voice * .8
 else:
