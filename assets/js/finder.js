@@ -15,7 +15,7 @@
       site: '<div class="fd-mock"><div class="fd-mock-nav"><b>NE-TI</b><span>Услуги</span><span>Техника</span><span>Контакты</span></div><div class="fd-mock-hero"><small>Астана и область</small><h4>Забивка свай под фундамент</h4><p>Своя техника · выезд в день обращения</p><span class="fd-mock-btn">Рассчитать стоимость</span></div><div class="fd-mock-row"><i></i><i></i><i></i></div></div>'
     },
     {
-      tab: 'кухни на заказ астана', q: 'кухни на заказ астана', url: 'khanmebel.vercel.app', biz: 'Khan Mebel', ava: 'K', rank: 0,
+      tab: 'кухни на заказ астана', q: 'кухни на заказ астана', url: 'khanmebel.kz', biz: 'Khan Mebel', ava: 'K', rank: 0,
       title: 'Кухни и мебель на заказ в Астане: Khan Mebel', desc: 'Своё производство, замер и дизайн-проект бесплатно. Рассчитайте стоимость кухни онлайн за минуту.',
       msg: 'Здравствуйте! Хочу кухню на заказ, длина около 3 метров. Можно замер?',
       site: '<img src="/assets/img/work/khan-mebel.jpg" alt="" loading="lazy">'
