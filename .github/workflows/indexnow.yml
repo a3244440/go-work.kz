@@ -4,6 +4,8 @@ on:
   push:
     branches: [claude/trusting-cray-aeyjke]
     paths-ignore: ['promo/**', 'README.md']
+  schedule:
+    - cron: '37 4 * * 1'   # раз в неделю напоминает поисковикам обо всех страницах
   workflow_dispatch:
 
 jobs:

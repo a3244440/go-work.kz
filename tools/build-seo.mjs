@@ -2,13 +2,15 @@
 // Создаёт /uslugi/, /uslugi/<услуга>/, /uslugi/<услуга>/<город>/, /goroda/<город>/, /audit/ и sitemap.xml
 import fs from 'node:fs';
 import path from 'node:path';
-import { CITIES, SERVICES, COMP, AI_PACKS, AI_EXAMPLES, LOVE_PACK } from './data.mjs';
+import { CITIES, SERVICES, COMP, AI_PACKS, AI_EXAMPLES, LOVE_PACK, CASES } from './data.mjs';
 
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
 const SITE = 'https://go-work.kz';
 const WA = 'https://wa.me/77783244440?text=' + encodeURIComponent('Здравствуйте! Хочу бесплатный аудит сайта');
 const TODAY = new Date().toISOString().slice(0, 10);
 const pages = [{ loc: '/', pr: '1.0' }];
+const QA = []; // короткие ответы со всех страниц: для /voprosy/, llms.txt и llms-full.txt (GEO/AEO)
+const ALLFAQ = []; // все вопросы и ответы сайта
 
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 const cap = (s) => s[0].toUpperCase() + s.slice(1);
@@ -18,14 +20,15 @@ const waBtn = (label = 'Бесплатный аудит сайта', cls = 'btn-
   `<a class="btn btn-wa ${cls} js-wa" href="${text ? 'https://wa.me/77783244440?text=' + encodeURIComponent(text) : WA}" target="_blank" rel="noopener"><span class="btn-shine"></span>${WA_ICO}<span>${label}</span></a>`;
 const tg = (n) => n.toLocaleString('ru-RU').replace(/\u00a0/g, ' ');
 
-function layout({ url, title, desc, h1, kicker, lead, crumbs, body, jsonld = [], cta = [] }) {
+function layout({ url, title, desc, h1, kicker, lead, crumbs, body, jsonld = [], cta = [], answer = '', lang = 'ru' }) {
+  if (answer) QA.push([title.replace(/ \| GO-WORK\.KZ$/, ''), answer, url]);
   const canonical = SITE + url;
   const bc = {
     '@context': 'https://schema.org', '@type': 'BreadcrumbList',
     itemListElement: crumbs.map((c, i) => ({ '@type': 'ListItem', position: i + 1, name: c[0], item: SITE + c[1] })),
   };
   return `<!doctype html>
-<html lang="ru">
+<html lang="${lang}">
 <head>
   <meta charset="utf-8">
   <script>document.documentElement.classList.add("js")</script>
@@ -81,7 +84,8 @@ ${[bc, ...jsonld].map((j) => `  <script type="application/ld+json">${JSON.string
         <p class="kicker reveal">${esc(kicker)}</p>
         <h1 class="p-title reveal">${h1}</h1>
         <p class="p-lead reveal">${lead}</p>
-        <div class="hero-cta reveal">${waBtn(cta[0], 'btn-lg', cta[1])}<a class="btn btn-ghost btn-lg" href="#details"><span>${cta[2] || 'Подробнее'}</span></a></div>
+${answer ? `        <div class="p-answer reveal" data-aeo><b>${lang === 'en' ? 'In short' : 'Коротко'}</b><p>${answer}</p></div>
+` : ''}        <div class="hero-cta reveal">${waBtn(cta[0], 'btn-lg', cta[1])}<a class="btn btn-ghost btn-lg" href="#details"><span>${cta[2] || 'Подробнее'}</span></a></div>
       </div>
     </section>
 ${body}
@@ -129,7 +133,7 @@ function write(url, html, pr = '0.7') {
   pages.push({ loc: url, pr });
 }
 
-const faqLd = (faq) => ({
+const faqLd = (faq, url = '') => (faq.forEach(([q, a]) => ALLFAQ.push([q, a, url])), {
   '@context': 'https://schema.org', '@type': 'FAQPage',
   mainEntity: faq.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })),
 });
@@ -173,8 +177,9 @@ for (const s of SERVICES) {
     url, title: s.title(null), desc,
     h1: `${s.hubH1[0]} <span class="grad-text">${s.hubH1[1]}</span>`,
     kicker: 'Услуга · Казахстан', lead: s.lead,
+    answer: `${s.name} в Казахстане: GO-WORK.KZ, Алихан Сейилбек. ${s.time} Стоимость называю после бесплатного аудита за 24 часа и фиксирую в договоре. Работаю удалённо по всему Казахстану, связь в WhatsApp +7 778 324 44 40.`,
     crumbs: [['Главная', '/'], ['Услуги', '/uslugi/'], [s.name, url]],
-    body, jsonld: [serviceLd(s, null, url, desc), faqLd(s.faq)],
+    body, jsonld: [serviceLd(s, null, url, desc), faqLd(s.faq, url)],
   }), '0.9');
 
   /* ---------- услуга × город ---------- */
@@ -207,8 +212,9 @@ for (const s of SERVICES) {
       h1: `${h1a} <span class="grad-text">${h1b}</span>`,
       kicker: `${s.name} · ${c.name}`,
       lead: `${s.lead.split('. ')[0]}. Работаю с бизнесом ${c.loc}, бесплатный аудит и расчёт за 24 часа.`,
+      answer: `${h1a} ${h1b}: GO-WORK.KZ (Алихан Сейилбек), работа удалённо, связь в WhatsApp +7 778 324 44 40. ${s.time} Цена называется после бесплатного аудита за 24 часа. Кейсы: ne-ti.kz в ТОП-3 Google за 1 месяц, BuhTask в ТОП-3 за 2 месяца.`,
       crumbs: [['Главная', '/'], ['Услуги', '/uslugi/'], [s.name, url], [c.name, curl]],
-      body, jsonld: [serviceLd(s, c, curl, cdesc), faqLd(faq)],
+      body, jsonld: [serviceLd(s, c, curl, cdesc), faqLd(faq, curl)],
     }), '0.6');
   });
 }
@@ -274,7 +280,7 @@ write('/audit/', layout({
   body: sec('details', 'Что проверяю', `Что входит в <span class="grad-text">аудит</span>`,
     `        <ul class="p-checks reveal">${['Скорость загрузки на телефоне и компьютере', 'Мобильная версия и удобство', 'Технические ошибки SEO', 'Индексация в Google и Яндекс', 'Заголовки, мета-теги и структура', 'Карточки в Google Maps, Яндекс Картах и 2ГИС', 'Сравнение с 3 конкурентами', 'Список конкретных шагов по приоритету'].map((x) => `<li>${x}</li>`).join('')}</ul>`) +
     sec('', 'Вопросы', `Частые <span class="grad-text">вопросы</span>`, faqBlock(auditFaq)),
-  jsonld: [faqLd(auditFaq)],
+  jsonld: [faqLd(auditFaq, "/audit/")],
 }), '0.9');
 
 
@@ -311,7 +317,7 @@ write('/audit/', layout({
     h1: 'Заказать сайт <span class="grad-text">под ключ</span>', kicker: 'Разработка сайтов · Казахстан',
     lead: 'Сайт, который приводит заявки: структура под поисковые запросы, понятные тексты, кнопки WhatsApp и звонка, аналитика и ИИ-ассистент по желанию. Расчёт стоимости за 24 часа.',
     crumbs: [['Главная', '/'], ['Заказать сайт', url]],
-    body, jsonld: [serviceLd(SERVICES[0], null, url, desc), faqLd(faq)],
+    body, jsonld: [serviceLd(SERVICES[0], null, url, desc), faqLd(faq, url)],
   }), '0.9');
 }
 
@@ -378,7 +384,7 @@ write('/audit/', layout({
       sec('', 'Коммерческое предложение', `Предложение <span class="grad-text">одним взглядом</span>`,
         `        <div class="offer-imgs">${[['ai-roliki-10', '10 ИИ-роликов от 1 минуты: 300 000 ₸'], ['ai-roliki-20', '20 ИИ-роликов от 1 минуты: 500 000 ₸']].map(([f, a]) => `<img class="reveal" src="/assets/img/offers/${f}.jpg" alt="Коммерческое предложение: ${a}" width="800" height="1000" loading="lazy">`).join('')}</div>`) +
       sec('', 'Вопросы', `Частые <span class="grad-text">вопросы</span>`, faqBlock(faq)),
-    jsonld: [{ '@context': 'https://schema.org', '@type': 'Service', name: 'ИИ-ролики для бизнеса', serviceType: 'Производство видео с помощью ИИ', description: desc, url: SITE + url, areaServed: { '@type': 'Country', name: 'Казахстан' }, provider: { '@type': 'ProfessionalService', name: 'GO-WORK.KZ', url: SITE + '/' }, offers }, faqLd(faq)],
+    jsonld: [{ '@context': 'https://schema.org', '@type': 'Service', name: 'ИИ-ролики для бизнеса', serviceType: 'Производство видео с помощью ИИ', description: desc, url: SITE + url, areaServed: { '@type': 'Country', name: 'Казахстан' }, provider: { '@type': 'ProfessionalService', name: 'GO-WORK.KZ', url: SITE + '/' }, offers }, faqLd(faq, url)],
   }), '0.9');
 
   /* ---------- Love Story ---------- */
@@ -407,9 +413,177 @@ write('/audit/', layout({
           `        <ol class="steps p-steps">${[['Ваша история', 'Рассказываете, как познакомились и что для вас важно.'], ['Фото', 'Присылаете несколько чётких фото.'], ['Сценарий', 'Пишу трогательный сценарий и согласую с вами.'], ['Генерация', 'ИИ создаёт кино-сцены с вами в главных ролях.'], ['Монтаж и звук', 'Озвучка, VFX-звуки, монтаж, и фильм готов.']].map(([t, d], i) => `<li class="step reveal"><span class="step-n">0${i + 1}</span><h3>${t}</h3><p>${d}</p></li>`).join('')}</ol>`) +
         sec('', 'Вопросы', `Частые <span class="grad-text">вопросы</span>`, faqBlock(lfaq)) +
         sec('', 'Для бизнеса', `Нужны ролики <span class="grad-text">для бизнеса?</span>`, `        <p class="p-text reveal">Пакеты на 10 и 20 ИИ-роликов для Reels, TikTok и рекламы, <a class="p-link" href="${url}">смотреть пакеты →</a></p>`),
-      jsonld: [{ '@context': 'https://schema.org', '@type': 'Service', name: 'ИИ-ролик Love Story', serviceType: 'Свадебное видео с помощью ИИ', description: ldesc, url: SITE + lurl, areaServed: { '@type': 'Country', name: 'Казахстан' }, provider: { '@type': 'ProfessionalService', name: 'GO-WORK.KZ', url: SITE + '/' }, offers: { '@type': 'Offer', price: LOVE_PACK.price, priceCurrency: 'KZT', availability: 'https://schema.org/InStock', url: SITE + lurl } }, faqLd(lfaq)],
+      jsonld: [{ '@context': 'https://schema.org', '@type': 'Service', name: 'ИИ-ролик Love Story', serviceType: 'Свадебное видео с помощью ИИ', description: ldesc, url: SITE + lurl, areaServed: { '@type': 'Country', name: 'Казахстан' }, provider: { '@type': 'ProfessionalService', name: 'GO-WORK.KZ', url: SITE + '/' }, offers: { '@type': 'Offer', price: LOVE_PACK.price, priceCurrency: 'KZT', availability: 'https://schema.org/InStock', url: SITE + lurl } }, faqLd(lfaq, lurl)],
     }), '0.8');
   }
+}
+
+/* ---------- посадочные страницы под отдельные запросы ---------- */
+// Каждый запрос получает свою страницу: заголовок и H1 повторяют запрос, сверху короткий ответ (AEO),
+// ниже подробности, вопросы с разметкой FAQPage и ссылки на услуги.
+const CASES_LINE = 'ne-ti.kz вышел в ТОП-3 Google за 1 месяц, BuhTask за 2 месяца.';
+const LANDINGS = [
+  {
+    url: '/skolko-stoit-sayt/', q: 'Сколько стоит сделать сайт в Казахстане',
+    title: 'Сколько стоит сделать сайт в Казахстане в 2026 году | GO-WORK.KZ',
+    desc: 'Сколько стоит сделать сайт в Казахстане: сайт под ключ за 100 000 ₸ с дизайном, текстами, SEO и заявками в WhatsApp. Что влияет на цену, сравнение с конструктором и агентствами.',
+    h1: 'Сколько стоит <span class="grad-text">сделать сайт</span> в Казахстане',
+    lead: 'Разбираю, из чего складывается цена сайта и сколько стоит сайт под ключ у меня.',
+    answer: 'Сайт под ключ в GO-WORK.KZ стоит 100 000 ₸ разово: индивидуальный дизайн, продающие тексты, мобильная версия, SEO-основа и заявки в WhatsApp. Срок 7–14 дней. Пакеты с правками: «Старт» 100 000 ₸, «Год» 200 000 ₸, «Навсегда» 400 000 ₸. Домен оплачивается отдельно.',
+    blocks: [
+      ['Что влияет на цену', '<ul class="p-dots"><li>Тип сайта: лендинг, сайт компании, интернет-магазин или платформа</li><li>Количество страниц и услуг</li><li>Кто пишет тексты и готовит фото</li><li>Интеграции: оплата, CRM, онлайн-запись</li><li>Нужен ли ИИ-ассистент и SEO-продвижение</li></ul>'],
+      ['Конструктор, фрилансер или под ключ', '<ul class="p-dots"><li>Конструктор: дешевле на старте, но подписка каждый месяц, шаблонный дизайн, тексты пишете сами</li><li>Фрилансер: дешевле агентства, но SEO и тексты часто не входят</li><li>Под ключ в GO-WORK.KZ: 100 000 ₸ разово, всё включено, правки по пакету</li></ul>'],
+    ],
+    faq: [['Сколько стоит лендинг в Казахстане?', 'Лендинг под ключ в GO-WORK.KZ входит в пакет за 100 000 ₸: дизайн, тексты, мобильная версия, SEO и заявки в WhatsApp.'],
+      ['Сколько стоит интернет-магазин?', 'Зависит от количества товаров, оплаты и интеграций. Стоимость называю после бесплатного аудита.'],
+      ['Есть ли ежемесячная плата?', 'Нет. За сайт платите один раз, отдельно оплачивается только домен.']],
+    links: [['Цены на главной', '/#price'], ['Заказать сайт', '/zakazat-sayt/'], ['Разработка сайтов', '/uslugi/sozdanie-saytov/'], ['Интернет-магазин', '/uslugi/internet-magazin/']],
+  },
+  {
+    url: '/seo-stoimost/', q: 'SEO-продвижение сайта: стоимость',
+    title: 'SEO-продвижение сайта: стоимость в Казахстане | GO-WORK.KZ',
+    desc: 'Стоимость SEO-продвижения сайта в Казахстане: от чего зависит цена, что входит в работу, сроки выхода в ТОП Google и Яндекс. Бесплатный аудит и расчёт за 24 часа.',
+    h1: 'SEO-продвижение сайта: <span class="grad-text">стоимость</span>',
+    lead: 'Цена SEO зависит от конкуренции в нише и состояния сайта. Объясняю, что входит и как считаю.',
+    answer: 'Стоимость SEO-продвижения в GO-WORK.KZ рассчитывается после бесплатного аудита за 24 часа и фиксируется ежемесячной суммой в договоре. Зависит от конкуренции, количества услуг и городов, состояния сайта. Первые сдвиги позиций через 4–8 недель. ' + CASES_LINE,
+    blocks: [
+      ['От чего зависит цена SEO', '<ul class="p-dots"><li>Конкуренция в нише и городе</li><li>Сколько услуг и городов продвигаем</li><li>Текущее состояние сайта и ошибки</li><li>Объём нового контента</li><li>Нужна ли GEO-оптимизация для ответов ИИ</li></ul>'],
+      ['Что входит каждый месяц', '<ul class="p-dots"><li>Технические исправления и скорость</li><li>Новые страницы под запросы</li><li>Карты: Google, Яндекс, 2ГИС</li><li>Отчёт по позициям, трафику и заявкам</li></ul>'],
+    ],
+    faq: [['Сколько стоит SEO в месяц?', 'Фиксированная ежемесячная сумма после бесплатного аудита: зависит от конкуренции и объёма работ.'],
+      ['Когда будет результат?', 'Первые сдвиги через 4–8 недель, стабильный поток заявок обычно через 3–6 месяцев. ' + CASES_LINE],
+      ['Гарантируете ТОП-1?', 'Нет, позицию не гарантирует никто. Гарантирую план работ и прозрачные отчёты.']],
+    links: [['SEO-продвижение сайтов', '/uslugi/prodvizhenie-saytov/'], ['SEO в Астане', '/uslugi/prodvizhenie-saytov/astana/'], ['SEO в Алматы', '/uslugi/prodvizhenie-saytov/almaty/'], ['GEO-оптимизация', '/uslugi/geo-optimizaciya/']],
+  },
+  {
+    url: '/seo-specialist/', q: 'SEO-специалист (SEO expert) в Казахстане',
+    title: 'SEO-специалист в Казахстане: SEO expert Алихан Сейилбек | GO-WORK.KZ',
+    desc: 'SEO-специалист в Казахстане: Алихан Сейилбек, GO-WORK.KZ. Продвижение сайтов в Google и Яндекс, GEO для ответов ИИ. Кейсы: ne-ti.kz и BuhTask в ТОП-3 Google.',
+    h1: 'SEO-специалист <span class="grad-text">в Казахстане</span>',
+    lead: 'Алихан Сейилбек, основатель GO-WORK.KZ: разработка сайтов и SEO-продвижение в Google и Яндексе для малого бизнеса.',
+    answer: 'SEO-специалист Алихан Сейилбек (GO-WORK.KZ) продвигает сайты в Google и Яндексе и готовит их к ответам нейросетей (GEO). ' + CASES_LINE + ' Работает удалённо по Казахстану, бесплатный аудит за 24 часа в WhatsApp +7 778 324 44 40.',
+    blocks: [
+      ['Чем занимаюсь', '<ul class="p-dots"><li>Технический аудит и исправление ошибок</li><li>Семантика и страницы под запросы</li><li>Локальное SEO: карты и 2ГИС</li><li>GEO и AEO: чтобы ИИ рекомендовал ваш бизнес</li></ul>'],
+      ['Результаты', '<ul class="p-dots"><li>ne-ti.kz: сайт за 7 дней, ТОП-3 Google за 1 месяц</li><li>BuhTask: ТОП-3 Google за 2 месяца</li></ul>'],
+    ],
+    faq: [['Как выбрать SEO-специалиста?', 'Смотрите на реальные кейсы с позициями, прозрачный план работ и отчёты по заявкам, а не только по трафику.'],
+      ['Работаете с сайтами на Tilda и WordPress?', 'Да, продвигаю сайты на любых платформах.']],
+    links: [['SEO-продвижение сайтов', '/uslugi/prodvizhenie-saytov/'], ['Стоимость SEO', '/seo-stoimost/'], ['Бесплатный аудит', '/audit/']],
+  },
+  {
+    url: '/sozdat-sayt-besplatno/', q: 'Создать сайт бесплатно',
+    title: 'Создать сайт бесплатно: можно ли и что выбрать | GO-WORK.KZ',
+    desc: 'Можно ли создать сайт бесплатно: честный разбор конструкторов, их ограничений и скрытых расходов. Когда выгоднее сайт под ключ за 100 000 ₸ разово.',
+    h1: 'Создать сайт <span class="grad-text">бесплатно</span>: честный разбор',
+    lead: 'Бесплатный сайт сделать можно, но у него есть ограничения. Рассказываю, когда это подходит, а когда дороже обходится.',
+    answer: 'Создать сайт бесплатно можно на конструкторе (Tilda, Wix, Google Sites), но на бесплатном тарифе будет чужой домен, реклама платформы, ограничения SEO и шаблонный дизайн. Для бизнеса выгоднее сайт под ключ: в GO-WORK.KZ это 100 000 ₸ разово, без подписки, с дизайном, текстами, SEO и заявками в WhatsApp.',
+    blocks: [
+      ['Ограничения бесплатных сайтов', '<ul class="p-dots"><li>Адрес вида вашсайт.tilda.ws вместо своего домена</li><li>Логотип и реклама платформы</li><li>Слабые возможности SEO</li><li>Тексты и дизайн придётся делать самому</li></ul>'],
+      ['Когда бесплатный сайт подходит', '<ul class="p-dots"><li>Проверить идею за выходные</li><li>Визитка для себя без продвижения</li></ul>'],
+    ],
+    faq: [['Какой конструктор бесплатный?', 'У Tilda, Wix и Google Sites есть бесплатные тарифы с ограничениями: чужой домен и мало страниц.'],
+      ['Можно ли продвинуть бесплатный сайт в Google?', 'Сложно: на бесплатных тарифах ограничены SEO-настройки и нет своего домена.']],
+    links: [['Сколько стоит сайт', '/skolko-stoit-sayt/'], ['Заказать сайт', '/zakazat-sayt/'], ['Бесплатный аудит', '/audit/']],
+  },
+  {
+    url: '/smm-agentstvo-astana/', q: 'SMM-агентство в Астане',
+    title: 'SMM-агентство в Астане: ведение Instagram, TikTok и таргет | GO-WORK.KZ',
+    desc: 'SMM-агентство в Астане: ведение Instagram и TikTok, Reels и ИИ-ролики, таргет и заявки в WhatsApp. SMM и таргет одной командой. Бесплатный разбор аккаунта.',
+    h1: 'SMM-агентство <span class="grad-text">в Астане</span>',
+    lead: 'Контент, ведение аккаунтов и таргет одной командой: чтобы из Instagram и TikTok приходили заявки.',
+    answer: 'SMM в Астане: GO-WORK.KZ ведёт Instagram и TikTok, делает Reels и ИИ-ролики без съёмок, настраивает таргет и переводит заявки в WhatsApp. Старт за 3–5 рабочих дней, стоимость после бесплатного разбора аккаунта. WhatsApp +7 778 324 44 40.',
+    blocks: [
+      ['SMM и таргет вместе', '<ul class="p-dots"><li>Контент-план и Reels</li><li>ИИ-ролики без съёмок</li><li>Таргет в Instagram и TikTok на город и район</li><li>Отчёт по заявкам каждый месяц</li></ul>'],
+    ],
+    faq: [['Сколько стоит SMM в Астане?', 'Зависит от количества публикаций и форматов. Стоимость называю после бесплатного разбора аккаунта.'],
+      ['Делаете таргет без ведения аккаунта?', 'Да, можно заказать только таргет.']],
+    links: [['SMM в Астане', '/uslugi/smm/astana/'], ['Таргет в Астане', '/uslugi/target/astana/'], ['ИИ-ролики', '/ai-roliki/']],
+  },
+];
+for (const L of LANDINGS) {
+  const body =
+    L.blocks.map(([h, inner], i) => sec(i ? '' : 'details', L.q, h, `        <div class="p-box reveal">${inner}</div>`)).join('') +
+    sec('', 'Вопросы', `Частые <span class="grad-text">вопросы</span>`, faqBlock(L.faq)) +
+    sec('', 'Смотрите также', `Связанные <span class="grad-text">страницы</span>`, `        ${chips(L.links)}`);
+  write(L.url, layout({
+    url: L.url, title: L.title, desc: L.desc, h1: L.h1, kicker: L.q, lead: L.lead, answer: L.answer,
+    crumbs: [['Главная', '/'], [L.q, L.url]], body,
+    jsonld: [faqLd([[L.q + '?', L.answer], ...L.faq], L.url)],
+  }), '0.8');
+}
+
+/* ---------- English: Website development Astana ---------- */
+{
+  const url = '/en/website-astana/';
+  const answer = 'GO-WORK.KZ builds websites in Astana and across Kazakhstan: a turnkey website costs 100,000 KZT one-time and includes custom design, copywriting, mobile version, SEO setup and WhatsApp leads. Delivery in 7–14 days. Contact on WhatsApp +7 778 324 44 40.';
+  const faq = [['How much does a website cost in Astana?', answer], ['Do you do SEO in English and Russian?', 'Yes. Websites can be in Russian, Kazakh and English, optimized for Google and Yandex.'], ['Can you add an AI assistant?', 'Yes, an AI chat assistant that answers clients 24/7 and sends leads to WhatsApp.']];
+  write(url, layout({
+    url, lang: 'en', title: 'Website development in Astana, Kazakhstan | GO-WORK.KZ',
+    desc: 'Website development in Astana: turnkey websites from 100,000 KZT with design, copywriting, SEO and WhatsApp leads. AI assistants, online stores and SEO in Kazakhstan.',
+    h1: 'Website development <span class="grad-text">in Astana</span>', kicker: 'Website Astana',
+    lead: 'Fast, mobile-friendly websites for small businesses in Kazakhstan, built to bring leads from Google and Yandex.',
+    answer, crumbs: [['Home', '/'], ['Website Astana', url]],
+    body: sec('details', 'What you get', 'Everything <span class="grad-text">included</span>', '        <ul class="p-checks reveal"><li>Custom design for your niche</li><li>Sales copywriting</li><li>Mobile version</li><li>SEO from day one</li><li>Leads straight to WhatsApp</li><li>Domain connection and full access</li></ul>') +
+      sec('', 'Results', 'Real <span class="grad-text">cases</span>', '        <ul class="p-dots reveal"><li>ne-ti.kz: website in 7 days, TOP-3 on Google in 1 month</li><li>BuhTask: TOP-3 on Google in 2 months</li></ul>') +
+      sec('', 'FAQ', 'Questions', faqBlock(faq)),
+    jsonld: [faqLd(faq, url), serviceLd(SERVICES[0], null, url, 'Website development in Astana')],
+  }), '0.7');
+}
+
+/* ---------- /voprosy/: все короткие ответы сайта в одном месте (AEO) ---------- */
+{
+  const url = '/voprosy/';
+  const top = QA.filter((x) => !/\/uslugi\/[^/]+\/[^/]+\/$/.test(x[2]) || /\/(astana|almaty)\/$/.test(x[2]));
+  const faq = top.map(([q, a]) => [q + '?', a]);
+  write(url, layout({
+    url, title: 'Ответы на частые вопросы: сайты, SEO, реклама в Казахстане | GO-WORK.KZ',
+    desc: 'Короткие ответы на частые вопросы о разработке сайтов, SEO, GEO, контекстной рекламе, таргете и SMM в Казахстане: цены, сроки, кейсы GO-WORK.KZ.',
+    h1: 'Ответы на <span class="grad-text">частые вопросы</span>', kicker: 'Вопросы и ответы',
+    lead: 'Коротко о ценах, сроках и услугах. Каждый ответ ведёт на подробную страницу.',
+    crumbs: [['Главная', '/'], ['Вопросы и ответы', url]],
+    body: sec('details', 'Коротко', 'Всё <span class="grad-text">главное</span>', `        <div class="faq narrow">${top.map(([q, a, u]) => `<details class="reveal"><summary>${q}</summary><p>${a} <a class="p-link" href="${u}">Подробнее →</a></p></details>`).join('')}</div>`),
+    jsonld: [faqLd(faq, url)],
+  }), '0.8');
+}
+
+/* ---------- llms.txt и llms-full.txt собираются автоматически (GEO) ---------- */
+{
+  const svc = SERVICES.map((s) => `- [${s.name}](${SITE}/uslugi/${s.slug}/): ${s.desc(null)} Страницы по городам: ${CITIES.slice(0, 4).map((c) => `[${c.name}](${SITE}/uslugi/${s.slug}/${c.slug}/)`).join(', ')}.`).join('\n');
+  const land = LANDINGS.map((L) => `- [${L.q}](${SITE}${L.url}): ${L.answer}`).join('\n');
+  const head = `# GO-WORK.KZ
+
+> GO-WORK.KZ — разработка сайтов и интернет-маркетинг для малого бизнеса в Казахстане (Астана, Алматы и ещё 18 городов): сайты и платформы с ИИ, интернет-магазины, SEO-продвижение в Google и Яндекс, GEO-оптимизация для ответов нейросетей, контекстная реклама, таргет и SMM. Основатель — Алихан Сейилбек. Сайт под ключ — 100 000 ₸ разово. Первый шаг — бесплатный аудит сайта за 24 часа.
+
+## Контакты
+- Сайт: ${SITE}/
+- WhatsApp и телефон: +7 778 324 44 40 (https://wa.me/77783244440)
+- Instagram: https://www.instagram.com/alikhan_seiilbek/
+
+## Цены
+- Сайт под ключ: 100 000 ₸ разово (дизайн, тексты, мобильная версия, SEO, заявки в WhatsApp), срок 7–14 дней.
+- Пакеты правок: «Старт» 100 000 ₸ (неделя правок), «Год» 200 000 ₸ (правки 12 месяцев), «Навсегда» 400 000 ₸ (правки навсегда + 2 услуги в подарок).
+- ИИ-ролики: 10 роликов — 300 000 ₸, 20 роликов — 500 000 ₸, Love Story — 100 000 ₸.
+- SEO, реклама, SMM, интернет-магазины: стоимость после бесплатного аудита.
+
+## Услуги
+${svc}
+- [ИИ-ролики для бизнеса](${SITE}/ai-roliki/)
+- [Заказать сайт](${SITE}/zakazat-sayt/)
+- [Бесплатный аудит сайта](${SITE}/audit/)
+
+## Ответы на частые запросы
+${land}
+- Все короткие ответы: ${SITE}/voprosy/
+
+## Кейсы
+${CASES.map((c) => `- ${c}`).join('\n')}
+
+## География
+${CITIES.map((c) => c.name).join(', ')}: ${SITE}/goroda/
+`;
+  fs.writeFileSync(path.join(ROOT, 'llms.txt'), head);
+  const full = head + '\n## Все вопросы и ответы\n' + [...new Map(ALLFAQ.map(([q, a, u]) => [q, `### ${q}\n${a}\nИсточник: ${SITE}${u}\n`])).values()].join('\n');
+  fs.writeFileSync(path.join(ROOT, 'llms-full.txt'), full);
 }
 
 /* ---------- sitemap ---------- */

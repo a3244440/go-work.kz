@@ -1,0 +1,32 @@
+name: SEO / GEO / AEO
+# При каждом обновлении: пересобирает SEO-страницы, sitemap, llms.txt и llms-full.txt из tools/data.mjs,
+# проверяет все страницы (title, description, H1, canonical, JSON-LD, ссылки, sitemap) и, если сборка
+# что-то изменила, сама сохраняет результат. Раз в неделю повторяет проверку.
+on:
+  push:
+    branches: [claude/trusting-cray-aeyjke]
+    paths: ['tools/**', 'index.html', 'robots.txt', '.github/workflows/seo.yml']
+  schedule:
+    - cron: '17 3 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  seo:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - name: Собрать страницы, sitemap и llms.txt
+        run: node tools/build-seo.mjs
+      - name: Проверить SEO / GEO / AEO
+        run: node tools/seo-audit.mjs
+      - name: Сохранить пересобранные файлы
+        run: |
+          git config user.name 'go-work-seo-bot'
+          git config user.email 'seo-bot@users.noreply.github.com'
+          git add -A
+          git diff --cached --quiet || (git commit -m 'SEO: автосборка страниц, sitemap и llms.txt [skip ci]' && git push)

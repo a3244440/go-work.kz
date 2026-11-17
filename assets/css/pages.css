@@ -80,3 +80,7 @@ a.chip:hover { background: var(--ink); color: #fff; transform: translateY(-2px);
 @media (max-width: 1080px) { .inc-cards { grid-template-columns: repeat(3, minmax(0, 1fr)); } .ex-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 @media (max-width: 760px) { .offer-imgs { grid-template-columns: 1fr; } .inc-cards, .ex-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 480px) { .inc-cards { grid-template-columns: 1fr; } }
+/* Короткий ответ под заголовком (AEO): его цитируют поисковики и нейросети */
+.p-answer { max-width: 760px; margin-top: 22px; padding: 18px 22px; border-radius: 18px; background: var(--paper); box-shadow: inset 4px 0 0 var(--lime), inset 0 0 0 1px var(--line); }
+.p-answer b { display: block; font-size: .8rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin-bottom: 6px; }
+.p-answer p { font-size: 1.02rem; line-height: 1.5; }

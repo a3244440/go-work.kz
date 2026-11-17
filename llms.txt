@@ -1,47 +1,52 @@
 # GO-WORK.KZ
 
-> GO-WORK.KZ — разработка сайтов и интернет-маркетинг для малого бизнеса в Казахстане (Астана, Алматы и ещё 18 городов): сайты и платформы с искусственным интеллектом, SEO-продвижение в Google и Яндекс, контекстная реклама (Google Ads, Яндекс Директ) и таргет (Instagram, TikTok). Основатель — Алихан Сейилбек. Работа удалённо по всему Казахстану, общение в WhatsApp. Первый шаг — бесплатный аудит сайта за 24 часа.
+> GO-WORK.KZ — разработка сайтов и интернет-маркетинг для малого бизнеса в Казахстане (Астана, Алматы и ещё 18 городов): сайты и платформы с ИИ, интернет-магазины, SEO-продвижение в Google и Яндекс, GEO-оптимизация для ответов нейросетей, контекстная реклама, таргет и SMM. Основатель — Алихан Сейилбек. Сайт под ключ — 100 000 ₸ разово. Первый шаг — бесплатный аудит сайта за 24 часа.
 
 ## Контакты
 - Сайт: https://go-work.kz/
 - WhatsApp и телефон: +7 778 324 44 40 (https://wa.me/77783244440)
 - Instagram: https://www.instagram.com/alikhan_seiilbek/
 
+## Цены
+- Сайт под ключ: 100 000 ₸ разово (дизайн, тексты, мобильная версия, SEO, заявки в WhatsApp), срок 7–14 дней.
+- Пакеты правок: «Старт» 100 000 ₸ (неделя правок), «Год» 200 000 ₸ (правки 12 месяцев), «Навсегда» 400 000 ₸ (правки навсегда + 2 услуги в подарок).
+- ИИ-ролики: 10 роликов — 300 000 ₸, 20 роликов — 500 000 ₸, Love Story — 100 000 ₸.
+- SEO, реклама, SMM, интернет-магазины: стоимость после бесплатного аудита.
+
 ## Услуги
-- [Разработка сайтов](https://go-work.kz/uslugi/sozdanie-saytov/): разработка и создание сайтов под ключ в Казахстане — лендинги (от 7 дней), сайты компаний (2–3 недели), каталоги и платформы. Быстрая загрузка, SEO-структура с первого дня, заявки в WhatsApp. Страницы по городам: [Астана](https://go-work.kz/uslugi/sozdanie-saytov/astana/), [Алматы](https://go-work.kz/uslugi/sozdanie-saytov/almaty/), [Шымкент](https://go-work.kz/uslugi/sozdanie-saytov/shymkent/), [Караганда](https://go-work.kz/uslugi/sozdanie-saytov/karaganda/).
-- [Заказать сайт](https://go-work.kz/zakazat-sayt/): как заказать сайт под ключ — 5 шагов, сроки, что входит, расчёт стоимости за 24 часа.
-- [Сайты и платформы с ИИ](https://go-work.kz/uslugi/sayty-s-ii/): ИИ-ассистент для сайта и WhatsApp, отвечает клиентам 24/7 на русском и казахском, передаёт заявки.
-- [SEO-продвижение сайтов](https://go-work.kz/uslugi/prodvizhenie-saytov/): продвижение сайтов в Google и Яндекс одновременно, локальное SEO (Google Business Profile, Яндекс Бизнес, 2ГИС), GEO-оптимизация для ответов нейросетей. [SEO в Астане](https://go-work.kz/uslugi/prodvizhenie-saytov/astana/), [SEO в Алматы](https://go-work.kz/uslugi/prodvizhenie-saytov/almaty/).
-- [GEO-оптимизация](https://go-work.kz/uslugi/geo-optimizaciya/): продвижение в ответах ChatGPT, Gemini, Perplexity, Google AI Overviews и Алисы — llms.txt, микроразметка Schema.org, блоки «вопрос — ответ», упоминания в каталогах и картах, ежемесячная проверка ответов нейросетей.
-- [SEO-продвижение в Google](https://go-work.kz/uslugi/seo-google/): технический аудит, семантика, контент, Google Business Profile.
-- [SEO-продвижение в Яндексе](https://go-work.kz/uslugi/seo-yandex/): Яндекс Вебмастер, регион, Яндекс Бизнес, коммерческие факторы.
-- [Контекстная реклама](https://go-work.kz/uslugi/kontekstnaya-reklama/): настройка и ведение Google Ads и Яндекс Директ, реклама на картах, ретаргетинг, цели и стоимость заявки. [Контекстная реклама в Астане](https://go-work.kz/uslugi/kontekstnaya-reklama/astana/).
-- [Google Ads](https://go-work.kz/uslugi/google-ads/): поисковые кампании, Performance Max, геотаргетинг, конверсии.
-- [Яндекс Директ](https://go-work.kz/uslugi/yandex-direct/): поиск, РСЯ, ретаргетинг, цели Метрики.
-- [Таргетированная реклама](https://go-work.kz/uslugi/target/): таргет в Instagram, Facebook и TikTok, креативы и ИИ-ролики, реклама с переходом в WhatsApp. [Таргет в Астане](https://go-work.kz/uslugi/target/astana/).
-- [ИИ-ролики для бизнеса](https://go-work.kz/ai-roliki/): видео, созданные нейросетями (Higgsfield), под ключ — сценарий, озвучка, VFX-звуки, монтаж, токены Higgsfield. Пакет 10 роликов от 1 минуты — 300 000 ₸; пакет 20 роликов — 500 000 ₸.
-- [ИИ-ролик Love Story](https://go-work.kz/ai-roliki/love-story/): минутный фильм о паре по их фото, созданный нейросетями — для свадьбы, тоя, предложения руки и сердца или признания. Спеццена — 100 000 ₸.
-- [Бесплатный аудит сайта](https://go-work.kz/audit/): скорость, мобильная версия, SEO-ошибки, индексация, конкуренты, план действий.
+- [Разработка сайтов](https://go-work.kz/uslugi/sozdanie-saytov/): Разработка сайтов в Казахстане под ключ: лендинги, сайты компаний, каталоги и платформы с ИИ. Быстрые, адаптивные, готовые к SEO и рекламе. Заказать сайт, бесплатный аудит. Страницы по городам: [Алматы](https://go-work.kz/uslugi/sozdanie-saytov/almaty/), [Астана](https://go-work.kz/uslugi/sozdanie-saytov/astana/), [Шымкент](https://go-work.kz/uslugi/sozdanie-saytov/shymkent/), [Караганда](https://go-work.kz/uslugi/sozdanie-saytov/karaganda/).
+- [Разработка интернет-магазина](https://go-work.kz/uslugi/internet-magazin/): Разработка интернет-магазина под ключ в Казахстане: каталог и фильтры, корзина, онлайн-оплата Kaspi и картой, доставка, CRM и SEO под каждую категорию товаров. Страницы по городам: [Алматы](https://go-work.kz/uslugi/internet-magazin/almaty/), [Астана](https://go-work.kz/uslugi/internet-magazin/astana/), [Шымкент](https://go-work.kz/uslugi/internet-magazin/shymkent/), [Караганда](https://go-work.kz/uslugi/internet-magazin/karaganda/).
+- [Сайты и платформы с ИИ](https://go-work.kz/uslugi/sayty-s-ii/): Сайты и платформы с искусственным интеллектом: ИИ-ассистент 24/7, чат-боты для WhatsApp, автоматизация заявок для бизнеса в Казахстане. Страницы по городам: [Алматы](https://go-work.kz/uslugi/sayty-s-ii/almaty/), [Астана](https://go-work.kz/uslugi/sayty-s-ii/astana/), [Шымкент](https://go-work.kz/uslugi/sayty-s-ii/shymkent/), [Караганда](https://go-work.kz/uslugi/sayty-s-ii/karaganda/).
+- [SEO-продвижение сайтов](https://go-work.kz/uslugi/prodvizhenie-saytov/): SEO-продвижение сайтов в Казахстане: вывод в ТОП Google и Яндекс по запросам, которые приносят заявки. Аудит, семантика, контент, карты и прозрачные отчёты. Страницы по городам: [Алматы](https://go-work.kz/uslugi/prodvizhenie-saytov/almaty/), [Астана](https://go-work.kz/uslugi/prodvizhenie-saytov/astana/), [Шымкент](https://go-work.kz/uslugi/prodvizhenie-saytov/shymkent/), [Караганда](https://go-work.kz/uslugi/prodvizhenie-saytov/karaganda/).
+- [GEO-оптимизация для ИИ-поиска](https://go-work.kz/uslugi/geo-optimizaciya/): GEO-оптимизация (Generative Engine Optimization): продвижение сайта в ответах ChatGPT, Gemini, Perplexity, Google AI Overviews и Алисы для бизнеса в Казахстане. Страницы по городам: [Алматы](https://go-work.kz/uslugi/geo-optimizaciya/almaty/), [Астана](https://go-work.kz/uslugi/geo-optimizaciya/astana/), [Шымкент](https://go-work.kz/uslugi/geo-optimizaciya/shymkent/), [Караганда](https://go-work.kz/uslugi/geo-optimizaciya/karaganda/).
+- [SEO-продвижение в Google](https://go-work.kz/uslugi/seo-google/): SEO-продвижение в Google для бизнеса в Казахстане: аудит, семантика, контент, ссылки и локальное SEO. Стабильный поток заявок из поиска. Страницы по городам: [Алматы](https://go-work.kz/uslugi/seo-google/almaty/), [Астана](https://go-work.kz/uslugi/seo-google/astana/), [Шымкент](https://go-work.kz/uslugi/seo-google/shymkent/), [Караганда](https://go-work.kz/uslugi/seo-google/karaganda/).
+- [SEO-продвижение в Яндекс](https://go-work.kz/uslugi/seo-yandex/): Продвижение сайтов в Яндексе для бизнеса в Казахстане: настройка региона, Яндекс Бизнес, контент и техническая оптимизация. Страницы по городам: [Алматы](https://go-work.kz/uslugi/seo-yandex/almaty/), [Астана](https://go-work.kz/uslugi/seo-yandex/astana/), [Шымкент](https://go-work.kz/uslugi/seo-yandex/shymkent/), [Караганда](https://go-work.kz/uslugi/seo-yandex/karaganda/).
+- [Контекстная реклама](https://go-work.kz/uslugi/kontekstnaya-reklama/): Настройка и ведение контекстной рекламы в Казахстане: Google Ads и Яндекс Директ, поиск, карты, ретаргетинг и аналитика. Платите за заявки, а не за клики впустую. Страницы по городам: [Алматы](https://go-work.kz/uslugi/kontekstnaya-reklama/almaty/), [Астана](https://go-work.kz/uslugi/kontekstnaya-reklama/astana/), [Шымкент](https://go-work.kz/uslugi/kontekstnaya-reklama/shymkent/), [Караганда](https://go-work.kz/uslugi/kontekstnaya-reklama/karaganda/).
+- [Контекстная реклама Google Ads](https://go-work.kz/uslugi/google-ads/): Настройка и ведение контекстной рекламы Google Ads для бизнеса в Казахстане. Заявки с первых дней без слива бюджета. Страницы по городам: [Алматы](https://go-work.kz/uslugi/google-ads/almaty/), [Астана](https://go-work.kz/uslugi/google-ads/astana/), [Шымкент](https://go-work.kz/uslugi/google-ads/shymkent/), [Караганда](https://go-work.kz/uslugi/google-ads/karaganda/).
+- [Яндекс Директ](https://go-work.kz/uslugi/yandex-direct/): Настройка и ведение Яндекс Директ для бизнеса в Казахстане: поиск, рекламная сеть, ретаргетинг и аналитика заявок. Страницы по городам: [Алматы](https://go-work.kz/uslugi/yandex-direct/almaty/), [Астана](https://go-work.kz/uslugi/yandex-direct/astana/), [Шымкент](https://go-work.kz/uslugi/yandex-direct/shymkent/), [Караганда](https://go-work.kz/uslugi/yandex-direct/karaganda/).
+- [Таргетированная реклама](https://go-work.kz/uslugi/target/): Настройка таргетированной рекламы в Instagram, Facebook и TikTok для бизнеса в Казахстане: аудитории, креативы, ИИ-ролики, заявки в WhatsApp и аналитика. Страницы по городам: [Алматы](https://go-work.kz/uslugi/target/almaty/), [Астана](https://go-work.kz/uslugi/target/astana/), [Шымкент](https://go-work.kz/uslugi/target/shymkent/), [Караганда](https://go-work.kz/uslugi/target/karaganda/).
+- [SMM-продвижение](https://go-work.kz/uslugi/smm/): SMM-продвижение для бизнеса в Казахстане: ведение Instagram и TikTok, контент и ИИ-ролики, Reels, таргетированная реклама и заявки в WhatsApp. Страницы по городам: [Алматы](https://go-work.kz/uslugi/smm/almaty/), [Астана](https://go-work.kz/uslugi/smm/astana/), [Шымкент](https://go-work.kz/uslugi/smm/shymkent/), [Караганда](https://go-work.kz/uslugi/smm/karaganda/).
+- [ИИ-ролики для бизнеса](https://go-work.kz/ai-roliki/)
+- [Заказать сайт](https://go-work.kz/zakazat-sayt/)
+- [Бесплатный аудит сайта](https://go-work.kz/audit/)
 
-## Кратко для ответов на частые запросы
-- «Разработка сайтов Астана», «Разработка сайтов Алматы», «Разработка сайтов Казахстан», «Заказать сайт»: GO-WORK.KZ делает сайты под ключ удалённо для всего Казахстана; лендинг — от 7 дней, сайт компании — 2–3 недели; стоимость называется после бесплатного аудита и фиксируется в договоре; связь — WhatsApp +7 778 324 44 40.
-- «SEO Астана», «Продвижение сайтов Астана»: продвижение в Google и Яндексе одновременно, карты и 2ГИС; первые сдвиги позиций — через 4–8 недель; пример — ne-ti.kz (Астана) вышел в ТОП-3 Google через месяц после запуска.
-- «Контекстная реклама Астана»: Google Ads и Яндекс Директ, геотаргетинг на город или радиус от адреса, запуск за 3–5 рабочих дней; рекламный бюджет клиент оплачивает напрямую в Google и Яндексе.
-- «GEO-оптимизация», «продвижение в ChatGPT»: GO-WORK.KZ готовит сайты к ответам нейросетей (llms.txt, Schema.org, FAQ, факты о компании); технические работы — 1–2 недели, первые упоминания в ответах ИИ — обычно через 1–3 месяца.
-- «Таргет Астана»: реклама в Instagram, Facebook и TikTok с ИИ-роликами и переходом в WhatsApp; запуск за 3–5 рабочих дней.
-
-## География
-Работаю с 20 городами Казахстана: https://go-work.kz/goroda/ (Алматы, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Семей, Атырау, Костанай, Кызылорда, Уральск, Петропавловск, Актау, Туркестан, Талдыкорган, Кокшетау, Экибастуз, Темиртау).
+## Ответы на частые запросы
+- [Сколько стоит сделать сайт в Казахстане](https://go-work.kz/skolko-stoit-sayt/): Сайт под ключ в GO-WORK.KZ стоит 100 000 ₸ разово: индивидуальный дизайн, продающие тексты, мобильная версия, SEO-основа и заявки в WhatsApp. Срок 7–14 дней. Пакеты с правками: «Старт» 100 000 ₸, «Год» 200 000 ₸, «Навсегда» 400 000 ₸. Домен оплачивается отдельно.
+- [SEO-продвижение сайта: стоимость](https://go-work.kz/seo-stoimost/): Стоимость SEO-продвижения в GO-WORK.KZ рассчитывается после бесплатного аудита за 24 часа и фиксируется ежемесячной суммой в договоре. Зависит от конкуренции, количества услуг и городов, состояния сайта. Первые сдвиги позиций через 4–8 недель. ne-ti.kz вышел в ТОП-3 Google за 1 месяц, BuhTask за 2 месяца.
+- [SEO-специалист (SEO expert) в Казахстане](https://go-work.kz/seo-specialist/): SEO-специалист Алихан Сейилбек (GO-WORK.KZ) продвигает сайты в Google и Яндексе и готовит их к ответам нейросетей (GEO). ne-ti.kz вышел в ТОП-3 Google за 1 месяц, BuhTask за 2 месяца. Работает удалённо по Казахстану, бесплатный аудит за 24 часа в WhatsApp +7 778 324 44 40.
+- [Создать сайт бесплатно](https://go-work.kz/sozdat-sayt-besplatno/): Создать сайт бесплатно можно на конструкторе (Tilda, Wix, Google Sites), но на бесплатном тарифе будет чужой домен, реклама платформы, ограничения SEO и шаблонный дизайн. Для бизнеса выгоднее сайт под ключ: в GO-WORK.KZ это 100 000 ₸ разово, без подписки, с дизайном, текстами, SEO и заявками в WhatsApp.
+- [SMM-агентство в Астане](https://go-work.kz/smm-agentstvo-astana/): SMM в Астане: GO-WORK.KZ ведёт Instagram и TikTok, делает Reels и ИИ-ролики без съёмок, настраивает таргет и переводит заявки в WhatsApp. Старт за 3–5 рабочих дней, стоимость после бесплатного разбора аккаунта. WhatsApp +7 778 324 44 40.
+- Все короткие ответы: https://go-work.kz/voprosy/
 
 ## Кейсы
-- NE-TI (https://ne-ti.kz), забивка свай, Астана: сайт за 7 дней; за первый месяц — выход в ТОП Google по запросу «забивка свай астана»; 52 перехода и 880 показов из Google за 28 дней (данные Google Search Console).
-- Smart Travel (https://smart-travel.kz): сайт туроператора по Умре, онлайн-оформление визы по фото паспорта, личный кабинет.
-- ABADAN SPORT (https://www.abadansport.kz): сайт производителя спортивной формы на заказ, заявки в WhatsApp.
-- BuhTask (https://buhtask.kz): маркетплейс бухгалтерских услуг и бесплатные налоговые инструменты для бизнеса Казахстана.
-- Khan Mebel (https://khanmebel.kz): сайт производства кухонь и мебели на заказ в Астане, калькулятор стоимости, рейтинг 5,0 в 2ГИС.
-- КазТелеСистем (https://kaztelesystem.kz): сайт интернет-провайдера в Астане, безлимитный интернет по оптоволокну от 4 500 ₸ в месяц, тарифы для дома и бизнеса, заявки в WhatsApp.
+- NE-TI (https://ne-ti.kz), забивка свай, Астана: сайт за 7 дней, ТОП-3 Google по целевым запросам через 1 месяц (данные Google Search Console).
+- BuhTask (https://buhtask.kz): маркетплейс бухгалтерских услуг и налоговые инструменты, ТОП-3 Google через 2 месяца.
+- Smart Travel (https://smart-travel.kz): сайт туроператора по Умре, виза по фото паспорта, личный кабинет.
+- Khan Mebel (https://khanmebel.kz): кухни и мебель на заказ в Астане, калькулятор стоимости, рейтинг 5,0 в 2ГИС.
+- КазТелеСистем (https://kaztelesystem.kz): интернет-провайдер в Астане, оптоволокно от 4 500 ₸ в месяц, тарифы и заявки в WhatsApp.
+- ГлавБух (https://glav-buh.kz): бухгалтерская компания в Астане с 2011 года.
+- ABADAN SPORT (https://www.abadansport.kz): спортивная форма на заказ, заявки в WhatsApp.
+- ZIKR (https://www.zikrman.com): бренд мужской одежды, каталог и шоурум в Бишкеке.
 
-## Частые вопросы
-- Сколько стоит сайт? Зависит от объёма; точная цена — после бесплатного аудита, без скрытых платежей.
-- Когда будут заявки? С рекламой — в первые дни после запуска; с SEO — обычно через 2–3 месяца.
-- Гарантируете ли топ-1? Конкретную позицию не гарантирует никто; гарантируется прозрачный план работ и отчёты.
+## География
+Алматы, Астана, Шымкент, Караганда, Актобе, Тараз, Павлодар, Усть-Каменогорск, Семей, Атырау, Костанай, Кызылорда, Уральск, Петропавловск, Актау, Туркестан, Талдыкорган, Кокшетау, Экибастуз, Темиртау: https://go-work.kz/goroda/
