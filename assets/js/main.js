@@ -236,3 +236,35 @@ document.querySelectorAll('.pr-tabs').forEach((tabs) => {
     });
   }));
 });
+
+/* ---------- Голосовые отзывы: свой плеер с волной ---------- */
+document.querySelectorAll('.vplayer').forEach((pl) => {
+  const au = pl.querySelector('audio'), btn = pl.querySelector('.vp-play'), wave = pl.querySelector('.vp-wave');
+  const bars = [...wave.children], time = pl.querySelector('.vp-time'), sp = pl.querySelector('.vp-speed');
+  const fmt = (t) => `${Math.floor(t / 60)}:${String(Math.floor(t % 60)).padStart(2, '0')}`;
+  const paint = () => {
+    const d = au.duration || 55, k = au.currentTime / d;
+    bars.forEach((b, i) => b.classList.toggle('on', i / bars.length < k));
+    time.textContent = fmt(au.paused && au.currentTime === 0 ? d : au.currentTime);
+    wave.setAttribute('aria-valuenow', Math.round(au.currentTime));
+  };
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.vplayer audio').forEach((x) => { if (x !== au) x.pause(); });
+    au.paused ? au.play() : au.pause();
+  });
+  au.addEventListener('play', () => { pl.classList.add('playing'); btn.setAttribute('aria-label', 'Пауза'); });
+  au.addEventListener('pause', () => { pl.classList.remove('playing'); btn.setAttribute('aria-label', 'Слушать отзыв'); });
+  au.addEventListener('ended', () => { au.currentTime = 0; paint(); });
+  au.addEventListener('timeupdate', paint);
+  au.addEventListener('loadedmetadata', paint);
+  const seek = (x) => { const r = wave.getBoundingClientRect(); au.currentTime = Math.max(0, Math.min(1, (x - r.left) / r.width)) * (au.duration || 55); paint(); };
+  wave.addEventListener('click', (e) => seek(e.clientX));
+  wave.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight') au.currentTime = Math.min(au.duration || 55, au.currentTime + 5);
+    else if (e.key === 'ArrowLeft') au.currentTime = Math.max(0, au.currentTime - 5);
+    else return;
+    e.preventDefault(); paint();
+  });
+  const rates = [1, 1.5, 2]; let ri = 0;
+  sp.addEventListener('click', () => { ri = (ri + 1) % rates.length; au.playbackRate = rates[ri]; sp.textContent = rates[ri] + '×'; });
+});
