@@ -107,7 +107,7 @@ ${body}
         <div>
           <a href="/" class="logo"><span class="logo-mark">G</span><span class="logo-text">GO-WORK<span class="accent">.KZ</span></span></a>
           <p class="f-note">Сайты с ИИ, SEO в Google и Яндекс, контекстная реклама для бизнеса в Казахстане.</p>
-          <div class="footer-links"><a href="https://www.instagram.com/alikhan_seiilbek/" target="_blank" rel="noopener">Instagram</a><a class="js-wa" href="${WA}" target="_blank" rel="noopener">WhatsApp</a></div>
+          <div class="footer-links"><a href="https://www.instagram.com/alikhan_seiilbek/" target="_blank" rel="noopener">Instagram</a><a href="https://2gis.kz/astana/geo/70000001119705288" target="_blank" rel="noopener">2ГИС</a><a class="js-wa" href="${WA}" target="_blank" rel="noopener">WhatsApp</a></div>
           <p class="f-note"><a class="tel-link" href="tel:+77783244440">+7 778 324 44 40</a></p>
         </div>
         <div><b>Услуги</b>${SERVICES.map((s) => `<a href="/uslugi/${s.slug}/">${s.name}</a>`).join('')}<a href="/ai-roliki/">ИИ-ролики для бизнеса</a><a href="/ai-roliki/love-story/">ИИ-ролик Love Story</a><a href="/zakazat-sayt/">Заказать сайт</a><a href="/audit/">Бесплатный аудит</a></div>
@@ -141,7 +141,7 @@ const serviceLd = (s, c, url, desc) => ({
   '@context': 'https://schema.org', '@type': 'Service',
   name: c ? `${s.name} ${c.loc}` : s.name, serviceType: s.name, description: desc, url: SITE + url,
   areaServed: c ? { '@type': 'City', name: c.name } : { '@type': 'Country', name: 'Казахстан' },
-  provider: { '@type': 'ProfessionalService', name: 'GO-WORK.KZ', url: SITE + '/', image: SITE + '/assets/img/og.png' },
+  provider: { '@type': 'ProfessionalService', name: 'GO-WORK.KZ', url: SITE + '/', image: SITE + '/assets/img/og.png', sameAs: ['https://www.instagram.com/alikhan_seiilbek/', 'https://2gis.kz/astana/geo/70000001119705288'] },
 });
 
 /* ---------- блоки ---------- */
@@ -558,6 +558,7 @@ for (const L of LANDINGS) {
 - Сайт: ${SITE}/
 - WhatsApp и телефон: +7 778 324 44 40 (https://wa.me/77783244440)
 - Instagram: https://www.instagram.com/alikhan_seiilbek/
+- 2ГИС (Астана): https://2gis.kz/astana/geo/70000001119705288
 
 ## Цены
 - Сайт под ключ: 100 000 ₸ разово (дизайн, тексты, мобильная версия, SEO, заявки в WhatsApp), срок 7–14 дней.
