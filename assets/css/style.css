@@ -896,3 +896,32 @@ html:not(.has-robot) .robo-hit svg { display: block; filter: drop-shadow(0 10px 
 .gis-card small{display:block;opacity:.6;font-size:13px;margin-top:2px}
 .gis-go{margin-left:auto;flex:none;padding:8px 14px;border-radius:99px;background:#111;color:#fff;font-size:13px;font-weight:600}
 @media (max-width:520px){.gis-go{display:none}}
+
+/* ---------- Подвал: блок контактов ---------- */
+.f-contact{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.35fr);gap:clamp(20px,3vw,40px);align-items:stretch;margin:0 0 48px;padding:clamp(24px,4vw,48px);border-radius:32px;background:var(--black);color:#fff;position:relative;overflow:hidden;isolation:isolate}
+.f-contact::before{content:"";position:absolute;inset:auto -10% -60% 30%;height:120%;background:radial-gradient(closest-side,rgba(255,90,31,.45),transparent 70%);z-index:-1;animation:fcGlow 9s ease-in-out infinite alternate}
+.f-contact::after{content:"";position:absolute;inset:-50% 50% auto -20%;height:100%;background:radial-gradient(closest-side,rgba(123,92,255,.3),transparent 70%);z-index:-1;animation:fcGlow 11s ease-in-out infinite alternate-reverse}
+@keyframes fcGlow{to{transform:translate(-8%,-10%) scale(1.15)}}
+.fc-head{display:flex;flex-direction:column;align-items:flex-start;gap:14px}
+.fc-kicker{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--lime);font-weight:700}
+.fc-title{margin:0;font-family:var(--font-d);font-size:clamp(1.8rem,1rem + 2.4vw,3.2rem);line-height:1;letter-spacing:-.03em;color:#fff}
+.fc-head p{margin:0;color:#b9b9b9;max-width:34ch}
+.fc-btn{margin-top:auto;display:inline-flex;align-items:center;gap:10px;padding:14px 22px;border-radius:99px;background:var(--wa);color:#06210f;font-weight:700;text-decoration:none;transition:transform .25s var(--ease),box-shadow .25s}
+.fc-btn svg{width:20px;height:20px;fill:currentColor}
+.fc-btn:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(37,211,102,.35)}
+.fc-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.fc-tile{display:flex;flex-direction:column;gap:4px;padding:18px;border-radius:22px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:#fff;text-decoration:none;backdrop-filter:blur(6px);transition:transform .3s var(--ease),background .3s,border-color .3s}
+a.fc-tile:hover{transform:translateY(-4px);background:rgba(255,255,255,.11);border-color:rgba(255,255,255,.25)}
+.fc-tile i{display:grid;place-items:center;width:42px;height:42px;margin-bottom:10px;border-radius:13px;background:rgba(255,255,255,.1);color:var(--lime)}
+.fc-tile i svg{width:22px;height:22px}
+.fc-tile small{color:#9a9a9a;font-size:13px}
+.fc-tile b{font-size:clamp(15px,1.3vw,18px);font-weight:700;overflow-wrap:anywhere}
+.fc-tile em{font-style:normal;font-size:13px;color:var(--accent);margin-top:auto;padding-top:6px}
+@media (max-width:860px){.f-contact{grid-template-columns:1fr}.fc-btn{margin-top:6px}}
+@media (max-width:420px){.fc-grid{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){.f-contact::before,.f-contact::after{animation:none}}
+.footer .f-contact .fc-title,.footer .f-contact .fc-tile,.footer .f-contact .fc-tile b{color:#fff}
+.footer .f-contact .fc-tile{display:flex}
+.footer .f-contact .fc-tile b{display:block;margin:0;font-size:clamp(15px,1.3vw,18px)}
+.footer .f-contact .fc-title{display:block;font-weight:600}
+.footer .f-contact .fc-tile small{color:#9a9a9a}
