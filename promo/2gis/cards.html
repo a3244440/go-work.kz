@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8">
+<title>2ГИС: карточки</title>
+<link rel="stylesheet" href="fonts.css">
+<style>
+:root{--bg:#f1f1f1;--ink:#0d0d0d;--ink2:#4a4a4a;--mut:#8a8a8a;--lime:#d4ff3a;--or:#ff5a1f;--vi:#7b5cff;--line:rgba(13,13,13,.1)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#777;font-family:"Man",sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}
+.c{width:1600px;height:1200px;position:relative;overflow:hidden;background:var(--bg);padding:90px 100px 150px;display:flex;flex-direction:column;margin-bottom:20px}
+.c.dark{background:#0b0b0b;color:#fff}
+.c.sq{width:1200px;height:1200px}
+.glow::before{content:"";position:absolute;width:1100px;height:1100px;right:-300px;bottom:-500px;background:radial-gradient(closest-side,rgba(255,90,31,.55),transparent 70%)}
+.glow::after{content:"";position:absolute;width:900px;height:900px;left:-350px;top:-450px;background:radial-gradient(closest-side,rgba(123,92,255,.4),transparent 70%)}
+.c>*{position:relative;z-index:1}
+.top{display:flex;align-items:center;gap:16px;margin-bottom:56px}
+.mark{width:58px;height:58px;border-radius:16px;background:var(--lime);color:#0d0d0d;display:grid;place-items:center;font:700 30px "Unb"}
+.brand{font:700 28px "Unb";letter-spacing:-.02em}.brand span{color:var(--or)}
+.kick{margin-left:auto;font:700 20px "Man";letter-spacing:.16em;text-transform:uppercase;padding:12px 22px;border-radius:99px;border:2px solid currentColor;opacity:.8}
+.foot{position:absolute;left:100px;right:100px;bottom:56px;display:flex;gap:40px;font:700 26px "Man";color:var(--ink2);align-items:center}
+.dark .foot{color:#a9a9a9}
+.foot b{color:var(--or)}
+.foot .wa{margin-left:auto;display:flex;align-items:center;gap:12px;background:#25d366;color:#06210f;padding:14px 26px;border-radius:99px}
+h1{font:700 96px/1 "Unb";letter-spacing:-.04em}
+h2{font:700 72px/1.02 "Unb";letter-spacing:-.04em}
+.lead{font:500 34px/1.35 "Man";color:var(--ink2);margin-top:28px;max-width:30ch}
+.dark .lead{color:#bdbdbd}
+.big{font:700 230px/0.9 "Unb";letter-spacing:-.06em;color:var(--lime);margin-top:26px;white-space:nowrap}
+.big small{font-size:.45em;color:#fff;margin-left:10px}
+.chips{display:flex;flex-wrap:wrap;gap:16px;margin-top:auto}
+.chip{font:700 30px "Man";padding:18px 30px;border-radius:99px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18)}
+.light .chip{background:#fff;border-color:var(--line)}
+.serif{font-family:"Cor";font-style:italic;font-weight:600;letter-spacing:0}
+/* пакеты */
+.packs{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:50px;flex:1}
+.pk{color:var(--ink);background:#fff;border-radius:36px;padding:42px 40px;display:flex;flex-direction:column;gap:14px;border:2px solid var(--line)}
+.pk.best{background:#0b0b0b;color:#fff;transform:translateY(-18px);border-color:#0b0b0b}
+.dark .pk.best{background:#1d1d1d;border-color:rgba(255,255,255,.18)}
+.packs{min-width:0}.pk{min-width:0}
+.pk .n{font:700 30px "Unb"}
+.pk .p{font:700 54px/1 "Unb";letter-spacing:-.04em;margin:8px 0 6px;white-space:nowrap}
+.pk.best .p{color:var(--lime)}
+.pk ul{list-style:none;display:grid;gap:18px;font:600 28px/1.3 "Man";color:var(--ink2);margin-top:10px}
+.pk.best ul{color:#cfcfcf}
+.pk li{padding-left:40px;position:relative}
+.pk li::before{content:"✓";position:absolute;left:0;top:-1px;width:28px;height:28px;border-radius:50%;background:var(--lime);color:#0d0d0d;font:700 18px/28px "Man";text-align:center}
+.tag{align-self:flex-start;font:700 20px "Man";letter-spacing:.1em;text-transform:uppercase;background:var(--or);color:#fff;padding:8px 16px;border-radius:99px}
+.note{font:500 24px "Man";color:var(--mut);margin-top:26px}
+/* что входит */
+.cols{display:grid;grid-template-columns:repeat(5,1fr);gap:20px;margin-top:50px;flex:1}
+.col{background:#fff;border-radius:30px;padding:36px 28px;display:flex;flex-direction:column;gap:18px}
+.col i{font:700 22px "Unb";color:var(--or);font-style:normal}
+.col b{font:700 36px/1.1 "Unb";letter-spacing:-.03em;margin-bottom:8px}
+.col span{font:600 28px/1.25 "Man";color:var(--ink2);padding-top:12px;border-top:1px solid var(--line)}
+/* услуги */
+.svc{display:grid;grid-template-columns:1.1fr 1fr;gap:70px;flex:1;align-items:center}
+.num{font:700 30px "Unb";color:var(--or);margin-bottom:26px}
+.list{list-style:none;display:grid;gap:22px}
+.list li{font:700 34px/1.25 "Man";padding:26px 30px 26px 92px;border-radius:26px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);position:relative}
+.light .list li{background:#fff;border-color:var(--line)}
+.list li::before{content:"";position:absolute;left:30px;top:50%;width:36px;height:36px;margin-top:-18px;border-radius:12px;background:var(--lime)}
+.list li::after{content:"✓";position:absolute;left:30px;top:50%;width:36px;margin-top:-20px;text-align:center;color:#0d0d0d;font:700 22px "Man"}
+.price-pill{display:inline-flex;margin-top:40px;font:700 40px "Unb";letter-spacing:-.03em;background:var(--lime);color:#0d0d0d;padding:22px 34px;border-radius:24px}
+.price-pill.ghost{background:transparent;border:2px solid currentColor;font-size:30px;color:inherit}
+/* кейсы */
+.case{display:grid;grid-template-columns:1.5fr 1fr;gap:64px;flex:1;align-items:center}
+.lap{border-radius:26px;overflow:hidden;background:#fff;box-shadow:0 40px 90px rgba(0,0,0,.22);border:10px solid #0d0d0d;aspect-ratio:16/10;display:grid;place-items:center}
+.dark .lap{border-color:#2a2a2a}
+.lap img.shot{width:100%;height:100%;object-fit:cover;object-position:top}
+.lap img.logo{max-width:62%;max-height:56%;object-fit:contain}
+.lap.blk{background:#111}
+.res{display:grid;gap:18px;margin-top:34px}
+.res div{font:700 34px/1.3 "Man";padding-left:28px;border-left:6px solid var(--or)}
+.url{font:700 28px "Man";color:var(--or);margin-top:30px}
+.niche{font:500 30px "Man";color:var(--mut);margin-top:16px}
+/* логотип / обложка */
+.logoSq{width:1000px;height:1000px;background:#0b0b0b;display:grid;place-items:center;position:relative;overflow:hidden;margin-bottom:20px}
+.logoSq .m{width:560px;height:560px;border-radius:150px;background:var(--lime);display:grid;place-items:center;font:700 380px "Unb";color:#0d0d0d;letter-spacing:-.06em;position:relative;z-index:1}
+</style></head>
+<body>
+<div id="root"></div>
+<script>
+const WA='+7 778 324 44 40';
+const hdr=(k)=>`<div class="top"><div class="mark">G</div><div class="brand">GO-WORK<span>.KZ</span></div>${k?`<div class="kick">${k}</div>`:''}</div>`;
+const foot=()=>`<div class="foot"><span><b>go-work.kz</b></span><span>Астана · весь Казахстан</span><span class="wa">WhatsApp ${WA}</span></div>`;
+const card=(id,cls,k,inner)=>`<section class="c ${cls}" id="${id}">${hdr(k)}${inner}${foot()}</section>`;
+const ul=(a)=>`<ul class="list">${a.map(x=>`<li>${x}</li>`).join('')}</ul>`;
+let H='';
+
+/* ---------- ЦЕНЫ ---------- */
+H+=card('cena-1-sayt-100000','dark glow','Цены',`
+  <h1>Сайт под ключ</h1>
+  <div class="big">100 000<small>₸</small></div>
+  <p class="lead">Дизайн, продающие тексты, мобильная версия, SEO и заявки в WhatsApp. Всё включено, без подписок.</p>
+  <div class="chips"><span class="chip">7–14 дней до запуска</span><span class="chip">0 ₸ подписки</span><span class="chip">Сайт полностью ваш</span></div>`);
+
+const pk=(n,p,lines,best,tag)=>`<div class="pk ${best?'best':''}">${tag?`<span class="tag">${tag}</span>`:''}<div class="n">${n}</div><div class="p">${p}</div><ul>${lines.map(l=>`<li>${l}</li>`).join('')}</ul></div>`;
+H+=card('cena-2-pakety','light','Цены',`
+  <h2>Пакеты: сайт один, разница в правках</h2>
+  <div class="packs">
+    ${pk('Старт','100 000 ₸',['Сайт под ключ','Дизайн и тексты','Мобильная версия, SEO, WhatsApp','Правки 1 неделю бесплатно'])}
+    ${pk('Год','200 000 ₸',['Всё, что в «Старте»','Любые правки 12 месяцев бесплатно'],true,'Рекомендую')}
+    ${pk('Навсегда','400 000 ₸',['Всё, что в «Старте»','Любые правки бесплатно навсегда','2 услуги в подарок: ИИ-ролик, ИИ-ассистент, GEO'])}
+  </div>
+  <p class="note">Домен оплачивается отдельно. Интернет-магазин, платформа с ИИ и боты рассчитываются индивидуально.</p>`);
+
+const col=(i,b,a)=>`<div class="col"><i>${i}</i><b>${b}</b>${a.map(x=>`<span>${x}</span>`).join('')}</div>`;
+H+=card('cena-3-chto-vhodit','light','Что входит в 100 000 ₸',`
+  <h2>Всё включено в цену</h2>
+  <div class="cols">
+    ${col('01','Ценность',['Разбор конкурентов','Структура под запросы','Продающие тексты','Блок вопросов'])}
+    ${col('02','Дизайн',['Индивидуально, без шаблонов','Цвета бренда','Мобильная версия','Понятные кнопки'])}
+    ${col('03','Заявки',['WhatsApp в 1 клик','Формы заявок','Карты 2ГИС и Google','ИИ-ассистент 24/7'])}
+    ${col('04','SEO',['Заголовки для Google и Яндекса','Разметка и GEO','Загрузка < 2 сек','Метрика и Analytics'])}
+    ${col('05','Запуск',['Домен и хостинг','Search Console и Вебмастер','Все доступы ваши','Тестовая заявка'])}
+  </div>`);
+
+H+=card('cena-4-ii-roliki','dark glow','Цены',`
+  <h2>ИИ-ролики для бизнеса</h2>
+  <p class="lead">Реклама и Reels без съёмок, актёров и студии.</p>
+  <div class="packs" style="grid-template-columns:1fr 1fr;margin-top:44px;flex:none;height:560px">
+    ${pk('Старт · 10 роликов','300 000 ₸',['30 000 ₸ за ролик','Сценарии, озвучка и монтаж','Чтобы протестировать формат'])}
+    ${pk('Бизнес · 20 роликов','500 000 ₸',['25 000 ₸ за ролик','Выгода 100 000 ₸','Контент на 1–2 месяца'],true,'Выгоднее')}
+  </div>`);
+
+H+=card('cena-5-love-story','dark glow','Цены',`
+  <h2>ИИ-ролик <span class="serif" style="font-size:1.2em;color:var(--lime)">Love Story</span></h2>
+  <p class="lead">Ваша история любви в кино-сценах: подарок на свадьбу и годовщину.</p>
+  <div class="big" style="font-size:190px">100 000<small>₸</small></div>
+  <div class="chips"><span class="chip">Сценарий по вашей истории</span><span class="chip">Ваши фото → кино</span><span class="chip">Озвучка и VFX</span></div>`);
+
+/* ---------- УСЛУГИ ---------- */
+const S=[
+  ['usluga-1-sayty','dark glow','Разработка сайтов','Сайты, которые приводят заявки',['Лендинги и многостраничные сайты','Интернет-магазины с Kaspi и 1С','Индивидуальный дизайн и тексты','Заявки сразу в WhatsApp'],'от 100 000 ₸'],
+  ['usluga-2-seo','light','SEO-продвижение','Выводим в ТОП Google и Яндекс',['NE-TI: ТОП-3 Google за 1 месяц','BuhTask: ТОП-3 Google за 2 месяца','Страницы под каждый запрос и город','Отчёты из Search Console'],'Бесплатный аудит'],
+  ['usluga-3-geo','dark glow','GEO-оптимизация','Чтобы ИИ рекомендовал вашу компанию',['ChatGPT, Perplexity, Алиса, Gemini','Разметка Schema.org и llms.txt','Короткие ответы на вопросы клиентов','Упоминания на внешних площадках'],'Бесплатный аудит'],
+  ['usluga-4-reklama','light','Контекстная реклама','Заявки с первого дня запуска',['Google Ads и Яндекс Директ','Настройка под ваш город и бюджет','Минус-слова и защита от скликивания','Понятные отчёты по заявкам'],'Бесплатный аудит'],
+  ['usluga-5-ii','dark glow','Сайты и боты с ИИ','Отвечают клиентам 24/7',['ИИ-ассистент на сайте','Чат-боты WhatsApp и Telegram','Расчёт стоимости и запись онлайн','Интеграция с CRM'],'Индивидуально'],
+  ['usluga-6-roliki','light','ИИ-ролики','Реклама без съёмок',['Reels и реклама для Instagram и TikTok','Сценарий, озвучка, VFX и монтаж','Love Story на свадьбу','Пакеты от 10 роликов'],'от 25 000 ₸ за ролик'],
+  ['usluga-7-target','dark glow','Таргет и SMM','Instagram, TikTok, Facebook',['Настройка таргетированной рекламы','Креативы и ИИ-ролики','Ведение аккаунтов','Заявки в WhatsApp и Директ'],'Бесплатный аудит'],
+];
+S.forEach(([id,cls,k,t,a,p],i)=>{H+=card(id,cls,'Услуги',`
+  <div class="svc"><div><div class="num">0${i+1} / 07</div><h2>${k}</h2><p class="lead">${t}</p><span class="price-pill ${/от/.test(p)?'':'ghost'}">${p}</span></div>${ul(a)}</div>`)});
+
+/* ---------- ПОРТФОЛИО ---------- */
+const P=[
+  ['rabota-1-ne-ti','NE-TI','Забивка свай, Астана','ne-ti.kz',null,'/assets/img/logos/ne-ti.png',['Сайт за 7 дней','ТОП-3 Google за 1 месяц','Заявки в WhatsApp']],
+  ['rabota-2-buhtask','BuhTask','Маркетплейс бухгалтерских услуг','buhtask.kz',null,'/assets/img/logos/buhtask.png',['Платформа и налоговые инструменты','ТОП-3 Google за 2 месяца']],
+  ['rabota-3-khan-mebel','Khan Mebel','Кухни и мебель на заказ, Астана','khanmebel.kz','/assets/img/work/khan-mebel.jpg',null,['Калькулятор стоимости','Рейтинг 5,0 в 2ГИС']],
+  ['rabota-4-kaztelesystem','КазТелеСистем','Интернет-провайдер, Астана','kaztelesystem.kz','/assets/img/work/kaztelesystem.jpg',null,['Тарифы и проверка адреса','Заявки в WhatsApp']],
+  ['rabota-5-smart-travel','Smart Travel','Туроператор по Умре','smart-travel.kz','/assets/img/work/smart-travel.jpg',null,['Виза по фото паспорта','Личный кабинет']],
+  ['rabota-6-abadan','ABADAN SPORT','Спортивная форма на заказ','abadansport.kz','/assets/img/work/abadan-sport.jpg',null,['Каталог формы','Заявки в WhatsApp']],
+  ['rabota-7-glavbuh','ГлавБух','Бухгалтерская компания, Астана','glav-buh.kz',null,'/assets/img/logos/glavbuh.png',['Сайт бухгалтерской компании','Работает с 2011 года']],
+  ['rabota-8-zikr','ZIKR','Бренд мужской одежды','zikrman.com',null,'/assets/img/logos/zikr.png',['Каталог и шоурум','Бишкек'],true],
+];
+P.forEach(([id,n,niche,url,shot,logo,res,blk],i)=>{H+=card(id,i%2?'light':'dark glow','Наши работы',`
+  <div class="case"><div class="lap ${blk?'blk':''}">${shot?`<img class="shot" src="${shot}">`:`<img class="logo" src="${logo}">`}</div>
+  <div><h2>${n}</h2><div class="niche">${niche}</div><div class="res">${res.map(r=>`<div>${r}</div>`).join('')}</div><div class="url">${url} ↗</div></div></div>`)});
+
+/* ---------- Обложка и логотип ---------- */
+H+=card('oblozhka','dark glow','',`
+  <h1 style="font-size:120px;margin-top:40px">Сайты, SEO<br>и реклама,<br><span style="color:var(--lime)">которые приводят заявки</span></h1>
+  <div class="chips"><span class="chip">Сайт под ключ от 100 000 ₸</span><span class="chip">ТОП-3 Google</span><span class="chip">ИИ-ролики</span></div>`);
+H+=`<section class="logoSq glow" id="logo"><div class="m">G</div></section>`;
+document.getElementById('root').innerHTML=H;
+</script>
+</body></html>
